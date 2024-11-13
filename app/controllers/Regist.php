@@ -6,7 +6,7 @@ class Regist extends Controller {
       header('Location: ' . BASEURL . '/daftar');
     } else {
       $data['judul'] = 'Daftar Toko';
-      $this->view('templates/headerHome', $data);
+      $this->view('templates/i-header', $data);
       $this->view('regist/index', $data);
       $this->view('templates/footer');
     }
@@ -14,8 +14,8 @@ class Regist extends Controller {
 
   public function daftar() {
     $data['judul'] = 'Daftar Akun';
-    $this->view('templates/headerHome', $data);
-    $this->view('regist/registToko', $data);
+    $this->view('templates/i-header', $data);
+    $this->view('regist/daftar', $data);
     $this->view('templates/footer');
   }
 }
