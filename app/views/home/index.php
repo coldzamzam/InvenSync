@@ -1,16 +1,94 @@
-<div class="container">
-  <div class="p-5 text-center bg-body-secondary rounded-3 m-5">
-    <img src="" alt="Logo Invensync" width="200" class="rounded-circle shadow">
-    <h1 class="text-body-emphasis">Selamat Datang di Toko InvenSync!</h1>
-    <p class="col-lg-8 mx-auto fs-5 text-muted">
+<div class="bg-white">
+  <section>
+    <div class="flex items-center justify-center h-[400px] bg-white">
+      <h2 class="text-black text-4xl font-semibold">Aplikasi Inventaris Terbaik!</h2>
+    </div>
+  </section>
 
-    </p>
-    <p class="col-lg-8 mx-auto fs-5 text-muted">
-      Silakan masuk!
-    </p>
-    <form action="<?= BASEURL; ?>/home/masuk" method="post">
-      <button type="submit" name="ayomasuk" class="btn btn-outline-primary btn-lg">Ayo Masuk</button>
-    </form>
-  </div>
+  <!-- Features Section -->
+  <section class="py-12 bg-[#FFD369] text-center">
+    <h3 class="text-2xl font-bold mb-4">Fitur-fitur InvenSync!</h3>
+    <p class="mb-8">Fitur-fitur terbaik yang kami sediakan untuk kelancaran pengelolaan inventaris Anda</p>
+    <div class="container mx-auto flex flex-wrap justify-center">
+      <div class="w-1/4 p-4 text-center">
+        <img src="path/to/icon1.png" alt="Feature 1" class="mx-auto mb-2">
+        <p class="font-semibold">Sistem Inventaris Simple dan Cepat</p>
+      </div>
+      <div class="w-1/4 p-4 text-center">
+        <img src="path/to/icon2.png" alt="Feature 2" class="mx-auto mb-2">
+        <p class="font-semibold">Sistem Kasir yang Terintegrasi</p>
+      </div>
+      <div class="w-1/4 p-4 text-center">
+        <img src="path/to/icon3.png" alt="Feature 3" class="mx-auto mb-2">
+        <p class="font-semibold">Penjadwalan dan Riwayat Transaksi</p>
+      </div>
+      <div class="w-1/4 p-4 text-center">
+        <img src="path/to/icon4.png" alt="Feature 4" class="mx-auto mb-2">
+        <p class="font-semibold">Laporan Keuangan yang Real-time</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inventory Statistics Section -->
+  <section class="py-12 text-center">
+    <h3 class="text-2xl font-bold">Inventory Statistics</h3>
+    <p class="mb-4">Insight analysis for informed decisions</p>
+    <div class="flex justify-center items-center space-x-6 mb-8">
+      <div class="text-center">
+        <p class="text-4xl font-bold">1000</p>
+        <p>Total Products</p>
+      </div>
+      <div class="text-center">
+        <p class="text-4xl font-bold">500</p>
+        <p>Sold Items</p>
+      </div>
+      <div class="text-center">
+        <p class="text-4xl font-bold">20%</p>
+        <p>Profit Margin</p>
+      </div>
+    </div>
+    <button class="bg-black text-white px-4 py-2 rounded">More Details</button>
+    <div class="mt-8">
+      <p class="mb-2">Sales Performance</p>
+      <div class="w-1/2 mx-auto bg-gray-300 h-40 rounded-lg flex items-end">
+        <!-- Replace with actual chart -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Us Section -->
+  <section class="py-12 bg-[#FFD369]">
+    <div class="container mx-auto text-center">
+      <h3 class="text-2xl font-bold mb-4">Contact Us</h3>
+      <p class="mb-8">Get in touch with us for inquiries</p>
+      <form class="flex flex-col items-center space-y-4">
+        <input type="text" placeholder="Name" class="w-1/3 p-2 rounded">
+        <input type="email" placeholder="Email" class="w-1/3 p-2 rounded">
+        <textarea placeholder="Message" class="w-1/3 p-2 rounded h-24"></textarea>
+        <button type="submit" class="bg-black text-white px-4 py-2 rounded">Submit</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Reviews Section -->
+  <section class="py-12 text-center">
+    <h3 class="text-2xl font-bold mb-4">Latest Reviews</h3>
+    <div class="flex justify-center space-x-6">
+      <div class="bg-white shadow-lg p-4 rounded-lg w-1/4">
+        <p>Review title</p>
+        <p>Reviewer name</p>
+        <p>Rating: ⭐⭐⭐⭐⭐</p>
+      </div>
+      <div class="bg-white shadow-lg p-4 rounded-lg w-1/4">
+        <p>Review title</p>
+        <p>Reviewer name</p>
+        <p>Rating: ⭐⭐⭐⭐⭐</p>
+      </div>
+      <div class="bg-white shadow-lg p-4 rounded-lg w-1/4">
+        <p>Review title</p>
+        <p>Reviewer name</p>
+        <p>Rating: ⭐⭐⭐⭐⭐</p>
+      </div>
+    </div>
+  </section>
 </div>
-
