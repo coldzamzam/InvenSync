@@ -3,11 +3,14 @@
     <img src="" alt="Logo Invensync" width="200" class="rounded-circle shadow">
     <h1 class="text-body-emphasis">Selamat Datang di Toko InvenSync!</h1>
     <p class="col-lg-8 mx-auto fs-5 text-muted">
-      Halo, nama saya <?= $data['nama']; ?>
+
     </p>
     <p class="col-lg-8 mx-auto fs-5 text-muted">
-      This is a custom jumbotron, some longer text that wraps early thanks to a responsive <code>.col-*</code> class, and a customized call to action.
+      Silakan masuk!
     </p>
+    <form action="<?= BASEURL; ?>/home/masuk" method="post">
+      <button type="submit" name="ayomasuk" class="btn btn-outline-primary btn-lg">Ayo Masuk</button>
+    </form>
   </div>
 </div>
 
