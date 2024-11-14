@@ -12,13 +12,13 @@ class User_model {
   public function checkRowAcc(){
     $query = "SELECT * FROM i_store_info";
     $this->db->query($query);
-    if ($this->db->execute()) {
-      echo 'Berhasil mengambil data i_store_info';
-      $this->db->resultSet();
-    } else {
-      echo 'Gagal mengambil data';
-    }
-    var_dump($this->db->rowCount());
+    // if ($this->db->execute()) {
+    //   echo 'Berhasil mengambil data i_store_info';
+    //   $this->db->resultSet();
+    // } else {
+    //   echo 'Gagal mengambil data';
+    // }
+    // var_dump($this->db->rowCount());
 
     return $this->db->rowCount();
   }
