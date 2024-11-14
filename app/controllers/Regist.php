@@ -3,7 +3,7 @@
 class Regist extends Controller {
   public function index(){
     if ( $this->model('User_model')->checkRowAcc() > 0 ) {
-      header('Location: ' . BASEURL . '/daftar');
+      header('Location: ' . BASEURL . '/regist/login');
     } else {
       $data['judul'] = 'Daftar Toko';
       $this->view('templates/i-header', $data);
@@ -17,6 +17,10 @@ class Regist extends Controller {
     $this->view('templates/i-header', $data);
     $this->view('regist/daftar', $data);
     $this->view('templates/footer');
+  }
+
+  public function regist() {
+
   }
 }
 
