@@ -12,13 +12,13 @@ class User_model {
   public function checkRowAcc(){
     $query = "SELECT * FROM i_store_info";
     $this->db->query($query);
-    // if ($this->db->execute()) {
-    //   echo 'Berhasil mengambil data i_store_info';
-    // } else {
-    //   echo 'Gagal mengambil data';
-    // }
-    // var_dump($this->db->rowCount());
-    // $this->db->resultSet();
+    if ($this->db->execute()) {
+      echo 'Berhasil mengambil data i_store_info';
+      $this->db->resultSet();
+    } else {
+      echo 'Gagal mengambil data';
+    }
+    var_dump($this->db->rowCount());
 
     return $this->db->rowCount();
   }
@@ -39,7 +39,7 @@ class User_model {
     VALUES (:namatoko, :tipetoko, :lokasi, :telepontoko, :emailtoko, :yearfounded)";
     $this->db->query($query);
     $this->db->bind('namatoko', $data['namatoko']);
-    $this->db->bind('tipetoko', $data['namstore_type']);
+    $this->db->bind('tipetoko', $data['store_type']);
     $this->db->bind('lokasi', $data['location']);
     $this->db->bind('telepontoko', $data['phone_number']);
     $this->db->bind('emailtoko', $data['emailtoko']);

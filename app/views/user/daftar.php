@@ -10,7 +10,7 @@
     </div>
     <div class="col-9">
       <h3 class="text-center">Buat Akun</h3>
-      <form action="" method="post">
+      <form action="<?= BASEURL; ?>/user/daftarAkun" method="post">
         <div >
           <label for="exampleFormControlInput1" class="form-label">Nama</label>
           <input class="form-control form-control-sm" type="text" name="nama" placeholder="Nama" aria-label="default input example">

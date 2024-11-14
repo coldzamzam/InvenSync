@@ -5,7 +5,7 @@
     </div>
     <div class="col-9">
       <h3 class="text-center">Daftar Toko</h3>
-      <form action="<?= BASEURL; ?>/regist/regist" method="post">
+      <form action="<?= BASEURL; ?>/user/regist" method="post">
         <div >
           <label for="exampleFormControlInput1" class="form-label">Nama Toko</label>
           <input class="form-control form-control-sm" type="text" name="namatoko" placeholder="Nama" aria-label="default input example">

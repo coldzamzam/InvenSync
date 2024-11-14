@@ -10,7 +10,7 @@ class Home extends Controller {
 
   public function masuk(){
     if ( isset($_POST['ayomasuk']) ){
-      header('Location: ' . BASEURL . '/regist');
+      header('Location: ' . BASEURL . '/user');
     }
   }
 }
