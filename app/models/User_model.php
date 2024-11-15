@@ -39,13 +39,14 @@ class User_model {
     VALUES (:namatoko, :tipetoko, :lokasi, :telepontoko, :emailtoko, :yearfounded)";
     $this->db->query($query);
     $this->db->bind('namatoko', $data['namatoko']);
-    $this->db->bind('tipetoko', $data['store_type']);
-    $this->db->bind('lokasi', $data['location']);
-    $this->db->bind('telepontoko', $data['phone_number']);
+    $this->db->bind('tipetoko', $data['tipetoko']);
+    $this->db->bind('lokasi', $data['lokasi']);
+    $this->db->bind('telepontoko', $data['telepontoko']);
     $this->db->bind('emailtoko', $data['emailtoko']);
     $this->db->bind('yearfounded', $data['yearfounded']);
 
     $this->db->execute();
+    var_dump($this->db->single());
 
     return $this->db->rowCount();
   }

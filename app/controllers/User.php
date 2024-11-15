@@ -20,8 +20,14 @@ class User extends Controller {
   }
 
   public function regist() {
-    if ( $this->model('Mahasiswa_model')->tambahDataMahasiswa($_POST) > 0 ){
-      
+    if ( $this->model('User_model')->daftarToko($_POST) > 0 ){
+      Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
+      header ('Location: ' . BASEURL . '/user');
+      exit;
+    } else{
+      Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
+      header ('Location: ' . BASEURL . '/user');
+      exit;
     }
   }
 }

@@ -31,7 +31,7 @@ class Database {
   }
 
   public function bind($param, $value, $type = null) {
-    if ( is_null($type) ) {
+    if ( is_null($type) ) { 
       switch(true) {
         case is_int($value) :
           $type = PDO::PARAM_INT;
@@ -40,7 +40,7 @@ class Database {
           $type = PDO::PARAM_BOOL;
           break;
         case is_null($value) :
-          PDO::PARAM_NULL;
+          $type = PDO::PARAM_NULL;
           break;
         default : 
           $type = PDO::PARAM_STR;
@@ -53,6 +53,7 @@ class Database {
 
   public function execute() {
     $this->stmt->execute();
+    $this->stmt->debugDumpParams();
   }
 
   public function resultSet() {
