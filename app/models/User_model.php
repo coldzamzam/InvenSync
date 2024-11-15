@@ -46,7 +46,7 @@ class User_model {
     $this->db->bind('yearfounded', $data['yearfounded']);
 
     $this->db->execute();
-    var_dump($this->db->single());
+    // var_dump($this->db->single());
 
     return $this->db->rowCount();
   }

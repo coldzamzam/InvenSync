@@ -6,8 +6,8 @@ define('BASEURL', 'http://localhost/invensync/public');
 
 define('DB_HOST', 'localhost');
 define('DB_SERVICE_NAME', 'orcl'); 
-define('DB_USER', 'SYSTEM');
-define('DB_PASS', 'admin');
+define('DB_USER', 'C##INVENSYNC');
+define('DB_PASS', 'kelompok4');
 
 
 ?>
