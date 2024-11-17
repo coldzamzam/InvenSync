@@ -1,4 +1,4 @@
-<footer class="bg-gray-800 text-white py-12">
+<footer class="bg-gray-800 text-white bottom-0 mt-[250px]">
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left px-4">
       <div>
         <p class="font-semibold">Use cases</p>

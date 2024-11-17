@@ -1,10 +1,10 @@
 <?php
 
-class Home extends Controller {
+class About extends Controller {
   public function index(){
-    $data['judul'] = 'Home';
+    $data['judul'] = 'Contact Us';
     $this->view('templates/i-header', $data);
-    $this->view('home/index', $data);
+    $this->view('contact/index', $data);
     $this->view('templates/footer');
   }
 }

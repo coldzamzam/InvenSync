@@ -7,12 +7,6 @@ class Features extends Controller {
     $this->view('features/index', $data);
     $this->view('templates/footer');
   }
-
-  public function masuk(){
-    if ( isset($_POST['ayomasuk']) ){
-      header('Location: ' . BASEURL . '/regist');
-    }
-  }
 }
 
 ?>

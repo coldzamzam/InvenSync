@@ -1,3 +1,6 @@
+<div class="flex items-center justify-center h-[400px] bg-red">
+
+</div>
 <div class="bg-white">
   <section>
     <div class="flex items-center justify-center h-[400px] bg-white">
