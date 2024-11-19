@@ -53,7 +53,7 @@ class Database {
 
   public function execute() {
     $this->stmt->execute();
-    $this->stmt->debugDumpParams();
+    // $this->stmt->debugDumpParams();
   }
 
   public function resultSet() {

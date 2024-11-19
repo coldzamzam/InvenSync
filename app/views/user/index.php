@@ -5,14 +5,14 @@
     <div class="w-1/2 bg-white items-center flex justify-center">
         <div class="w-3/5 p-12">
           <h2 class="text-4xl font-bold mb-6 text-black text-center">Login</h2>
-            <form>
+            <form action="<?= BASEURL; ?>/user/login" method="post">
               <div class="mb-4">
                 <label class="block mb-1 text-black font-medium">Email*</label>
-                <input type="email" placeholder="Enter your email" class="w-full p-3 bg-gray-200 rounded-lg focus:outline-none">
+                <input type="email" name="email" placeholder="Enter your email" class="w-full p-3 bg-gray-200 rounded-lg focus:outline-none">
               </div>
               <div class="mb-4">
                 <label class="block mb-1 text-black font-medium">Password*</label>
-                <input type="password" placeholder="Minimum 8 characters" class="w-full p-3 bg-gray-200 rounded-lg focus:outline-none">
+                <input type="password" name="password" placeholder="Minimum 8 characters" class="w-full p-3 bg-gray-200 rounded-lg focus:outline-none">
               </div>
               <div class="text-right mb-4">
                 <p class="mt-6 text-sm text-black">
@@ -20,7 +20,7 @@
                 </p>
                 <a href="#" class="text-sm text-gray-600 hover:underline">Forgot Password?</a>
               </div>
-              <button type="submit" class="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800">
+              <button type="submit" name="login" class="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800">
                 Login
               </button>
             </form>
@@ -52,70 +52,69 @@
       </div>
       <!-- Formulir Register -->
       <div class="w-3/5 h-full px-10 py-8 bg-white">
-        <h3 class="text-center font-black text-4xl py-4 text-gray-800">Register</h3>
-        <form action="<?= BASEURL; ?>/user/regist" method="post">
+        <h3 class="text-center font-black text-4xl py-4 text-gray-800">Register Akun</h3>
+        <form action="<?= BASEURL; ?>/user/createAcc" method="post">
           <div class="flex gap-4 mb-6">
             <div class="w-1/2">
-              <label for="namatoko" class="block text-gray-700 font-medium mb-2">Nama Toko</label>
+              <label for="name" class="block text-gray-700 font-medium mb-2">Nama</label>
               <input 
-                id="namatoko"
+                id="name"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="text" 
-                name="namatoko" 
-                placeholder="Nama Toko">
+                name="name" 
+                placeholder="Nama">
             </div>
             <div class="w-1/2">
-              <label for="tipetoko" class="block text-gray-700 font-medium mb-2">Tipe Toko</label>
+              <label for="role" class="block text-gray-700 font-medium mb-2">Tipe Toko</label>
               <select 
-                id="tipetoko"
+                id="role"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="tipetoko">
-                <option selected>Tipe Toko</option>
-                <option value="Toko Kelontong">Toko Kelontong</option>
-                <option value="Toko Hewan">Toko Hewan</option>
-                <option value="Toko Pakaian">Toko Pakaian</option>
-                <option value="Lainnya">Lainnya</option>
+                name="role">
+                <option selected>Roles</option>
+                <option value="Owner">Owner</option>
+                <option value="Admin Gudang">Admin Gudang</option>
+                <option value="Admin Kasir">Admin Kasir</option>
               </select>
             </div>
           </div>
           <div class="flex gap-4 mb-6">
             <div class="w-1/2">
-              <label for="lokasi" class="block text-gray-700 font-medium mb-2">Lokasi</label>
+              <label for="address" class="block text-gray-700 font-medium mb-2">Alamat</label>
               <input 
-                id="lokasi"
+                id="address"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="text" 
-                name="lokasi" 
-                placeholder="Lokasi">
+                name="address" 
+                placeholder="Address">
             </div>
             <div class="w-1/2">
-              <label for="telepontoko" class="block text-gray-700 font-medium mb-2">No Telepon Toko</label>
+              <label for="phonenumber" class="block text-gray-700 font-medium mb-2">No Telepon</label>
               <input 
-                id="telepontoko"
+                id="phonenumebr"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="number" 
-                name="telepontoko" 
-                placeholder="No Telepon Toko">
+                name="phonenumber" 
+                placeholder="No Telepon">
             </div>
           </div>
           <div class="flex gap-4 mb-6">
             <div class="w-1/2">
-              <label for="emailtoko" class="block text-gray-700 font-medium mb-2">Email Toko</label>
+              <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
               <input 
-                id="emailtoko"
+                id="email"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="email" 
-                name="emailtoko" 
-                placeholder="Email Toko">
+                name="email" 
+                placeholder="Email">
             </div>
             <div class="w-1/2">
-              <label for="yearfounded" class="block text-gray-700 font-medium mb-2">Tahun Didirikan</label>
+              <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
               <input 
-                id="yearfounded"
+                id="password"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="number" 
-                name="yearfounded" 
-                placeholder="Tahun Didirikan">
+                type="password" 
+                name="password" 
+                placeholder="Buat Password Anda">
             </div>
           </div>
           <button type="submit" name="daftar" class="w-full bg-blue-600 text-white py-3 rounded-lg mt-4 hover:bg-blue-700">Daftar</button>

@@ -23,15 +23,21 @@ class User_model {
     return $this->db->rowCount();
   }
 
-  public function daftar() {
-    if ( isset($_POST['lanjut']) ) {
-      $_SESSION['nama'] = $_POST['nama'];
-      $_SESSION['username'] = $_POST['username'];
-      $_SESSION['password'] = $_POST['password'];
-      $_SESSION['telepon'] = $_POST['telepon'];
-      $_SESSION['email'] = $_POST['email'];
-      $_SESSION['alamat'] = $_POST['alamat'];
-    }
+  public function daftar($data) {
+    $query = "INSERT INTO i_users (name, role, address, phone_number, email, password)
+    VALUES (:name, :role, :address, :phonenumber, :email, :password)";
+    $this->db->query($query);
+    $this->db->bind('name', $data['name']);
+    $this->db->bind('role', $data['role']);
+    $this->db->bind('address', $data['address']);
+    $this->db->bind('phonenumber', $data['phonenumber']);
+    $this->db->bind('email', $data['email']);
+    $this->db->bind('password', hash('sha256', $data['password']) );
+
+    $this->db->execute();
+    // var_dump($this->db->single());
+
+    return $this->db->rowCount();
   }
 
   public function daftarToko($data) {
@@ -49,6 +55,29 @@ class User_model {
     // var_dump($this->db->single());
 
     return $this->db->rowCount();
+  }
+
+  public function masuk($data) {
+    $query = "SELECT * FROM i_users WHERE email = :email AND password = :password";
+    $this->db->query($query);
+    $this->db->bind('email', $data['email']);
+    $this->db->bind('password', hash('sha256', $data['password']));
+    $this->db->execute();
+
+    $user = $this->db->single();
+    // $pass = password_hash($data['password'], PASSWORD_BCRYPT);
+
+    if($user) {
+      $_SESSION['user_email'] = $user['EMAIL'];
+      $_SESSION['user_name'] = $user['NAME'];
+      
+      return $user;
+    } else {
+      return false;
+    }
+    
+
+    // return $this->db->rowCount();
   }
   
 
