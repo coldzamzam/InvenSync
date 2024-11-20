@@ -50,14 +50,15 @@ class User extends Controller {
     // var_dump($check); 
 
     if ( $this->model('User_model')->masuk($_POST) ) {
-      $this->view('templates/i-header', $data);
-      $this->view('user/login', $data);
-      $this->view('templates/footer');
+      // $this->view('templates/i-header', $data);
+      $this->view('dashboard/index', $data);
+      // $this->view('templates/footer');
       
     } else {
       echo 'Gagal login';
     }
   }
+
 }
 
 ?>

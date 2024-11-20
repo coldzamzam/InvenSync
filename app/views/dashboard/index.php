@@ -19,9 +19,11 @@
         <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700">Monthly Report</a>
         <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700">Cashier</a>
       </nav>
-      <button class="mt-12 bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-400">
-        Log Out
-      </button>
+      <form action="<?= BASEURL; ?>/dashboard/logout" method="post">
+        <button name="logout" class="mt-12 bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-400">
+          Log Out
+        </button>
+      </form>
     </aside>
 
     <main class="flex-1 p-8">
