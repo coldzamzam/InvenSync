@@ -50,7 +50,7 @@ class User extends Controller {
     // var_dump($check); 
 
     if ( $this->model('User_model')->masuk($_POST) ) {
-      // $this->view('templates/i-header', $data);
+      $this->view('templates/s-header', $data);
       $this->view('dashboard/index', $data);
       // $this->view('templates/footer');
       
