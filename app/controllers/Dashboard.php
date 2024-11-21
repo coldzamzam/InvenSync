@@ -8,9 +8,9 @@ Class Dashboard extends Controller{
     }
   }
   
-  public function index($id){
+  public function index(){
     $data['judul'] = 'Dashboard';
-    $data['users'] = $this->model('Item_model')->getUserById($id);
+    // $data['users'] = $this->model('Item_model')->getUserById($id);
 
     $this->view('templates/s-header', $data);
     $this->view('dashboard/index', $data);
