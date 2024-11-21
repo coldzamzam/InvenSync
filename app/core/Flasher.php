@@ -13,10 +13,9 @@ class Flasher {
 
   public static function flash(){
     if ( isset($_SESSION['flash']) ) {
-      echo '<div class="alert alert-' . $_SESSION['flash']['tipe'] . ' alert-dismissible fade show" role="alert">'
-              . $_SESSION['flash']['subjek'] . ' <strong>' . $_SESSION['flash']['pesan'] . '</strong> ' . $_SESSION['flash']['aksi'] . '
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
+      echo '<script>
+          Swal.fire("SweetAlert2 is working!");
+        </script>';
       
       session_unset($_SESSION['flash']);
       session_destroy($_SESSION['flash']);

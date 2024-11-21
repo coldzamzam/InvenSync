@@ -10,12 +10,12 @@
       <h1 class="text-xl font-bold mb-8">Selamat Datang di <br> InvenSync!</h1>
       <nav class="space-y-4">
         <a href="<?= BASEURL; ?>/dashboard" class="block py-2 px-4 rounded hover:bg-gray-700">Dashboard</a>
-        <a href="<?= BASEURL; ?>/dashboard/employees" class="block py-2 px-4 rounded hover:bg-gray-700">Employees</a>
-        <a href="<?= BASEURL; ?>/dashboard/inventory" class="block py-2 px-4 rounded hover:bg-gray-700">Inventory</a>
-        <a href="<?= BASEURL; ?>/dashboard/troublesome" class="block py-2 px-4 rounded hover:bg-gray-700">Troublesome Items</a>
-        <a href="<?=BASEURL; ?>/dashboard/dailyreport" class="block py-2 px-4 rounded hover:bg-gray-700">Daily Report</a>
-        <a href="<?=BASEURL; ?>/dashboard/monthlyreport" class="block py-2 px-4 rounded hover:bg-gray-700">Monthly Report</a>
-        <a href="<?= BASEURL; ?>/dashboard/cashier" class="block py-2 px-4 rounded hover:bg-gray-700">Cashier</a>
+        <a href="<?= BASEURL; ?>/employees" class="block py-2 px-4 rounded hover:bg-gray-700">Employees</a>
+        <a href="<?= BASEURL; ?>/inventory" class="block py-2 px-4 rounded hover:bg-gray-700">Inventory</a>
+        <a href="<?= BASEURL; ?>/troublesome" class="block py-2 px-4 rounded hover:bg-gray-700">Troublesome Items</a>
+        <a href="<?=BASEURL; ?>/dailyreport" class="block py-2 px-4 rounded hover:bg-gray-700">Daily Report</a>
+        <a href="<?=BASEURL; ?>/monthlyreport" class="block py-2 px-4 rounded hover:bg-gray-700">Monthly Report</a>
+        <a href="<?= BASEURL; ?>/cashier" class="block py-2 px-4 rounded hover:bg-gray-700">Cashier</a>
       </nav>
       <form action="<?= BASEURL; ?>/dashboard/logout" method="post">
         <button name="logout" class="mt-12 bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-400">

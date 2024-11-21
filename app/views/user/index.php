@@ -63,6 +63,7 @@
                 type="text" 
                 name="name" 
                 placeholder="Nama">
+              <span class="text-red-500"><?= $data['nameError']; ?></span>
             </div>
             <div class="w-1/2">
               <label for="role" class="block text-gray-700 font-medium mb-2">Tipe Toko</label>
@@ -75,6 +76,7 @@
                 <option value="Admin Gudang">Admin Gudang</option>
                 <option value="Admin Kasir">Admin Kasir</option>
               </select>
+              <span class="text-red-500"><?= $data['roleError']; ?></span>
             </div>
           </div>
           <div class="flex gap-4 mb-6">
@@ -86,6 +88,7 @@
                 type="text" 
                 name="address" 
                 placeholder="Address">
+                <span class="text-red-500"><?= $data['addressError']; ?></span>
             </div>
             <div class="w-1/2">
               <label for="phonenumber" class="block text-gray-700 font-medium mb-2">No Telepon</label>
@@ -95,6 +98,7 @@
                 type="number" 
                 name="phonenumber" 
                 placeholder="No Telepon">
+                <span class="text-red-500"><?= $data['phonenumberError']; ?></span>
             </div>
           </div>
           <div class="flex gap-4 mb-6">
@@ -106,6 +110,7 @@
                 type="email" 
                 name="email" 
                 placeholder="Email">
+                <span class="text-red-500"><?= $data['emailError']; ?></span>
             </div>
             <div class="w-1/2">
               <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
@@ -115,6 +120,7 @@
                 type="password" 
                 name="password" 
                 placeholder="Buat Password Anda">
+                <span class="text-red-500"><?= $data['passwordError']; ?></span>
             </div>
           </div>
           <button type="submit" name="daftar" class="w-full bg-blue-600 text-white py-3 rounded-lg mt-4 hover:bg-blue-700">Daftar</button>

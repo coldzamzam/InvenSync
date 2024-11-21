@@ -2,6 +2,12 @@
 
 class User extends Controller {
   public function index(){
+    $data['nameError'] = '';
+    $data['roleError'] = '';
+    $data['addressError'] = '';
+    $data['phonenumberError'] = '';
+    $data['emailError'] = '';
+    $data['passwordError'] = '';
     if ( $this->model('User_model')->checkRowAcc() > 0 ) {
       header('Location: ' . BASEURL . '/user/daftar');
     } else {
