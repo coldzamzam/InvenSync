@@ -2,11 +2,18 @@
 
 Class Dashboard extends Controller{
 
+  public function __construct(){
+    if ( !isset($_SESSION['is_login']) ) {
+      header('Location: ' . BASEURL . '/user/index');
+    }
+  }
   
-  public function index(){
+  public function index($id){
     $data['judul'] = 'Dashboard';
+    $data['users'] = $this->model('Item_model')->getUserById($id);
+
     $this->view('templates/s-header', $data);
-    $this->view('dashboard/index');
+    $this->view('dashboard/index', $data);
   }
   public function employees(){
     $data['judul'] = 'Dashboard';

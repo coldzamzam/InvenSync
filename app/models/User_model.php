@@ -70,6 +70,8 @@ class User_model {
     if($user) {
       $_SESSION['user_email'] = $user['EMAIL'];
       $_SESSION['user_name'] = $user['NAME'];
+      $_SESSION['user_role'] = $user['ROLE'];
+      $_SESSION['is_login'] = true;
       
       return $user;
     } else {
@@ -79,8 +81,6 @@ class User_model {
 
     // return $this->db->rowCount();
   }
-  
-  
 
 }
 
