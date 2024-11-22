@@ -18,25 +18,29 @@
         <table class="w-full text-left border-collapse">
           <thead>
             <tr class="bg-gray-200 text-gray-600">
-              <th class="py-3 px-4 border">Order ID</th>
-              <th class="py-3 px-4 border">Product</th>
-              <th class="py-3 px-4 border">Category</th>
-              <th class="py-3 px-4 border">Sales Channel</th>
-              <th class="py-3 px-4 border">Instruction</th>
-              <th class="py-3 px-4 border">Items</th>
+              <th class="py-3 px-4 border">No.</th>
+              <th class="py-3 px-4 border">Item ID</th>
+              <th class="py-3 px-4 border">Item Name</th>
+              <th class="py-3 px-4 border">Quantity</th>
+              <th class="py-3 px-4 border">Date Added</th>
+              <th class="py-3 px-4 border">Purchase Price</th>
+              <th class="py-3 px-4 border">Selling Price</th>
               <th class="py-3 px-4 border">Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="hover:bg-gray-100">
-              <td class="py-3 px-4 border">001</td>
-              <td class="py-3 px-4 border">Tes</td>
-              <td class="py-3 px-4 border">Tes</td>
-              <td class="py-3 px-4 border">Tes</td>
-              <td class="py-3 px-4 border">Tes</td>
-              <td class="py-3 px-4 border">Tes</td>
-              <td class="py-3 px-4 border">Tes</td>
-            </tr>
+            <?php $no = 1; foreach( $data['item'] as $item ) : ?>
+              <tr class="hover:bg-gray-100">
+                <td class="py-3 px-4 border"><?= $no++; ?></td>
+                <td class="py-3 px-4 border"><?= $item['ITEM_ID']; ?></td>
+                <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
+                <td class="py-3 px-4 border"><?= $item['QUANTITY']; ?></td>
+                <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
+                <td class="py-3 px-4 border"><?= $item['HARGA_BELI']; ?></td>
+                <td class="py-3 px-4 border"><?= $item['HARGA_JUAL']; ?></td>
+                <td class="py-3 px-4 border"><?= $item['STATUS']; ?></td>
+              </tr>
+            <?php endforeach; ?>
           </tbody>
         </table>
       </div>
