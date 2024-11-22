@@ -8,15 +8,17 @@
             <form action="<?= BASEURL; ?>/user/login" method="post">
               <div class="mb-4">
                 <label class="block mb-1 text-black font-medium">Email*</label>
-                <input type="email" name="email" placeholder="Enter your email" class="w-full p-3 bg-gray-200 rounded-lg focus:outline-none">
+                <input type="email" name="email" placeholder="Enter your email" value="<?= htmlspecialchars($data['email'] ?? '', ENT_QUOTES); ?>" class="w-full p-3 bg-gray-200 rounded-lg focus:outline-none">
+                <span class="text-red-500"><?= $data['loginEmailError']; ?></span>
               </div>
               <div class="mb-4">
                 <label class="block mb-1 text-black font-medium">Password*</label>
-                <input type="password" name="password" placeholder="Minimum 8 characters" class="w-full p-3 bg-gray-200 rounded-lg focus:outline-none">
+                <input type="password" name="password" placeholder="Minimum 8 characters" value="<?= htmlspecialchars($data['password'] ?? '', ENT_QUOTES); ?>" class="w-full p-3 bg-gray-200 rounded-lg focus:outline-none">
+                <span class="text-red-500"><?=$data['loginPasswordError']?></span>
               </div>
               <div class="text-right mb-4">
                 <p class="mt-6 text-sm text-black">
-                  Not registered yet? <a href="#" onclick="Register()" class="text-blue-600 hover:underline">Create a new account</a>
+                  Not registered yet? <a href="#" onclick="SwitchRegister()" class="text-blue-600 hover:underline">Create a new account</a>
                 </p>
                 <a href="#" class="text-sm text-gray-600 hover:underline">Forgot Password?</a>
               </div>
@@ -31,7 +33,7 @@
             <img src="<?= BASEURL; ?>/img/ripat.jpg" width="200px" height="200px" class="rounded-circle mb-4" alt="ripat">
             <p class="text-2xl font-bold text-black mb-4">Belum Punya Akun? Daftar dan Kembangkan Bisnismu Mulai dari Inventaris dengan InvenSync!</p>
             <button
-              onclick="Register()"
+              onclick="SwitchRegister()"
               class="bg-black text-white py-2 px-6 rounded-lg shadow hover:bg-gray-800">
               SignUp
             </button>
@@ -45,7 +47,7 @@
         <img src="<?= BASEURL; ?>/img/aqsa.png" width="200px" height="200px" class="rounded-circle mb-4" alt="ripat">
           <p class="text-2xl font-bold text-black mb-4">Sudah Punya Akun? Masuk dan Kembangkan Bisnismu Mulai dari Inventaris dengan InvenSync! </p>
         <button
-          onclick="Login()"
+          onclick="SwitchLogin()"
           class="bg-black text-white py-2 px-6 rounded-lg shadow hover:bg-gray-800">
           Login
         </button>
@@ -53,93 +55,110 @@
       <!-- Formulir Register -->
       <div class="w-3/5 h-full px-10 py-8 bg-white">
         <h3 class="text-center font-black text-4xl py-4 text-gray-800">Register Akun</h3>
-        <form action="<?= BASEURL; ?>/user/createAcc" method="post">
-          <div class="flex gap-4 mb-6">
-            <div class="w-1/2">
-              <label for="name" class="block text-gray-700 font-medium mb-2">Nama</label>
-              <input 
+        <form id="myForm" action="<?= BASEURL; ?>/user/createAcc" method="post">
+    <div class="flex gap-4 mb-6">
+        <div class="w-1/2">
+            <label for="name" class="block text-gray-700 font-medium mb-2">Nama</label>
+            <input 
                 id="name"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="text" 
                 name="name" 
+                value="<?= htmlspecialchars($data['name'] ?? '', ENT_QUOTES); ?>"
                 placeholder="Nama">
-              <span class="text-red-500"><?= $data['nameError']; ?></span>
-            </div>
-            <div class="w-1/2">
-              <label for="role" class="block text-gray-700 font-medium mb-2">Tipe Toko</label>
-              <select 
+            <span class="text-red-500"><?= $data['nameError']; ?></span>
+        </div>
+        <div class="w-1/2">
+            <label for="role" class="block text-gray-700 font-medium mb-2">Tipe Toko</label>
+            <select 
                 id="role"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 name="role">
-                <option selected>Roles</option>
-                <option value="Owner">Owner</option>
-                <option value="Admin Gudang">Admin Gudang</option>
-                <option value="Admin Kasir">Admin Kasir</option>
-              </select>
-              <span class="text-red-500"><?= $data['roleError']; ?></span>
-            </div>
-          </div>
-          <div class="flex gap-4 mb-6">
-            <div class="w-1/2">
-              <label for="address" class="block text-gray-700 font-medium mb-2">Alamat</label>
-              <input 
+                <option selected disabled>Roles</option>
+                <option value="Owner" <?= isset($data['role']) && $data['role'] == 'Owner' ? 'selected' : ''; ?>>Owner</option>
+                <option value="Admin Gudang" <?= isset($data['role']) && $data['role'] == 'Admin Gudang' ? 'selected' : ''; ?>>Admin Gudang</option>
+                <option value="Admin Kasir" <?= isset($data['role']) && $data['role'] == 'Admin Kasir' ? 'selected' : ''; ?>>Admin Kasir</option>
+            </select>
+            <span class="text-red-500"><?= $data['roleError']; ?></span>
+        </div>
+    </div>
+    <div class="flex gap-4 mb-6">
+        <div class="w-1/2">
+            <label for="address" class="block text-gray-700 font-medium mb-2">Alamat</label>
+            <input 
                 id="address"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="text" 
                 name="address" 
+                value="<?= htmlspecialchars($data['address'] ?? '', ENT_QUOTES); ?>"
                 placeholder="Address">
-                <span class="text-red-500"><?= $data['addressError']; ?></span>
-            </div>
-            <div class="w-1/2">
-              <label for="phonenumber" class="block text-gray-700 font-medium mb-2">No Telepon</label>
-              <input 
-                id="phonenumebr"
+            <span class="text-red-500"><?= $data['addressError']; ?></span>
+        </div>
+        <div class="w-1/2">
+            <label for="phonenumber" class="block text-gray-700 font-medium mb-2">No Telepon</label>
+            <input 
+                id="phonenumber"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="number" 
                 name="phonenumber" 
+                value="<?= htmlspecialchars($data['phonenumber'] ?? '', ENT_QUOTES); ?>"
                 placeholder="No Telepon">
-                <span class="text-red-500"><?= $data['phonenumberError']; ?></span>
-            </div>
-          </div>
-          <div class="flex gap-4 mb-6">
-            <div class="w-1/2">
-              <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-              <input 
+            <span class="text-red-500"><?= $data['phonenumberError']; ?></span>
+        </div>
+    </div>
+    <div class="flex gap-4 mb-6">
+        <div class="w-1/2">
+            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+            <input 
                 id="email"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="email" 
                 name="email" 
+                value="<?= htmlspecialchars($data['email'] ?? '', ENT_QUOTES); ?>"
                 placeholder="Email">
-                <span class="text-red-500"><?= $data['emailError']; ?></span>
-            </div>
-            <div class="w-1/2">
-              <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
-              <input 
+            <span class="text-red-500"><?= $data['emailError']; ?></span>
+        </div>
+        <div class="w-1/2">
+            <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+            <input 
                 id="password"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="password" 
                 name="password" 
                 placeholder="Buat Password Anda">
-                <span class="text-red-500"><?= $data['passwordError']; ?></span>
-            </div>
-          </div>
-          <button type="submit" name="daftar" class="w-full bg-blue-600 text-white py-3 rounded-lg mt-4 hover:bg-blue-700">Daftar</button>
-        </form>
+            <span class="text-red-500"><?= $data['passwordError']; ?></span>
+        </div>
+    </div>
+    <button type="submit" name="daftar" class="w-full bg-blue-600 text-white py-3 rounded-lg mt-4 hover:bg-blue-700">Daftar</button>
+</form>
+
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  function Login() {
+  // public function InstantLogin(){
+  //   const panels = document.getElementById("auth-panels");
+  //   panels.style.transition = "none"; // Hapus transisi
+  //   panels.style.transform = "translateX(0)"; // Geser ke panel login
+  //   document.getElementById("register-button").style.display = "block";
+  // }
+  // public function InstantRegister(){
+  //   const panels = document.getElementById("auth-panels");
+  //   panels.style.transition = "none"; // Hapus transisi
+  //   panels.style.transform = "translateX(-50%)"; // Geser ke panel login
+  //   document.getElementById("login-button").style.display = "block";
+  // }
+  function SwitchLogin() {
     const panels = document.getElementById("auth-panels");
-    panels.style.transform = "translateX(0)"; // Geser ke panel login
+    panels.style.transform = "translateX(0)";
     document.getElementById("register-button").style.display = "block";
   }
 
-  function Register() {
+  function SwitchRegister() {
     const panels = document.getElementById("auth-panels");
-    panels.style.transform = "translateX(-50%)"; // Geser ke panel register
+    panels.style.transform = "translateX(-50%)";
     document.getElementById("login-button").style.display = "block";
   }
 </script>
