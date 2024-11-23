@@ -10,17 +10,18 @@ class User_model {
 
 
   public function checkRowAcc(){
-    $query = "SELECT * FROM i_store_info";
+    $query = "SELECT * FROM i_users";
     $this->db->query($query);
+    $this->db->execute();
     // if ($this->db->execute()) {
-    //   echo 'Berhasil mengambil data i_store_info';
+    //   echo 'Berhasil mengambil data i_users';
     //   $this->db->resultSet();
     // } else {
     //   echo 'Gagal mengambil data';
     // }
-    // var_dump($this->db->rowCount());
+    // var_dump($this->db->fetchColumn());
 
-    return $this->db->rowCount();
+    return $this->db->fetchColumn();
   }
 
   public function daftar($data) {

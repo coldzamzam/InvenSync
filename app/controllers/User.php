@@ -2,9 +2,6 @@
 
 class User extends Controller {
   public function index(){
-    $data['loginEmailError'] = '';
-    $data['loginPasswordError'] = '';
-    
     $data['nameError'] = '';
     $data['roleError'] = '';
     $data['addressError'] = '';
@@ -12,13 +9,23 @@ class User extends Controller {
     $data['emailError'] = '';
     $data['passwordError'] = '';
     if ( $this->model('User_model')->checkRowAcc() > 0 ) {
-      header('Location: ' . BASEURL . '/user/daftar');
+      header('Location: ' . BASEURL . '/user/login');
     } else {
-      $data['judul'] = 'Login';
+      $data['judul'] = 'Buat Akun';
       $this->view('templates/i-header', $data);
       $this->view('user/index', $data);
       $this->view('templates/footer');
     }
+  }
+
+  public function login() {
+    $data['loginEmailError'] = '';
+    $data['loginPasswordError'] = '';
+
+    $data['judul'] = 'Login';
+    $this->view('templates/i-header', $data);
+    $this->view('user/login', $data);
+    $this->view('templates/footer');
   }
 
   public function daftar() {
@@ -55,7 +62,8 @@ class User extends Controller {
         'emailError' => '',
         'passwordError' => '',
         'loginEmailError' => '',
-        'loginPasswordError' => ''
+        'loginPasswordError' => '',
+        'judul' => 'Buat Akun'
     ];
 
     // Validate data
@@ -87,7 +95,7 @@ class User extends Controller {
     // Insert data
     if ($this->model('User_model')->daftar($data) > 0) {
         Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
-        header('Location: ' . BASEURL . '/user');
+        header('Location: ' . BASEURL . '/user/login');
         exit;
     } else {
         Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
@@ -98,18 +106,12 @@ class User extends Controller {
 
 
 
-  public function login() {
+  public function loginAcc() {
     $data = [
         'email' => $_POST['email'] ?? '',
         'password' => $_POST['password'] ?? '',
         'loginEmailError' => '',
         'loginPasswordError' => '',
-        'nameError' => '',
-        'roleError' => '',
-        'addressError' => '',
-        'phonenumberError' => '',
-        'emailError' => '',
-        'passwordError' => '',
     ];
 
 
@@ -120,23 +122,22 @@ class User extends Controller {
         $data['loginEmailError'] = 'Format email tidak valid.';
     }
 
-    if (!empty($data['loginEmailError']) || !empty($data['passwordError'])) {
-        $this->view('templates/i-header', $data);
-        $this->view('user/index', $data);
-        $this->view('templates/footer');
-        return;
-    }
+    // Jika ada error, tampilkan kembali halaman login
+    // if (!empty($data['loginEmailError']) || !empty($data['loginPasswordError'])) {
+    //     $this->view('templates/i-header', $data);
+    //     $this->view('user/login', $data);
+    //     $this->view('templates/footer');
+    // }
 
-    if ($this->model('User_model')->masuk($data)) {
-        $this->view('templates/s-header', $data);
-        $this->view('dashboard/index', $data);
+    if ($this->model('User_model')->masuk($_POST)) {
+        header('Location: ' . BASEURL . '/dashboard');
     } else {
         $data['loginEmailError'] = 'Email atau password salah.';
         $this->view('templates/i-header', $data);
-        $this->view('user/index', $data);
+        $this->view('user/login', $data);
         $this->view('templates/footer');
     }
-}
+  }
 
 
 }
