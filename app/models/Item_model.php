@@ -43,6 +43,20 @@ Class Item_model {
     // var_dump($this->db->resultSet());
     return $this->db->resultSet();
   }
+
+  public function getInventoryUser(){
+    $this->db->query("SELECT * FROM i_users WHERE role = 'Admin Gudang' AND is_deleted = 0");
+    $this->db->execute();
+    // var_dump($this->db->resultSet());
+    return $this->db->resultSet();
+  }
+
+  public function getCashierUser(){
+    $this->db->query("SELECT * FROM i_users WHERE role = 'Admin Kasir' AND is_deleted = 0");
+    $this->db->execute();
+    // var_dump($this->db->resultSet());
+    return $this->db->resultSet();
+  }
   
   public function addInventory($data) {
     $query = "INSERT INTO I_INVENTORY (ITEM_NAME, QUANTITY, HARGA_BELI, HARGA_JUAL, STATUS, DATE_ADDED)
