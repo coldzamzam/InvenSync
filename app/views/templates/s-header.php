@@ -10,12 +10,12 @@
     <aside class="bg-gray-800 text-white w-64 p-6 min-h-screen fixed">
       <h1 class="text-xl font-bold mb-8">Selamat Datang di <br> InvenSync!</h1>
       <nav class="space-y-4">
-        <a href="<?= BASEURL; ?>/dashboard" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Dashboard</a>
-        <a href="<?= BASEURL; ?>/employees" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Employees</a>
+        <a href="<?= BASEURL; ?>/dashboard" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Dashboard</a>
+        <a href="<?= BASEURL; ?>/employees" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Employees</a>
         <a href="<?= BASEURL; ?>/inventory" class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Inventory</a>
         <a href="<?= BASEURL; ?>/troublesome" class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Troublesome Items</a>
-        <a href="<?=BASEURL; ?>/dailyreport" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Daily Report</a>
-        <a href="<?=BASEURL; ?>/monthlyreport" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Monthly Report</a>
+        <a href="<?=BASEURL; ?>/dailyreport" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Daily Report</a>
+        <a href="<?=BASEURL; ?>/monthlyreport" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Monthly Report</a>
         <a href="<?= BASEURL; ?>/cashier" class="<?= ($_SESSION['user_role'] == 'Admin Gudang') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Cashier</a>
       </nav>
       <form action="<?= BASEURL; ?>/dashboard/logout" method="post">
