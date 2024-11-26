@@ -49,6 +49,24 @@ class User_model {
     return $this->db->rowCount();
   }
 
+  public function daftarAdmin($data) {
+    $query="INSERT INTO i_users (name, role, address, phone_number, email, password, owner_id)
+    VALUES (:name, :role, :address, :phonenumber, :email, :password, :owner_id)";
+
+    $this->db->query($query);  
+    $this->db->bind('name', $data['name']);
+    $this->db->bind('role', $data['role']);
+    $this->db->bind('address', $data['address']);
+    $this->db->bind('phonenumber', $data['phonenumber']);
+    $this->db->bind('email', $data['email']);
+    $this->db->bind('password', hash('sha256', $data['password']) );
+    $this->db->bind('owner_id', $_SESSION['user_id']);
+
+    $this->db->execute();
+
+    return $this->db->rowCount();
+}
+
   public function daftarToko($data) {
     $query = "INSERT INTO i_store_info (store_name, store_type, location, phone_number, email, year_founded)
     VALUES (:namatoko, :tipetoko, :lokasi, :telepontoko, :emailtoko, :yearfounded)";
@@ -77,6 +95,7 @@ class User_model {
     // $pass = password_hash($data['password'], PASSWORD_BCRYPT);
 
     if($user) {
+      $_SESSION['user_id'] = $user['USER_ID'];
       $_SESSION['user_email'] = $user['EMAIL'];
       $_SESSION['user_name'] = $user['NAME'];
       $_SESSION['user_role'] = $user['ROLE'];

@@ -29,10 +29,7 @@
                 id="role"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 name="role">
-                <option selected disabled>Roles</option>
-                <option value="Owner" <?= isset($data['role']) && $data['role'] == 'Owner' ? 'selected' : ''; ?>>Owner</option>
-                <option value="Admin Gudang" <?= isset($data['role']) && $data['role'] == 'Admin Gudang' ? 'selected' : ''; ?>>Admin Gudang</option>
-                <option value="Admin Kasir" <?= isset($data['role']) && $data['role'] == 'Admin Kasir' ? 'selected' : ''; ?>>Admin Kasir</option>
+                <option selected value="Owner" <?= isset($data['role']) && $data['role'] == 'Owner' ? 'selected' : ''; ?>>Owner</option>
             </select>
             <span class="text-red-500"><?= $data['roleError']; ?></span>
         </div>
