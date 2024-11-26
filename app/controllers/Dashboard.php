@@ -15,6 +15,13 @@ Class Dashboard extends Controller{
     $this->view('templates/s-header', $data);
     $this->view('dashboard/index', $data);
   }
+  
+  public function toko() {
+    $data['judul'] = 'Profile Toko';
+    $this->view('templates/s-header', $data);
+    $this->view('user/toko', $data);
+  }
+
   public function employees(){
     $data['judul'] = 'Dashboard';
     $data['users'] = $this->model('Item_model')->getAllUser();

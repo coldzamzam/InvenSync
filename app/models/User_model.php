@@ -24,6 +24,14 @@ class User_model {
     return $this->db->fetchColumn();
   }
 
+  public function checkRowToko(){
+    $query = "SELECT * FROM i_store_info";
+    $this->db->query($query);
+    $this->db->execute();
+
+    return $this->db->fetchColumn();
+  }
+
   public function daftar($data) {
     $query = "INSERT INTO i_users (name, role, address, phone_number, email, password)
     VALUES (:name, :role, :address, :phonenumber, :email, :password)";

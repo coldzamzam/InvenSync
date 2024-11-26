@@ -17,6 +17,7 @@
         <a href="<?=BASEURL; ?>/dailyreport" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Daily Report</a>
         <a href="<?=BASEURL; ?>/monthlyreport" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Monthly Report</a>
         <a href="<?= BASEURL; ?>/cashier" class="<?= ($_SESSION['user_role'] == 'Admin Gudang') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Cashier</a>
+        <a href="<?= BASEURL; ?>/dashboard/toko" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Profile Toko</a>
       </nav>
       <form action="<?= BASEURL; ?>/dashboard/logout" method="post">
         <button name="logout" class="mt-12 bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-400">

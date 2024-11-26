@@ -33,6 +33,7 @@ class User extends Controller {
     $this->view('templates/i-header', $data);
     $this->view('user/daftar', $data);
     $this->view('templates/footer');
+  
   }
 
   public function regist() {
@@ -102,7 +103,58 @@ class User extends Controller {
         header('Location: ' . BASEURL . '/user');
         exit;
     }
-}
+  }
+
+  public function createToko() {
+    $data = [
+        'namatoko' => $_POST['namatoko'] ?? '',
+        'tipetoko' => $_POST['tipetoko'] ?? '',
+        'lokasi' => $_POST['lokasi'] ?? '',
+        'telepontoko' => $_POST['telepontoko'] ?? '',
+        'emailtoko' => $_POST['emailtoko'] ?? '',
+        'yearfounded' => $_POST['yearfounded'] ?? '',
+        'namatokoError' => '',
+        'tipetokoError' => '',
+        'lokasiError' => '',
+        'telepontokoError' => '',
+        'emailtokoError' => '',
+        'passwordError' => '',
+        'loginemailtokoError' => '',
+        'loginPasswordError' => '',
+        'judul' => 'Buat Akun'
+    ];
+
+    // Validate data
+    if (empty($data['namatoko'])) $data['namatokoError'] = 'Nama tidak boleh kosong.';
+    if (empty($data['tipetoko'])) $data['tipetokoError'] = 'Tipe toko tidak boleh kosong.';
+    if (empty($data['lokasi'])) $data['lokasiError'] = 'Alamat tidak boleh kosong.';
+    if (empty($data['phonenumber'])) $data['phonenumberError'] = 'Nomor Telepon tidak boleh kosong.';
+    if (empty($data['emailtoko'])) {
+        $data['emailtokoError'] = 'emailtoko tidak boleh kosong.';
+    } elseif (!filter_var($data['emailtoko'], FILTER_VALIDATE_EMAIL)) {
+        $data['emailtokoError'] = 'Format email toko tidak valid.';
+    }
+
+    // Return errors if any
+    if (!empty($data['namatokoError']) || !empty($data['tipetokoError']) || !empty($data['lokasiError']) || 
+        !empty($data['phonenumberError']) || !empty($data['emailtokoError']) || !empty($data['passwordError'])) {
+        $this->view('templates/i-header', $data);
+        $this->view('user/index', $data);
+        $this->view('templates/footer');
+        return;
+    }
+
+    // Insert data
+    if ($this->model('User_model')->daftarToko($data) > 0) {
+        Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
+        header('Location: ' . BASEURL . '/user/login');
+        exit;
+    } else {
+        Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
+        header('Location: ' . BASEURL . '/user');
+        exit;
+    }
+  }
 
 
 
@@ -111,7 +163,7 @@ class User extends Controller {
         'email' => $_POST['email'] ?? '',
         'password' => $_POST['password'] ?? '',
         'loginEmailError' => '',
-        'loginPasswordError' => '',
+        'loginPasswordError' => ''
     ];
 
 
@@ -130,7 +182,11 @@ class User extends Controller {
     // }
 
     if ($this->model('User_model')->masuk($_POST)) {
-        header('Location: ' . BASEURL . '/dashboard');
+        if ($this->model('User_model')->checkRowToko() == 0) {
+          header('Location: ' . BASEURL . '/dashboard/toko');
+        } else{
+          header('Location: ' . BASEURL . '/dashboard');
+        }
     } else {
         $data['loginEmailError'] = 'Email atau password salah.';
         $this->view('templates/i-header', $data);
