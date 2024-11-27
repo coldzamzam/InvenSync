@@ -17,9 +17,19 @@ Class Dashboard extends Controller{
   }
   
   public function toko() {
+    $data['namatokoError'] = '';
+    $data['tipetokoError'] = '';
+    $data['lokasiError'] = '';
+    $data['telepontokoError'] = '';
+    $data['emailtokoError'] = '';
+    $data['yearfoundedError'] = '';
     $data['judul'] = 'Profile Toko';
     $this->view('templates/s-header', $data);
-    $this->view('user/toko', $data);
+    if ( $this->model('User_model')->checkRowToko() == 0 ) {
+      $this->view('user/toko', $data);
+    } else {
+      $this->view('user/tokoupdate', $data);
+    }
   }
 
   public function employees(){

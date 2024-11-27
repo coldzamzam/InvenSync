@@ -14,7 +14,7 @@
 
           <div class="mb-2">
             <label for="exampleFormControlInput1" class="form-label">Tipe Toko</label>
-            <select name="tipetoko" class="form-select form-select-sm" aria-label="Default select example">
+            <select name="tipetoko" class="form-select form-select-sm" aria-label="Default select example>
               <option selected disabled>Pilih Jenis Toko</option>
               <option value="Toko Distro">Toko Distro</option>
               <option value="Toko Sepatu">Toko Sepatu</option>
@@ -47,10 +47,9 @@
             <input class="form-control form-control-sm" type="number" name="yearfounded" placeholder="Tahun Didirikan" aria-label="default input example">
             <span class="text-red-500"><?= $data['yearfoundedError']; ?></span>
           </div>
-
       </div>
       <div class="modal-footer">
-        <button type="submit" name="simpan" class="btn btn-primary">Simpan Informasi</button>
+        <button type="submit" name="update" class="btn btn-primary">Update Informasi</button>
       </div>
       </form>
 

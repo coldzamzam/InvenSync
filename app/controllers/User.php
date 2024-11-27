@@ -118,17 +118,16 @@ class User extends Controller {
         'lokasiError' => '',
         'telepontokoError' => '',
         'emailtokoError' => '',
-        'passwordError' => '',
-        'loginemailtokoError' => '',
-        'loginPasswordError' => '',
-        'judul' => 'Buat Akun'
+        'yearfoundedError' => '',
+        'judul' => 'Profile Toko'
     ];
 
     // Validate data
     if (empty($data['namatoko'])) $data['namatokoError'] = 'Nama tidak boleh kosong.';
     if (empty($data['tipetoko'])) $data['tipetokoError'] = 'Tipe toko tidak boleh kosong.';
     if (empty($data['lokasi'])) $data['lokasiError'] = 'Alamat tidak boleh kosong.';
-    if (empty($data['phonenumber'])) $data['phonenumberError'] = 'Nomor Telepon tidak boleh kosong.';
+    if (empty($data['telepontoko'])) $data['telepontokoError'] = 'Nomor Telepon tidak boleh kosong.';
+    if (empty($data['yearfounded'])) $data['yearfoundedError'] = 'Tahun didirikan tidak boleh kosong.';
     if (empty($data['emailtoko'])) {
         $data['emailtokoError'] = 'emailtoko tidak boleh kosong.';
     } elseif (!filter_var($data['emailtoko'], FILTER_VALIDATE_EMAIL)) {
@@ -137,23 +136,23 @@ class User extends Controller {
 
     // Return errors if any
     if (!empty($data['namatokoError']) || !empty($data['tipetokoError']) || !empty($data['lokasiError']) || 
-        !empty($data['phonenumberError']) || !empty($data['emailtokoError']) || !empty($data['passwordError'])) {
-        $this->view('templates/i-header', $data);
-        $this->view('user/index', $data);
-        $this->view('templates/footer');
+        !empty($data['telepontokoError']) || !empty($data['emailtokoError']) || !empty($data['yearfoundedError'])) {
+        $this->view('templates/s-header', $data);
+        $this->view('user/toko', $data);
         return;
     }
 
     // Insert data
-    if ($this->model('User_model')->daftarToko($data) > 0) {
-        Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
-        header('Location: ' . BASEURL . '/user/login');
-        exit;
-    } else {
-        Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
-        header('Location: ' . BASEURL . '/user');
-        exit;
-    }
+      if ($this->model('User_model')->daftarToko($_POST) > 0) {
+          // Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
+          header('Location: ' . BASEURL . '/dashboard/toko');
+          exit;
+      } else {
+          // Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
+          // header('Location: ' . BASEURL . '/dashboard/toko');
+          echo 'Gagal memasukkan data';
+          exit;
+      }
   }
 
 

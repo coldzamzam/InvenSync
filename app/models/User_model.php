@@ -29,7 +29,12 @@ class User_model {
     $this->db->query($query);
     $this->db->execute();
 
-    return $this->db->fetchColumn();
+    $toko = $this->db->fetchColumn();
+    if ($toko > 0) {
+      $_SESSION['ada_toko'] = true;
+    }
+
+    return $toko;
   }
 
   public function daftar($data) {
@@ -68,8 +73,8 @@ class User_model {
 }
 
   public function daftarToko($data) {
-    $query = "INSERT INTO i_store_info (store_name, store_type, location, phone_number, email, year_founded)
-    VALUES (:namatoko, :tipetoko, :lokasi, :telepontoko, :emailtoko, :yearfounded)";
+    $query = "INSERT INTO i_store_info (store_name, store_type, location, phone_number, email, year_founded, owner_id)
+    VALUES (:namatoko, :tipetoko, :lokasi, :telepontoko, :emailtoko, :yearfounded, :owner_id)";
     $this->db->query($query);
     $this->db->bind('namatoko', $data['namatoko']);
     $this->db->bind('tipetoko', $data['tipetoko']);
@@ -77,6 +82,7 @@ class User_model {
     $this->db->bind('telepontoko', $data['telepontoko']);
     $this->db->bind('emailtoko', $data['emailtoko']);
     $this->db->bind('yearfounded', $data['yearfounded']);
+    $this->db->bind('owner_id', $_SESSION['user_id']);
 
     $this->db->execute();
     // var_dump($this->db->single());
