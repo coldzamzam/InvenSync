@@ -8,7 +8,7 @@
       </h2>
     </div>
   </section>
-
+  
   <!-- Features Section -->
   <section class="py-12 bg-[#FFD369] text-center">
     <h3 class="text-xl md:text-2xl font-bold mb-4">Fitur-fitur InvenSync!</h3>
