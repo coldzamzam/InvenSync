@@ -695,12 +695,32 @@ video {
   margin-top: 1.25rem;
 }
 
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
 .mt-8 {
   margin-top: 2rem;
 }
 
 .mt-\[250px\] {
   margin-top: 250px;
+}
+
+.mt-\[30000px\] {
+  margin-top: 30000px;
+}
+
+.mt-\[900px\] {
+  margin-top: 900px;
+}
+
+.mt-\[300px\] {
+  margin-top: 300px;
+}
+
+.mt-\[3000px\] {
+  margin-top: 3000px;
 }
 
 .block {
@@ -749,6 +769,10 @@ video {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.w-0 {
+  width: 0px;
 }
 
 .w-1\/2 {

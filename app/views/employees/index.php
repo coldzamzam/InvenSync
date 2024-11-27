@@ -48,31 +48,32 @@
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
   <div class="bg-white w-full max-w-md p-6 rounded-lg shadow-lg">
     <!-- Header Modal -->
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-xl font-semibold">Create Employee</h3>
-      <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">&times;</button>
+    <div class="flex justify-between items-center">
+      <h3 class="text-2xl font-semibold w-full text-center">Create Employee</h3>
+      <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 w-0">&times;</button>
     </div>
-
+    <h3 class="text-xl text-center">Buatkan Akun untuk Karyawanmu!</h3>
     <!-- Formulir -->
     <form  action="<?= BASEURL; ?>/employees/createEmployee" method="POST">
-      <!-- Input Nama -->
-      <div class="mb-4">
-        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-        <input type="text" id="name" name="name" required 
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-      </div>
-
-      <!-- Input Role -->
-      <div class="mb-4">
-        <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-        <select id="role" name="role" required 
+      <div class="flex mt-6">
+        <!-- Input Nama -->
+        <div class="mb-4">
+          <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+          <input type="text" id="name" name="name" required 
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-          <option value="" disabled selected>-- Select Role --</option>
-          <option value="Admin Gudang">Admin Gudang</option>
-          <option value="Admin Kasir">Admin Kasir</option>
-        </select>
-      </div>
+        </div>
 
+        <!-- Input Role -->
+        <div class="mb-4">
+          <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+          <select id="role" name="role" required 
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            <option value="" disabled selected>-- Select Role --</option>
+            <option value="Admin Gudang">Admin Gudang</option>
+            <option value="Admin Kasir">Admin Kasir</option>
+          </select>
+        </div>
+      </div>
       <!-- Input Alamat -->
       <div class="mb-4">
         <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
@@ -113,7 +114,6 @@
 </main>
 
     <script>
-      closeModal();
       function closeModal() {
         document.getElementById('modal').classList.add('hidden');
       }
