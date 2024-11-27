@@ -1,6 +1,6 @@
 <main class="flex-1 ml-64 p-8">
       <header class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-semibold">Employees</h2>
+        <h2 class="text-2xl font-semibold text-blue-500">Employees</h2>
         <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Create Employee</button>
       </header>
 
@@ -8,9 +8,10 @@
         <input type="text" placeholder="Quick search" class="border rounded px-4 py-2">
         <input type="date" class="border rounded px-4 py-2">
           <select class="border rounded px-4 py-2">
-          <option>Status</option>
-          <option>Pending</option>
-          <option>Completed</option>
+          <option>Role</option>
+          <option>Owner</option>
+          <option>Admin Kasir</option>
+          <option>Admin Gudang</option>
         </select>
       </div>
       <h2 class="text-xl font-semibold pb-2">Karyawan</h2>
@@ -86,7 +87,7 @@ if (isset($_SESSION['formErrors'])) {
     <!-- Header Modal -->
     <div class="flex justify-between items-center">
       <h3 class="text-2xl font-semibold w-full text-center">Create Employee</h3>
-      <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 w-0">&times;</button>
+      <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2">&times;</button>
     </div>
     <h3 class="text-l text-center">Buatkan Akun untuk Karyawanmu!</h3>
     <!-- Formulir -->
