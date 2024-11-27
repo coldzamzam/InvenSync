@@ -37,6 +37,28 @@ Class Item_model {
     return $this->db->resultSet();
   }
 
+  public function getPaginatedUsers($start, $limit)
+  {
+      $this->db->query('
+          SELECT * FROM (
+              SELECT a.*, ROWNUM rnum
+              FROM i_users a
+              WHERE is_deleted = 0
+          ) WHERE rnum > :startIndex AND rnum <= :endIndex
+      ');
+      $this->db->bind('startIndex', $start, PDO::PARAM_INT);
+      $this->db->bind('endIndex', $start + $limit, PDO::PARAM_INT);
+      $this->db->execute();
+      return $this->db->resultSet();
+  }
+
+  public function getUserCount()
+  {
+      $this->db->query('SELECT COUNT(*) as total FROM i_users WHERE is_deleted = 0');
+      $this->db->execute();
+      return $this->db->single()['TOTAL'];
+  }
+
   public function getAllUser(){
     $this->db->query('SELECT * FROM i_users WHERE is_deleted = 0');
     $this->db->execute();
