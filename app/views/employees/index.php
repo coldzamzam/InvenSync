@@ -41,7 +41,8 @@
           <?php endforeach; ?>
         </tbody>
       </table>
-      <div class="pagination mt-4">
+    </div>
+    <div class="pagination mt-4">
         <ul class="flex justify-center space-x-2">
           <?php if ($data['currentPage'] > 1): ?>
             <li>
@@ -62,7 +63,6 @@
           <?php endif; ?>
         </ul>
       </div>
-    </div>
 </div>
 
   <!-- <?php
