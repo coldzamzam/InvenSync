@@ -1,5 +1,5 @@
   <!-- Main Content -->
-  <main class="flex-1 ml-64 p-8">
+  <main class="flex-1 ml-64 mt-20 p-8">
     <header class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-semibold text-blue-500">Inventory</h2>
       <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ New Stock</button>
