@@ -8,19 +8,20 @@ class User extends Controller {
     $data['phonenumberError'] = '';
     $data['emailError'] = '';
     $data['passwordError'] = '';
-    if ( $this->model('User_model')->checkRowAcc() > 0 ) {
-      header('Location: ' . BASEURL . '/user/login');
-    } else {
+    // if ( $this->model('User_model')->checkRowAcc() > 0 ) {
+    //   header('Location: ' . BASEURL . '/user/login');
+    // } else {
       $data['judul'] = 'Buat Akun';
       $this->view('templates/i-header', $data);
       $this->view('user/index', $data);
       $this->view('templates/footer');
-    }
+    // }
   }
 
   public function login() {
     $data['loginEmailError'] = '';
     $data['loginPasswordError'] = '';
+    $data['captchaError'] = '';
 
     $data['judul'] = 'Login';
     $this->view('templates/i-header', $data);
@@ -161,30 +162,51 @@ class User extends Controller {
     $data = [
         'email' => $_POST['email'] ?? '',
         'password' => $_POST['password'] ?? '',
+        'captcha' => $_POST['g-recaptcha-response'] ?? '',
         'loginEmailError' => '',
-        'loginPasswordError' => ''
+        'loginPasswordError' => '',
+        'captchaError' => ''
     ];
 
-
-    if (empty($data['password'])) $data['loginPasswordError'] = 'Password tidak boleh kosong.';
+    // Validate email
     if (empty($data['email'])) {
         $data['loginEmailError'] = 'Email tidak boleh kosong.';
     } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
         $data['loginEmailError'] = 'Format email tidak valid.';
     }
 
-    // Jika ada error, tampilkan kembali halaman login
-    // if (!empty($data['loginEmailError']) || !empty($data['loginPasswordError'])) {
-    //     $this->view('templates/i-header', $data);
-    //     $this->view('user/login', $data);
-    //     $this->view('templates/footer');
-    // }
+    // Validate password
+    if (empty($data['password'])) {
+        $data['loginPasswordError'] = 'Password tidak boleh kosong.';
+    }
 
+    // Validate CAPTCHA
+    if (empty($data['captcha'])) {
+        $data['captchaError'] = 'Captcha tidak boleh kosong.';
+    } else {
+        $secret = '6LdmtowqAAAAANi_nfbZ1XqYUgpZKVEwpzgt2x0w'; // Your Google reCAPTCHA secret key
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$data['captcha']}");
+        $responseKeys = json_decode($response, true);
+
+        if (intval($responseKeys['success']) !== 1) {
+            $data['captchaError'] = 'Captcha tidak valid.';
+        }
+    }
+
+    // If there are errors, show the login form again
+    if (!empty($data['loginEmailError']) || !empty($data['loginPasswordError']) || !empty($data['captchaError'])) {
+        $this->view('templates/i-header', $data);
+        $this->view('user/login', $data);
+        $this->view('templates/footer');
+        return;
+    }
+
+    // If no errors, proceed with login
     if ($this->model('User_model')->masuk($_POST)) {
         if ($this->model('User_model')->checkRowToko() == 0) {
-          header('Location: ' . BASEURL . '/dashboard/toko');
-        } else{
-          header('Location: ' . BASEURL . '/dashboard');
+            header('Location: ' . BASEURL . '/dashboard/toko');
+        } else {
+            header('Location: ' . BASEURL . '/dashboard');
         }
     } else {
         $data['loginEmailError'] = 'Email atau password salah.';
@@ -192,7 +214,7 @@ class User extends Controller {
         $this->view('user/login', $data);
         $this->view('templates/footer');
     }
-  }
+}
 
 
 }

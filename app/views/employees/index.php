@@ -1,10 +1,31 @@
-<main class="flex-1 ml-64 p-8">
-      <header class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-semibold text-blue-500">Employees</h2>
-        <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Create Employee</button>
-      </header>
+<main class="flex-1 ml-64 mt-20 p-8">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+          google.charts.load("current", {packages:["corechart"]});
+          google.charts.setOnLoadCallback(drawChart);
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Task', 'Hours per Day'],
+              ['Work',     11],
+              ['Eat',      2],
+              ['Commute',  2],
+              ['Watch TV', 2],
+              ['Sleep',    7]
+            ]);
+
+            var options = {
+              title: 'My Daily Activities',
+              pieHole: 0.4,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+            chart.draw(data, options);
+          }
+        </script>
+        <div id="donutchart" style="width: 900px; height: 500px;"></div>
 
       <div class="flex items-center mb-4 space-x-4">
+        <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Create Employee</button>
         <input type="text" placeholder="Quick search" class="border rounded px-4 py-2">
         <input type="date" class="border rounded px-4 py-2">
           <select class="border rounded px-4 py-2">

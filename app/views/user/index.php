@@ -1,17 +1,20 @@
-<div class="relative my-[250px] mx-[350px] bg-white shadow-lg rounded-lg overflow-hidden">
+<div class="mt-[200px] mx-[350px] bg-white shadow-lg rounded-lg overflow-hidden">
   <!-- Wrapper for sliding panels -->
   <div id="auth-panels" class="flex w-[200%] h-full transition-transform transform duration-500 ease-in-out">
     <!-- Register Panel -->
     <div class="w-1/2  flex items-center justify-center">
-      <div class="m-0 bg-[#FFD369] w-2/5 h-full flex justify-center rounded-lg text-center p-6 items-center row">
-        <img src="<?= BASEURL; ?>/img/aqsa.png" width="200px" height="200px" class="rounded-circle mb-4" alt="ripat">
-          <p class="text-2xl font-bold text-black mb-4">Selamat datang di InvenSync! Ayo buat akun Anda dahulu sebelum memulai pengelolaan inventaris!</p>
+      <div class="m-0 bg-[#FFD369] w-2/5 h-full rounded-lg text-center p-6 flex flex-col items-center justify-center">
+          <img src="<?= BASEURL; ?>/img/invensync-logo.png" width="300px" height="300px" class="rounded-circle mb-4" alt="ripat">
+          <p class="text-2xl font-bold text-black mb-4">Selamat Datang! Ayo Awali harimu dengan login ke InvenSync!</p>
+          <a href="<?= BASEURL; ?>/user/login" class="text-2xl font-bold text-black mb-8 py-2 px-4 border-2 border-black rounded-lg hover:bg-black hover:text-white transition duration-100">
+            Loginkan!
+          </a>
       </div>
       <!-- Formulir Register -->
       <div class="w-3/5 h-full px-10 py-8 bg-white">
         <h3 class="text-center font-black text-4xl py-4 text-gray-800">Register Akun</h3>
         <form id="myForm" action="<?= BASEURL; ?>/user/createAcc" method="post">
-    <div class="flex gap-4 mb-6">
+      <div class="flex gap-4 mb-6">
         <div class="w-1/2">
             <label for="name" class="block text-gray-700 font-medium mb-2">Nama</label>
             <input 
