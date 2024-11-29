@@ -7,14 +7,16 @@
     <table id="barangTable" class="w-full text-left border-collapse">
       <thead>
         <tr class="bg-gray-200 text-gray-600">
-          <th class="py-3 px-4 border">Nama Barang</th>
-          <th class="py-3 px-4 border">Jumlah Barang</th>
-          <th class="py-3 px-4 border">Harga Barang</th>
-          <th class="py-3 px-4 border">Total Harga</th>
+          <th class="py-3 px-4 border text-center">Kode Barang</th>
+          <th class="py-3 px-4 border text-center">Nama Barang</th>
+          <th class="py-3 px-4 border text-center">Jumlah Barang</th>
+          <th class="py-3 px-4 border text-center">Harga Barang</th>
+          <th class="py-3 px-4 border text-center">Total Harga</th>
+          <th class="py-3 px-4 border text-center">Option</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Data rows will be added here dynamically -->
+        <!-- Data rows will be dynamically added here -->
       </tbody>
     </table>
   </div>
@@ -23,158 +25,177 @@
 <!-- Modal -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">
   <div class="bg-white w-full max-w-[600px] p-6 rounded-lg shadow-lg">
-    <!-- Header Modal -->
     <div class="flex justify-between items-center">
-      <h3 class="text-2xl font-semibold w-full text-center">Tambah Barang</h3>
+      <h3 class="text-2xl font-semibold w-full text-center">Tambah/Update Barang</h3>
       <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2">&times;</button>
     </div>
     <form id="createBarangForm">
       <div class="mt-6">
+        <!-- Kode Barang -->
+        <div class="mb-4">
+          <label for="kodebarang" class="block text-sm font-medium text-gray-700">Kode Barang</label>
+          <input type="text" id="kodebarang" name="kodebarang" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <span id="kodebarangError" class="text-red-500 error"></span>
+        </div>
+
         <!-- Nama Barang -->
         <div class="mb-4">
           <label for="namabarang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
-          <input type="text" id="namabarang" name="namabarang" class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input type="text" id="namabarang" name="namabarang" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           <span id="namabarangError" class="text-red-500 error"></span>
         </div>
 
         <!-- Jumlah Barang -->
         <div class="mb-4">
           <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah Barang</label>
-          <input type="text" id="jumlah" name="jumlah" class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input type="number" id="jumlah" name="jumlah" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           <span id="jumlahError" class="text-red-500 error"></span>
         </div>
 
         <!-- Harga Barang -->
         <div class="mb-4">
           <label for="harga" class="block text-sm font-medium text-gray-700">Harga Barang</label>
-          <input type="text" id="harga" name="harga" class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input type="text" id="harga" name="harga" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="formatHarga(this)">
           <span id="hargaError" class="text-red-500 error"></span>
         </div>
 
-        <!-- Total -->
-        <div class="mb-6">
-          <label for="total" class="block text-sm font-medium text-gray-700">Total Harga</label>
-          <input type="text" id="total" name="total" class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <span id="totalError" class="text-red-500 error"></span>
-        </div>
-
-        <!-- Tombol Tambahkan -->
-        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Tambahkan</button>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Simpan</button>
       </div>
     </form>
   </div>
 </div>
 
 <script>
-// Function to save the table data to localStorage
-function saveTableData() {
-  const tableRows = [];
-  const rows = document.querySelectorAll('#barangTable tbody tr');
-  rows.forEach(row => {
-    const rowData = {
-      namaBarang: row.cells[0].textContent,
-      jumlah: row.cells[1].textContent,
-      harga: row.cells[2].textContent,
-      total: row.cells[3].textContent
-    };
-    tableRows.push(rowData);
-  });
-  localStorage.setItem('barangData', JSON.stringify(tableRows));
-}
+  let editingRow = null; // Variable untuk menyimpan baris yang sedang diedit
 
-// Function to load the table data from localStorage
-function loadTableData() {
-  const savedData = localStorage.getItem('barangData');
-  if (savedData) {
-    const barangData = JSON.parse(savedData);
-    const tableBody = document.querySelector('#barangTable tbody');
-    barangData.forEach(item => {
-      const newRow = document.createElement('tr');
-      newRow.innerHTML = `
-        <td class="py-3 px-4 border">${item.namaBarang}</td>
-        <td class="py-3 px-4 border">${item.jumlah}</td>
-        <td class="py-3 px-4 border">${item.harga}</td>
-        <td class="py-3 px-4 border">${item.total}</td>
-      `;
-      tableBody.appendChild(newRow);
-    });
+  // Menutup modal
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+    editingRow = null; // Reset editingRow
   }
-}
 
-// Menutup modal
-function closeModal() {
-  document.getElementById('modal').style.display = 'none';
-}
+  // Menampilkan modal untuk Tambah Barang
+  document.getElementById('tambahBarangBtn').addEventListener('click', function () {
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('createBarangForm').reset(); // Reset form saat modal dibuka
+  });
 
-// Menampilkan modal ketika tombol Tambah Barang diklik
-document.getElementById('tambahBarangBtn').addEventListener('click', function() {
-  document.getElementById('modal').style.display = 'flex';
-});
+  // Load data dari localStorage
+  function loadTableData() {
+    const savedData = localStorage.getItem('barangData');
+    if (savedData) {
+      const barangData = JSON.parse(savedData);
+      const tableBody = document.querySelector('#barangTable tbody');
+      barangData.forEach(item => {
+        const newRow = createRow(item);
+        tableBody.appendChild(newRow);
+      });
+    }
+  }
 
-// Validasi Form
-document.getElementById('createBarangForm').addEventListener('submit', function(event) {
+  // Simpan data ke localStorage
+  function saveTableData() {
+    const rows = Array.from(document.querySelectorAll('#barangTable tbody tr'));
+    const data = rows.map(row => {
+      return {
+        kodeBarang: row.cells[0].textContent,
+        namaBarang: row.cells[1].textContent,
+        jumlah: row.cells[2].textContent,
+        harga: removeNonNumericChars(row.cells[3].textContent),
+        total: removeNonNumericChars(row.cells[4].textContent)
+      };
+    });
+    localStorage.setItem('barangData', JSON.stringify(data));
+  }
+
+  // Buat baris tabel
+  function createRow(item) {
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td class="py-3 px-4 border">${item.kodeBarang}</td>
+      <td class="py-3 px-4 border">${item.namaBarang}</td>
+      <td class="py-3 px-4 border">${item.jumlah}</td>
+      <td class="py-3 px-4 border">${formatCurrency(item.harga)}</td>
+      <td class="py-3 px-4 border">${formatCurrency(item.total)}</td>
+      <td class="py-3 px-4 border flex justify-center space-x-4">
+        <button class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600" onclick="editRow(this)">Update</button>
+        <button class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="deleteRow(this)">Delete</button>
+      </td>
+    `;
+    return newRow;
+  }
+
+  // Edit baris
+  function editRow(button) {
+    const row = button.closest('tr');
+    editingRow = row;
+
+    const cells = row.querySelectorAll('td');
+    document.getElementById('kodebarang').value = cells[0].textContent;
+    document.getElementById('namabarang').value = cells[1].textContent;
+    document.getElementById('jumlah').value = cells[2].textContent;
+    document.getElementById('harga').value = removeNonNumericChars(cells[3].textContent);
+
+    document.getElementById('modal').style.display = 'flex';
+  }
+
+  // Hapus baris
+  function deleteRow(button) {
+    const row = button.closest('tr');
+    row.remove();
+    saveTableData();
+  }
+
+  // Tangani submit form
+  document.getElementById('createBarangForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    // Get form values
-    const namabarang = document.getElementById('namabarang').value;
-    const harga = document.getElementById('harga').value;
-    const total = document.getElementById('total').value;
-    const jumlah = document.getElementById('jumlah').value;
+    const kodeBarang = document.getElementById('kodebarang').value;
+    const namaBarang = document.getElementById('namabarang').value;
+    const jumlah = parseInt(document.getElementById('jumlah').value, 10);
+    const harga = parseInt(removeNonNumericChars(document.getElementById('harga').value), 10);
+    const total = jumlah * harga; // Hitung total harga
 
-    // Validation checks
-    let errors = false;
-
-    // Clear any existing error messages
-    document.querySelectorAll('.error').forEach(function(el) {
-      el.textContent = '';
-    });
-
-    // Validate each field and show errors if any
-    if (!namabarang) {
-      document.getElementById('namabarangError').textContent = 'Nama Barang tidak boleh kosong.';
-      errors = true;
-    }
-    if (!harga) {
-      document.getElementById('hargaError').textContent = 'Harga Barang tidak boleh kosong.';
-      errors = true;
-    }
-    if (!total) {
-      document.getElementById('totalError').textContent = 'Total Harga tidak boleh kosong.';
-      errors = true;
-    }
-    if (!jumlah) {
-      document.getElementById('jumlahError').textContent = 'Jumlah Barang tidak boleh kosong.';
-      errors = true;
+    if (editingRow) {
+      editingRow.innerHTML = `
+        <td class="py-3 px-4 border">${kodeBarang}</td>
+        <td class="py-3 px-4 border">${namaBarang}</td>
+        <td class="py-3 px-4 border">${jumlah}</td>
+        <td class="py-3 px-4 border">${formatCurrency(harga)}</td>
+        <td class="py-3 px-4 border">${formatCurrency(total)}</td>
+        <td class="py-3 px-4 border flex justify-center space-x-4">
+          <button class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600" onclick="editRow(this)">Update</button>
+          <button class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600" onclick="deleteRow(this)">Delete</button>
+        </td>
+      `;
+      editingRow = null;
+    } else {
+      const tableBody = document.querySelector('#barangTable tbody');
+      const newRow = createRow({ kodeBarang, namaBarang, jumlah, harga, total });
+      tableBody.appendChild(newRow);
     }
 
-    if (errors) {
-      // Stay on the modal if there are validation errors
-      return;
-    }
-
-    // If there are no errors, add the data to the table dynamically
-    const tableBody = document.querySelector('#barangTable tbody');
-    const newRow = document.createElement('tr');
-
-    newRow.innerHTML = `
-      <td class="py-3 px-4 border">${namabarang}</td>
-      <td class="py-3 px-4 border">${jumlah}</td>
-      <td class="py-3 px-4 border">${harga}</td>
-      <td class="py-3 px-4 border">${total}</td>
-    `;
-
-    // Append the new row to the table
-    tableBody.appendChild(newRow);
-
-    // Save the new table data to localStorage
     saveTableData();
-
-    // Close the modal after adding the item
     closeModal();
-});
+  });
 
-// Load the table data when the page loads
-window.addEventListener('load', function() {
+  // Format harga menjadi format ribuan (200000 -> 200.000) dengan prefix "Rp"
+  function formatCurrency(price) {
+    return 'Rp ' + parseInt(price).toLocaleString('id-ID');
+  }
+
+  // Menghilangkan pemisah ribuan dan mengembalikan nilai numerik
+  function removeNonNumericChars(str) {
+    return str.replace(/[^\d]/g, '');
+  }
+
+  // Format input harga menjadi format ribuan dengan awalan "Rp"
+  function formatHarga(input) {
+    let value = removeNonNumericChars(input.value);
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    input.value = 'Rp ' + value;
+  }
+
+  // Muat data saat halaman pertama kali dimuat
   loadTableData();
-});
 </script>
