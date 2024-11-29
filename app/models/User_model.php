@@ -24,18 +24,26 @@ class User_model {
     return $this->db->fetchColumn();
   }
 
-  public function checkRowToko(){
-    $query = "SELECT * FROM i_store_info";
+  public function checkRowToko() {
+    $query = "SELECT COUNT(*) FROM i_store_info WHERE owner_id = :owner_id";
     $this->db->query($query);
+    $this->db->bind(':owner_id', $_SESSION['user_id']);
     $this->db->execute();
 
-    $toko = $this->db->fetchColumn();
-    if ($toko > 0) {
-      $_SESSION['ada_toko'] = true;
-    }
+    $storeCount = $this->db->fetchColumn() ?? 0;
+    $_SESSION['ada_toko'] = ($storeCount > 0);
 
-    return $toko;
-  }
+    return $storeCount;
+}
+
+
+public function getStoreInfo() {
+  $this->db->query('SELECT * FROM i_store_info WHERE owner_id = :owner_id');
+  $this->db->bind(':owner_id', $_SESSION['user_id']);
+  return $this->db->single(); // Ambil 1 baris data saja
+}
+
+
 
   public function daftar($data) {
     $query = "INSERT INTO i_users (name, role, address, phone_number, email, password)

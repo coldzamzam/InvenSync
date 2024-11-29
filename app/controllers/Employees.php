@@ -9,10 +9,10 @@ class Employees extends Controller{
 
     public function index($page=1){
         $data['judul'] = 'Employees';
-        $data['users'] = $this->model('Item_model')->getAllUser();
+        $data['users'] = $this->model('Item_model')->getUserStore();
         // $data['invusers'] = $this->model('Item_model')->getInventoryUser();
         // $data['cashusers'] = $this->model('Item_model')->getCashierUser();
-        $usersperpage = 5;
+        $usersperpage = 10;
         $totalusers = $this->model('Item_model')->getUserCount();
         $totalpages = ceil($totalusers / $usersperpage);
         $start = ($page - 1) * $usersperpage;

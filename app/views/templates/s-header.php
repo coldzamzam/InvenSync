@@ -32,7 +32,7 @@
       </form>
     </aside>
     <nav class="left-64 p-6 bg-[#fdfdfd] fixed min-w-screen top-0 right-0 z-10 shadow-md"><p class="text-2xl font-bold text-center"><?=$data['judul']?></p></nav>
-<body class=" bg-grey-100 h-[9000px]">
+<body class=" bg-grey-100">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="<?= BASEURL; ?>/js/script.js"></script>

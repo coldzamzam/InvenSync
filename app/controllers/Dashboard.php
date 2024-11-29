@@ -17,21 +17,44 @@ Class Dashboard extends Controller{
   }
   
   public function toko() {
-    $data['namatokoError'] = '';
-    $data['tipetokoError'] = '';
-    $data['lokasiError'] = '';
-    $data['telepontokoError'] = '';
-    $data['emailtokoError'] = '';
-    $data['yearfoundedError'] = '';
-    $data['judul'] = 'Profile Toko';
+    $data = [
+        'namatokoError' => '',
+        'tipetokoError' => '',
+        'lokasiError' => '',
+        'telepontokoError' => '',
+        'emailtokoError' => '',
+        'yearfoundedError' => '',
+        'judul' => 'Profile Toko',
+        'owner_id' => $_SESSION['user_id'],
+        'namatoko'=> $_POST['namatoko'] ?? '',
+        'tipetoko'=> $_POST['tipetoko'] ?? '',
+        'lokasi'=> $_POST['lokasi'] ?? '',
+        'telepontoko'=> $_POST['telepontoko'] ?? '',
+        'emailtoko'=> $_POST['emailtoko'] ?? '',
+        'yearfounded'=> $_POST['yearfounded'] ?? '',
+    ];
+
+    $storeInfo = $this->model('User_model')->getStoreInfo();
+
+    if ($storeInfo) {
+        $data['namatoko'] = $storeInfo['STORE_NAME'];
+        $data['tipetoko'] = $storeInfo['STORE_TYPE'];
+        $data['lokasi'] = $storeInfo['LOCATION'];
+        $data['telepontoko'] = $storeInfo['PHONE_NUMBER'];
+        $data['emailtoko'] = $storeInfo['EMAIL'];
+        $data['yearfounded'] = $storeInfo['YEAR_FOUNDED'];
+
+        $this->view('templates/s-header', $data);
+        $this->view('user/tokoinfo', $data);
+        return;
+    }
+
     $this->view('templates/s-header', $data);
     $this->view('user/toko', $data);
-    // if ( $this->model('User_model')->checkRowToko() == 0 ) {
-    //   $this->view('user/tokoupdate', $data);
-    // } else {
-      
-    // }
-  }
+}
+
+
+
 
   public function employees(){
     $data['judul'] = 'Dashboard';
