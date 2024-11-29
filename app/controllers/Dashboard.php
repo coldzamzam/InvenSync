@@ -25,11 +25,12 @@ Class Dashboard extends Controller{
     $data['yearfoundedError'] = '';
     $data['judul'] = 'Profile Toko';
     $this->view('templates/s-header', $data);
-    if ( $this->model('User_model')->checkRowToko() == 0 ) {
-      $this->view('user/toko', $data);
-    } else {
-      $this->view('user/tokoupdate', $data);
-    }
+    $this->view('user/toko', $data);
+    // if ( $this->model('User_model')->checkRowToko() == 0 ) {
+    //   $this->view('user/tokoupdate', $data);
+    // } else {
+      
+    // }
   }
 
   public function employees(){

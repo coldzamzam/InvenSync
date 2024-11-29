@@ -57,7 +57,7 @@
 
       <!-- Submit Button -->
       <div class="flex justify-end mt-4">
-        <button type="submit" name="simpan" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Simpan Informasi</button>
+        <button type="submit" name="simpan" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Update Informasi</button>
       </div>
     </form>
   </div>
