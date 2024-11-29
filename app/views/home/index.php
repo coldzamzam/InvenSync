@@ -1,98 +1,32 @@
-<div class="flex items-center justify-center h-[400px] bg-red">
-</div>
-<div class="bg-white">
-  <section>
-    <div class="flex items-center justify-center h-[400px] bg-white">
-      <h2 class="text-black text-2xl md:text-4xl font-semibold text-center px-4">
-        Aplikasi Inventaris Terbaik!
-      </h2>
-    </div>
-  </section>
-  
-  <!-- Features Section -->
-  <section class="py-12 bg-[#FFD369] text-center">
-    <h3 class="text-xl md:text-2xl font-bold mb-4">Fitur-fitur InvenSync!</h3>
-    <p class="mb-8 px-4">Fitur-fitur terbaik yang kami sediakan untuk kelancaran pengelolaan inventaris Anda</p>
-    <div class="container mx-auto flex flex-wrap justify-center">
-      <div class="w-full sm:w-1/2 md:w-1/4 p-4 text-center">
-        <img src="path/to/icon1.png" alt="Feature 1" class="mx-auto mb-2">
-        <p class="font-semibold">Sistem Inventaris Simple dan Cepat</p>
-      </div>
-      <div class="w-full sm:w-1/2 md:w-1/4 p-4 text-center">
-        <img src="path/to/icon2.png" alt="Feature 2" class="mx-auto mb-2">
-        <p class="font-semibold">Sistem Kasir yang Terintegrasi</p>
-      </div>
-      <div class="w-full sm:w-1/2 md:w-1/4 p-4 text-center">
-        <img src="path/to/icon3.png" alt="Feature 3" class="mx-auto mb-2">
-        <p class="font-semibold">Penjadwalan dan Riwayat Transaksi</p>
-      </div>
-      <div class="w-full sm:w-1/2 md:w-1/4 p-4 text-center">
-        <img src="path/to/icon4.png" alt="Feature 4" class="mx-auto mb-2">
-        <p class="font-semibold">Laporan Keuangan yang Real-time</p>
-      </div>
-    </div>
-  </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvenSync</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="relative bg-gray-900 text-white h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background Video -->
+    <video autoplay loop muted class="absolute top-0 left-0 w-full h-full object-cover">
+        <source src="<?= BASEURL; ?>/videos/video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 
-  <!-- Inventory Statistics Section -->
-  <section class="py-12 text-center">
-    <h3 class="text-xl md:text-2xl font-bold">Inventory Statistics</h3>
-    <p class="mb-4 px-4">Insight analysis for informed decisions</p>
-    <div class="flex flex-wrap justify-center items-center space-x-6 mb-8">
-      <div class="w-1/3 text-center">
-        <p class="text-2xl md:text-4xl font-bold">1000</p>
-        <p>Total Products</p>
-      </div>
-      <div class="w-1/3 text-center">
-        <p class="text-2xl md:text-4xl font-bold">500</p>
-        <p>Sold Items</p>
-      </div>
-      <div class="w-1/3 text-center">
-        <p class="text-2xl md:text-4xl font-bold">20%</p>
-        <p>Profit Margin</p>
-      </div>
+    <!-- Content Section -->
+    <div class="relative z-10 text-center p-6 bg-opacity-60 bg-gray-800 rounded-lg shadow-lg max-w-lg mx-auto">
+        <h1 class="text-4xl font-bold mb-4">Welcome to InvenSync</h1>
+        <p class="text-lg mb-6">
+            Simplify your inventory management with our comprehensive system. InvenSync ensures accurate tracking, seamless organization, and effortless control of your inventory.
+        </p>
+        <div class="flex justify-center space-x-4">
+            <a href="user/file/index.php" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                Get Started
+            </a>
+            <a href="#" class="bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                Learn More
+            </a>
+        </div>
     </div>
-    <button class="bg-black text-white px-4 py-2 rounded">More Details</button>
-    <div class="mt-8">
-      <p class="mb-2">Sales Performance</p>
-      <div class="w-full md:w-1/2 mx-auto bg-gray-300 h-40 rounded-lg flex items-end">
-        <!-- Replace with actual chart -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Us Section -->
-  <section class="py-12 bg-[#FFD369]">
-    <div class="container mx-auto text-center">
-      <h3 class="text-xl md:text-2xl font-bold mb-4">Contact Us</h3>
-      <p class="mb-8 px-4">Get in touch with us for inquiries</p>
-      <form class="flex flex-col items-center space-y-4">
-        <input type="text" placeholder="Name" class="w-full md:w-1/3 p-2 rounded">
-        <input type="email" placeholder="Email" class="w-full md:w-1/3 p-2 rounded">
-        <textarea placeholder="Message" class="w-full md:w-1/3 p-2 rounded h-24"></textarea>
-        <button type="submit" class="bg-black text-white px-4 py-2 rounded">Submit</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- Reviews Section -->
-  <section class="py-12 text-center">
-    <h3 class="text-xl md:text-2xl font-bold mb-4">Latest Reviews</h3>
-    <div class="flex flex-wrap justify-center space-x-0 md:space-x-6">
-      <div class="bg-white shadow-lg p-4 rounded-lg w-full md:w-1/4 mb-4 md:mb-0">
-        <p>Review title</p>
-        <p>Reviewer name</p>
-        <p>Rating: ⭐⭐⭐⭐⭐</p>
-      </div>
-      <div class="bg-white shadow-lg p-4 rounded-lg w-full md:w-1/4 mb-4 md:mb-0">
-        <p>Review title</p>
-        <p>Reviewer name</p>
-        <p>Rating: ⭐⭐⭐⭐⭐</p>
-      </div>
-      <div class="bg-white shadow-lg p-4 rounded-lg w-full md:w-1/4">
-        <p>Review title</p>
-        <p>Reviewer name</p>
-        <p>Rating: ⭐⭐⭐⭐⭐</p>
-      </div>
-    </div>
-  </section>
-</div>
+</body>
+</html>
