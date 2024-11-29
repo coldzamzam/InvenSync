@@ -21,7 +21,7 @@
           <tr class="bg-gray-200 text-gray-600">
             <th class="py-3 px-4 border">Item ID</th>
             <th class="py-3 px-4 border">Item Name</th>
-            <th class="py-3 px-4 border">Category Item</th>
+            <!-- <th class="py-3 px-4 border">Category Item</th> -->
             <th class="py-3 px-4 border">Quantity</th>
             <th class="py-3 px-4 border">Date Added</th>
             <th class="py-3 px-4 border">Purchase Price</th>
@@ -36,7 +36,7 @@
             <tr class="group hover:bg-gray-100 relative">
               <td class="py-3 px-4 border"><?= $item['ITEM_ID']; ?></td>
               <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
-              <td class="py-3 px-4 border"><?= $item['CATEGORY_ITEM']; ?></td>
+              <!-- <td class="py-3 px-4 border"><?= $item['CATEGORY_ITEM']; ?></td> -->
               <td class="py-3 px-4 border"><?= $item['QUANTITY']; ?></td>
               <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
               <td class="py-3 px-4 border"><?= $item['HARGA_BELI']; ?></td>
