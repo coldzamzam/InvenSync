@@ -143,10 +143,12 @@ class User extends Controller {
 		return;
 	}
 
+
 	// Insert data
 	  if ($this->model('User_model')->daftarToko($_POST) > 0) {
 		  // Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
-		  header('Location: ' . BASEURL . '/dashboard/toko');
+		  header('Location: ' . BASEURL . '/dashboard');
+		  $_SESSION['status']='success';
 		  exit;
 	  } else {
 		  // Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
@@ -204,11 +206,11 @@ class User extends Controller {
 
 		// If no errors, proceed with login
 		if ($this->model('User_model')->masuk($_POST)) {
-			if ($this->model('User_model')->checkRowToko() == 0) {
-				header('Location: ' . BASEURL . '/dashboard/toko');
-			} else {
+			// if ($this->model('User_model')->checkRowToko() == 0) {
 				header('Location: ' . BASEURL . '/dashboard');
-			}
+			// } else {
+			// 	header('Location: ' . BASEURL . '/dashboard');
+			// }
 		} else {
 			$data['loginEmailError'] = 'Email atau password salah.';
 			$this->view('templates/i-header', $data);

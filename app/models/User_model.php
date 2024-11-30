@@ -113,6 +113,9 @@ public function getStoreInfo() {
       $_SESSION['user_email'] = $user['EMAIL'];
       $_SESSION['user_name'] = $user['NAME'];
       $_SESSION['user_role'] = $user['ROLE'];
+      $_SESSION['user_address'] = $user['ADDRESS'];
+      $_SESSION['user_phonenumber'] = $user['PHONE_NUMBER'];
+
       $_SESSION['is_login'] = true;
       
       return $user;

@@ -9,11 +9,35 @@ Class Dashboard extends Controller{
   }
   
   public function index(){
-    $data['judul'] = 'Dashboard';
+    $data = [
+      'namatokoError' => '',
+      'tipetokoError' => '',
+      'lokasiError' => '',
+      'telepontokoError' => '',
+      'emailtokoError' => '',
+      'yearfoundedError' => '',
+      'owner_id' => $_SESSION['user_id'],
+      'namatoko'=> $_POST['namatoko'] ?? '',
+      'tipetoko'=> $_POST['tipetoko'] ?? '',
+      'lokasi'=> $_POST['lokasi'] ?? '',
+      'telepontoko'=> $_POST['telepontoko'] ?? '',
+      'emailtoko'=> $_POST['emailtoko'] ?? '',
+      'yearfounded'=> $_POST['yearfounded'] ?? '',
+      'judul' => 'Dashboard'
+  ];
+
+    if($this->model('User_model')->checkRowToko() > 0) {
+      $this->view('templates/s-header', $data);
+      $this->view('dashboard/index', $data);
+    }
+    else {
+      $this->view('templates/s-header', $data);
+      $this->view('user/toko', $data);
+    }
     // $data['users'] = $this->model('Item_model')->getUserById($id);
 
-    $this->view('templates/s-header', $data);
-    $this->view('dashboard/index', $data);
+    // $this->view('templates/s-header', $data);
+    // $this->view('dashboard/index', $data);
   }
   
   public function toko() {

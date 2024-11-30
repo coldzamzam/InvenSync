@@ -46,5 +46,27 @@
     }
   </script>
   <div id="chart_div"></div>
-
 </div>
+<?php
+if (isset($_SESSION['status'])):
+    $status = $_SESSION['status']; // Get status from session
+    unset($_SESSION['status']); // Remove status from session after using it
+?>
+    <script>
+        // Handle SweetAlert based on session status
+        let status = '<?= $status ?>';
+        if (status === 'success') {
+            Swal.fire({
+                title: 'Terima Kasih!',
+                text: 'Selamat Datang di Invensync!',
+                icon: 'success'
+            });
+        } else if (status === 'error') {
+            Swal.fire({
+                title: 'Error',
+                text: 'Failed to add employee!',
+                icon: 'error'
+            });
+        }
+    </script>
+<?php endif; ?>

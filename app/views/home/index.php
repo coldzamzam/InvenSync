@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InvenSync</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="relative bg-gray-900 text-white h-screen flex items-center justify-center overflow-hidden">
+<main class="bg-gray-900 text-white h-screen flex items-center justify-center overflow-hidden">
     <!-- Background Video -->
     <video autoplay loop muted class="absolute top-0 left-0 w-full h-full object-cover">
-        <source src="<?= BASEURL; ?>/videos/video.mp4" type="video/mp4">
+        <source src="<?= BASEURL; ?>/videos/background-edited.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 
@@ -20,7 +12,7 @@
             Simplify your inventory management with our comprehensive system. InvenSync ensures accurate tracking, seamless organization, and effortless control of your inventory.
         </p>
         <div class="flex justify-center space-x-4">
-            <a href="user/file/index.php" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
+            <a href="<?= BASEURL; ?>/user/login" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
                 Get Started
             </a>
             <a href="#" class="bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg shadow">
@@ -28,5 +20,6 @@
             </a>
         </div>
     </div>
+</main>
 </body>
 </html>
