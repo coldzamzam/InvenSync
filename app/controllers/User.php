@@ -221,7 +221,6 @@ class User extends Controller {
 
 	public function getToko() {
 		echo json_encode(
-		
 			$this->model('User_model')->getEditToko($_SESSION['user_id'])
 		);
 	}
@@ -259,12 +258,16 @@ class User extends Controller {
 		if (!empty($data['namatokoError']) || !empty($data['tipetokoError']) || !empty($data['lokasiError']) || 
 			!empty($data['telepontokoError']) || !empty($data['emailtokoError']) || !empty($data['yearfoundedError'])) {
 			$this->view('templates/s-header', $data);
-			$this->view('user/toko', $data);
+			$this->view('user/tokoinfo', $data);
+			echo "<script>
+							modal.classList.remove('hidden');
+							toko.classList.add('hidden');
+						</script>";
 			return;
 		}
 	
 		// Insert data
-		if ($this->model('User_model')->daftarToko($_POST) > 0) {
+		if ($this->model('User_model')->editToko($_POST) > 0) {
 			// Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
 			header('Location: ' . BASEURL . '/dashboard/toko');
 			exit;

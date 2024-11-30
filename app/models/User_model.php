@@ -145,8 +145,6 @@ public function getStoreInfo() {
                 email = :emailtoko, 
                 year_founded = :yearfounded 
               WHERE owner_id = :owner_id";
-    $query = "INSERT INTO i_store_info (store_name, store_type, location, phone_number, email, year_founded, owner_id)
-    VALUES (:namatoko, :tipetoko, :lokasi, :telepontoko, :emailtoko, :yearfounded, :owner_id)";
     $this->db->query($query);
     $this->db->bind('namatoko', $data['namatoko']);
     $this->db->bind('tipetoko', $data['tipetoko']);
