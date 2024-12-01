@@ -160,6 +160,77 @@ public function getStoreInfo() {
     return $this->db->rowCount();
   }
 
+  public function getUserbyID($id){
+    $this->db->query('SELECT * FROM i_users WHERE user_id = :user_id AND is_deleted = 0 AND owner_id = :owner_id');
+    $this->db->bind('user_id', $id);
+    $this->db->bind('owner_id', $_SESSION['user_id']);
+    return $this->db->single(); // Ambil hanya satu hasil
+  }
+
+  public function updateAdmin($data) {
+    $query = "UPDATE i_users SET 
+                name = :name, 
+                role = :role, 
+                address = :address, 
+                phone_number = :phonenumber, 
+                email = :email ";
+    
+    // Add password only if it's provided
+    if (isset($data['password'])) {
+        $query .= ", password = :password";
+    }
+
+    $query .= " WHERE user_id = :user_id and owner_id = :owner_id";
+
+    $this->db->query($query);
+    $this->db->bind('name', $data['name']);
+    $this->db->bind('role', $data['role']);
+    $this->db->bind('address', $data['address']);
+    $this->db->bind('phonenumber', $data['phonenumber']);
+    $this->db->bind('email', $data['email']);
+    $this->db->bind('user_id', $data['user_id']);
+    $this->db->bind('owner_id', $_SESSION['user_id']);
+
+    // Bind password only if it's provided
+    if (isset($data['password'])) {
+        $this->db->bind('password', $data['password']);
+    }
+
+    $this->db->execute();
+
+    return $this->db->rowCount();
+}
+
+public function deleteEmployee($id = null) {
+  // Ensure that the ID is provided (either from URL or POST)
+  // Proceed with deletion logic
+      // Dump the provided ID and user ID for debugging
+      // var_dump($id); 
+      // var_dump($_SESSION['user_id']); 
+      // Soft delete employee by setting is_deleted to 1
+      $this->db->query("UPDATE i_users SET is_deleted = 1 WHERE user_id = :user_id AND owner_id = :owner_id");
+      $this->db->bind('user_id', $id);
+      $this->db->bind('owner_id', $_SESSION['user_id']);
+      $this->db->execute();
+
+      // Dump the result of the execution and row count
+      // var_dump($this->db->rowCount()); // Check how many rows were affected
+
+      // Return the row count to check if the operation was successful
+      return $this->db->rowCount() > 0 ? 'success' : 'error';
+  // Return 'error' if no ID is provided
+}
+
+// public function searchEmployee(){
+//   $this->db->query("SELECT * FROM i_users WHERE is_deleted = 0 AND owner_id = :owner_id AND name LIKE :search");
+//   $this->db->bind('owner_id', $_SESSION['user_id']);
+//   $this->db->bind('search', '%' . $_GET['search'] . '%');
+//   $this->db->execute();
+
+//   return $this->db->resultSet();
+// }
+
+
 }
 
 ?>
