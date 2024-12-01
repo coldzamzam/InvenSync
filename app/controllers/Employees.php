@@ -3,7 +3,7 @@
 class Employees extends Controller{
     public function __construct(){
         if ( !isset($_SESSION['is_login']) ) {
-        header('Location: ' . BASEURL . '/user/index');
+        header('Location: ' . BASEURL . '/user/login');
         }
     }
 
