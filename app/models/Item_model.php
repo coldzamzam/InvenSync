@@ -106,7 +106,19 @@ Class Item_model {
     $this->db->execute();
     
     return $this->db->rowCount();
-}
+  }
+
+  public function getItemByName($namabarang) {
+    $query = ('SELECT * FROM i_inventory WHERE item_name = :namabarang');
+
+    // var_dump($namabarang);
+
+    $this->db->query($query);
+    $this->db->bind('namabarang', $namabarang);
+    $this->db->execute();
+
+    return $this->db->single();
+  }
 
 }
 

@@ -35,20 +35,26 @@
     <form id="createBarangForm">
       <div class="mt-6">
         <div class="mb-4">
-          <label for="kodebarang" class="block text-sm font-medium text-gray-700">Kode Barang</label>
-          <input type="text" id="kodebarang" name="kodebarang" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="namabarang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
+          <select id="namabarang" name="namabarang" onchange="fetchItemDetails()"
+                  class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="" disabled selected>-- Pilih Nama Barang --</option>
+            <?php foreach ($data['item'] as $item) : ?>
+              <option value="<?= $item['ITEM_NAME']; ?>"><?= $item['ITEM_NAME']; ?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
         <div class="mb-4">
-          <label for="namabarang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
-          <input type="text" id="namabarang" name="namabarang" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="kodebarang" class="block text-sm font-medium text-gray-700">Kode Barang</label>
+          <input type="text" id="kodebarang" name="kodebarang" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>
+        </div>
+        <div class="mb-4">
+          <label for="harga" class="block text-sm font-medium text-gray-700">Harga Barang</label>
+          <input type="text" id="harga" name="harga" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="formatHarga(this)" readonly>
         </div>
         <div class="mb-4">
           <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah Barang</label>
           <input type="number" id="jumlah" name="jumlah" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <div class="mb-4">
-          <label for="harga" class="block text-sm font-medium text-gray-700">Harga Barang</label>
-          <input type="text" id="harga" name="harga" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="formatHarga(this)">
         </div>
         <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Simpan</button>
       </div>
@@ -196,4 +202,31 @@
     printWindow.document.close();
     printWindow.print();
   });
+
+  function fetchItemDetails(){
+    const namaBarang = $('#namabarang').val();
+    
+    if (namaBarang) {
+      $.ajax({
+        url: "<?= BASEURL; ?>/Cashier/getDetailItem",
+        data: { namabarang: namaBarang },
+        method: "POST",
+        dataType: "json",
+        success: function(data) {
+          $("#harga").val(data.HARGA_JUAL);
+          $("#kodebarang").val(data.ITEM_ID);
+          console.log(data);
+        }
+      })
+      // $.post(
+      //   "<?= BASEURL; ?>/Cashier/getDetailItem",
+      //   { namabarang: namaBarang },
+      //   function(data) {
+      //     $("#harga").val(data.HARGA_JUAL);
+      //     $("#kodebarang").val(data.KODE_BARANG);
+      //     console.log(data);
+      //   }
+      // )
+    }
+  }
 </script>
