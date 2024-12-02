@@ -5,18 +5,19 @@
     <div class="w-1/2  flex items-center justify-center">
       <div class="m-0 bg-[#FFD369] w-2/5 h-full rounded-lg text-center p-6 flex flex-col items-center justify-center">
           <img src="<?= BASEURL; ?>/img/invensync-logo.png" width="300px" height="300px" class="rounded-circle mb-4" alt="ripat">
-          <p class="text-2xl font-bold text-black mb-4">Selamat Datang! Ayo Awali harimu dengan login ke InvenSync!</p>
+          <p class="text-2xl font-bold text-black mb-4">Sudah Punya Akun? Login Sekarang Juga!</p>
           <a href="<?= BASEURL; ?>/user/login" class="text-2xl font-bold text-black mb-8 py-2 px-4 border-2 border-black rounded-lg hover:bg-black hover:text-white transition duration-100">
             Loginkan!
           </a>
       </div>
       <!-- Formulir Register -->
-      <div class="w-3/5 h-full px-10 py-8 bg-white">
-        <h3 class="text-center font-black text-4xl py-4 text-gray-800">Register Akun</h3>
-        <form id="myForm" action="<?= BASEURL; ?>/user/createAcc" method="post">
+    <div class="w-3/5 h-full px-10 py-8 bg-white">
+    <h3 class="text-center font-black text-4xl py-4 text-gray-800">Register Akun</h3>
+    <form id="myForm" action="<?= BASEURL; ?>/user/createAcc" method="post">
       <div class="flex gap-4 mb-6">
+        <input type="hidden" name="role" value="Owner">
         <div class="w-1/2">
-            <label for="name" class="block text-gray-700 font-medium mb-2">Nama</label>
+            <label for="name" class="flex text-gray-700 font-medium mb-2">Nama<p class="text-red-500">*</p></label>
             <input 
                 id="name"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -27,19 +28,20 @@
             <span class="text-red-500"><?= $data['nameError']; ?></span>
         </div>
         <div class="w-1/2">
-            <label for="role" class="block text-gray-700 font-medium mb-2">Role</label>
-            <select 
-                id="role"
+            <label for="email" class="flex text-gray-700 font-medium mb-2">Email<p class="text-red-500">*</p></label>
+            <input 
+                id="email"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="role">
-                <option selected value="Owner" <?= isset($data['role']) && $data['role'] == 'Owner' ? 'selected' : ''; ?>>Owner</option>
-            </select>
-            <span class="text-red-500"><?= $data['roleError']; ?></span>
+                type="email" 
+                name="email" 
+                value="<?= htmlspecialchars($data['email'] ?? '', ENT_QUOTES); ?>"
+                placeholder="Email">
+            <span class="text-red-500"><?= $data['emailError']; ?></span>
         </div>
     </div>
     <div class="flex gap-4 mb-6">
         <div class="w-1/2">
-            <label for="address" class="block text-gray-700 font-medium mb-2">Alamat</label>
+            <label for="address" class="flex text-gray-700 font-medium mb-2">Alamat<p class="text-red-500">*</p></label>
             <input 
                 id="address"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -50,7 +52,7 @@
             <span class="text-red-500"><?= $data['addressError']; ?></span>
         </div>
         <div class="w-1/2">
-            <label for="phonenumber" class="block text-gray-700 font-medium mb-2">No Telepon</label>
+            <label for="phonenumber" class="flex text-gray-700 font-medium mb-2">No Telepon<p class="text-red-500">*</p></label>
             <input 
                 id="phonenumber"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -62,26 +64,27 @@
         </div>
     </div>
     <div class="flex gap-4 mb-6">
-        <div class="w-1/2">
-            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-            <input 
-                id="email"
-                class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="email" 
-                name="email" 
-                value="<?= htmlspecialchars($data['email'] ?? '', ENT_QUOTES); ?>"
-                placeholder="Email">
-            <span class="text-red-500"><?= $data['emailError']; ?></span>
-        </div>
-        <div class="w-1/2">
-            <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+    <div class="w-1/2">
+            <label for="password" class="flex text-gray-700 font-medium mb-2">Password<p class="text-red-500">*</p></label>
             <input 
                 id="password"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="password" 
                 name="password" 
+                value="<?= htmlspecialchars($data['password'] ?? '', ENT_QUOTES); ?>"
                 placeholder="Buat Password Anda">
             <span class="text-red-500"><?= $data['passwordError']; ?></span>
+        </div>
+        <div class="w-1/2">
+            <label for="password" class="flex text-gray-700 font-medium mb-2">Konfirmasi Password<p class="text-red-500">*</p></label>
+            <input 
+                id="confirmPassword"
+                class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="password" 
+                value="<?= htmlspecialchars($data['confirmPassword'] ?? '', ENT_QUOTES); ?>"
+                name="confirmPassword" 
+                placeholder="Ketik Ulang Password Anda">
+            <span class="text-red-500"><?= $data['confirmPasswordError']; ?></span>
         </div>
     </div>
     <button type="submit" name="daftar" class="w-full bg-blue-600 text-white py-3 rounded-lg mt-4 hover:bg-blue-700">Daftar</button>

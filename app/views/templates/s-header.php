@@ -81,6 +81,7 @@
       </a>
     </nav>
     <form action="<?= BASEURL; ?>/dashboard/logout" id="LogoutForm" method="post" class="mt-12">
+      <input type="hidden" name="logout" value="1">
       <button type="button" class="bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-400 transition-all duration-300" onclick="logoutConfirmation()">
         <i class="fa-solid fa-right-from-bracket"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Logout</span>

@@ -34,7 +34,7 @@ class User_model {
     $_SESSION['ada_toko'] = ($storeCount > 0);
 
     return $storeCount;
-}
+  }
 
 
 public function getStoreInfo() {
@@ -93,9 +93,17 @@ public function getStoreInfo() {
     $this->db->bind('owner_id', $_SESSION['user_id']);
 
     $this->db->execute();
+    $_SESSION['store_id'] = $data['store_id'];
     // var_dump($this->db->single());
 
     return $this->db->rowCount();
+  }
+
+  public function setOwnerStoreID(){
+    $query = "UPDATE i_users SET store_id = :store_id WHERE user_id = :user_id";
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->bind('user_id', $_SESSION['user_id']);
   }
 
   public function masuk($data) {
@@ -120,6 +128,7 @@ public function getStoreInfo() {
       } else {
         $_SESSION['owner_id'] = $_SESSION['user_id'];
       }
+      $_SESSION['store_id'] = $user['STORE_ID'];
       // $_SESSION['owner_id'] = $user['OWNER_ID'];
 
       $_SESSION['is_login'] = true;
@@ -128,10 +137,28 @@ public function getStoreInfo() {
     } else {
       return false;
     }
-    
-
-    // return $this->db->rowCount();
   }
+
+  public function activateStoreID() {
+    // Query to fetch store information for the current owner
+    $query = "SELECT STORE_ID FROM i_store_info WHERE owner_id = :owner_id";
+    $this->db->query($query);
+    $this->db->bind('owner_id', $_SESSION['owner_id']);
+    
+    // Execute the query and fetch the single result
+    $store = $this->db->single();
+
+    // Check if a store record was found
+    if ($store) {
+        $_SESSION['store_id'] = $store['STORE_ID']; // Set store ID in session
+        return true; // Indicate success
+    } else {
+        // Handle the case where no store is found
+        $_SESSION['store_id'] = null; // Optionally clear any previous value
+        return false; // Indicate failure
+    }
+}
+
 
   public function getEditToko($id) {
     $query = "SELECT * FROM i_store_info WHERE owner_id = :owner_id";

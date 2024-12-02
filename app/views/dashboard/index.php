@@ -1,5 +1,5 @@
 <div class="flex-1 ml-24 mt-20 p-8">
-  <p class="ml-[300px]">Selamat datang di halaman utama <?=$_SESSION['user_id'];?> <b><?= $_SESSION['user_role']; ?></b>, <b><?= $_SESSION['user_name']; ?></b>.</p>
+  <p class="ml-[300px]">Selamat datang di halaman utama <b><?=$_SESSION['user_id'];?></b> <b><?= $_SESSION['user_role']; ?></b>, <b><?= $_SESSION['user_name']; ?></b> dengan owner id <b><?= $_SESSION['owner_id']; ?></b> dan dengan store id <b><?= $_SESSION['store_id']; ?></b>.</p>
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">

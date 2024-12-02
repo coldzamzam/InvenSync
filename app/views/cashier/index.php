@@ -2,7 +2,8 @@
   <header class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-semibold text-blue-500">Transaksi</h2>
     <div class="space-x-2">
-      <button id="printInvoiceBtn" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Cetak Invoice</button>
+      <button id="printInvoiceBtn" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600">Cetak Invoice</button>
+      <button id="konfirmasiBtn" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Konfirmasi Pembelian</button>
       <button id="tambahBarangBtn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Tambah Barang</button>
     </div>
   </header>
@@ -32,21 +33,21 @@
       <h3 class="text-2xl font-semibold w-full text-center">Tambah/Update Barang</h3>
       <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2">&times;</button>
     </div>
-    <form id="createBarangForm">
+    <form id="createBarangForm" action="<?= BASEURL; ?>/cashier/transaction" method="post">
       <div class="mt-6">
         <div class="mb-4">
           <label for="namabarang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
-          <select id="namabarang" name="namabarang" onchange="fetchItemDetails()"
+          <select id="kodebarang"  name="kodebarang" onchange="fetchItemDetails()"
                   class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             <option value="" disabled selected>-- Pilih Nama Barang --</option>
             <?php foreach ($data['item'] as $item) : ?>
-              <option value="<?= $item['ITEM_NAME']; ?>"><?= $item['ITEM_NAME']; ?></option>
+              <option value="<?= $item['ITEM_ID']; ?>"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></option>
             <?php endforeach; ?>
           </select>
         </div>
         <div class="mb-4">
-          <label for="kodebarang" class="block text-sm font-medium text-gray-700">Kode Barang</label>
-          <input type="text" id="kodebarang" name="kodebarang" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>
+          <label for="namabarang" class="block text-sm font-medium text-gray-700">Kode Barang</label>
+          <input type="text" id="namabarang" name="namabarang" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>
         </div>
         <div class="mb-4">
           <label for="harga" class="block text-sm font-medium text-gray-700">Harga Barang</label>
@@ -62,6 +63,7 @@
   </div>
 </div>
 
+
 <script>
   let editingRow = null;
 
@@ -70,12 +72,61 @@
     document.getElementById('modal').style.display = 'none';
     editingRow = null;
   }
-
   // Menampilkan modal untuk tambah barang
   document.getElementById('tambahBarangBtn').addEventListener('click', function () {
     document.getElementById('modal').style.display = 'flex';
     document.getElementById('createBarangForm').reset();
   });
+  
+  document.getElementById('konfirmasiBtn').addEventListener('click', function () {
+    swal.fire({
+        title: 'Konfirmasi',
+        text: 'Apakah Anda yakin ingin melakukan pembayaran?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Iya, Bayar',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Jalankan fungsi untuk mengirim transaksi
+
+            processTransaction();
+        }
+    }).catch((error) => {
+        console.log(error);
+    })
+});
+
+// function processTransaction() {
+    // Ambil data dari localStorage
+    // const barangData = JSON.parse(localStorage.getItem('barangData'));
+
+    // Kirim data ke server menggunakan AJAX (fetch API)
+    // fetch('http://localhost/invensync/public/cashier/processTransaction', {
+        // method: 'POST',
+        // headers: {
+            // 'Content-Type': 'application/json'
+        // },
+        // body: JSON.stringify({ barangData: barangData })
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+        // console.log(data); // Cek respons dari server
+        // if (data.success) {
+            // Jika transaksi berhasil, redirect ke halaman yang diinginkan
+            // window.location.href = 'http://localhost/invensync/public/cashier/processTransaction'; // Sesuaikan dengan URL halaman sukses
+        // } else {
+            // Jika gagal, tampilkan pesan kesalahan
+            // swal.fire('Gagal', data.error, 'error');
+        // }
+    // })
+    // .catch(error => {
+        // console.error('Error:', error);
+        // swal.fire('Error', 'Terjadi kesalahan, coba lagi!', 'error');
+    // });
+// }
 
   // Fungsi untuk menambah baris baru di tabel
   function addRowToTable(kodeBarang, namaBarang, jumlahBarang, hargaBarang, totalHarga) {
@@ -150,33 +201,60 @@
     return parseInt(value).toLocaleString('id-ID');
   }
 
+  // Mendapatkan data dari localStorage dan parsing ke objek JavaScript
+  const barangDataString = localStorage.getItem('barangData');
+  const barangData = JSON.parse(barangDataString);
+
+// Cek hasil parsing
+  console.log(barangData);
+
+
+  // function processTransaction() {
+  //   // Ambil data dari localStorage
+  //   const barangData = JSON.parse(localStorage.getItem('barangData'));
+
+  //   // Kirim data ke server menggunakan AJAX (fetch API)
+  //   fetch('http://localhost/invensync/public/cashier/processTransaction', {
+  //       method: 'POST',
+  //       headers: {
+  //           'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ barangData: barangData })
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //       console.log(data); // Cek respons dari server
+  //   })
+  //   .catch(error => console.error('Error:', error));
+  // }
+
   // Simpan data ke localStorage
-  function saveToLocalStorage() {
-    const tableBody = document.querySelector('#barangTable tbody');
-    const rows = tableBody.querySelectorAll('tr');
-    const data = Array.from(rows).map(row => {
-      const cells = row.querySelectorAll('td');
-      return {
-        kodeBarang: cells[0].textContent,
-        namaBarang: cells[1].textContent,
-        jumlahBarang: parseInt(cells[2].textContent, 10),
-        hargaBarang: parseInt(cells[3].textContent.replace(/[^0-9]/g, ''), 10),
-        totalHarga: parseInt(cells[4].textContent.replace(/[^0-9]/g, ''), 10),
-      };
-    });
-    localStorage.setItem('barangData', JSON.stringify(data));
-  }
+  // function saveToLocalStorage() {
+  //   const tableBody = document.querySelector('#barangTable tbody');
+  //   const rows = tableBody.querySelectorAll('tr');
+  //   const data = Array.from(rows).map(row => {
+  //     const cells = row.querySelectorAll('td');
+  //     return {
+  //       kodeBarang: cells[0].textContent,
+  //       namaBarang: cells[1].textContent,
+  //       jumlahBarang: parseInt(cells[2].textContent, 10),
+  //       hargaBarang: parseInt(cells[3].textContent.replace(/[^0-9]/g, ''), 10),
+  //       totalHarga: parseInt(cells[4].textContent.replace(/[^0-9]/g, ''), 10),
+  //     };
+  //   });
+  //   localStorage.setItem('barangData', JSON.stringify(data));
+  // }
+  
+  // // Muat data dari localStorage
+  // function loadFromLocalStorage() {
+  //   const data = JSON.parse(localStorage.getItem('barangData')) || [];
+  //   data.forEach(item => {
+  //     addRowToTable(item.kodeBarang, item.namaBarang, item.jumlahBarang, item.hargaBarang, item.totalHarga);
+  //   });
+  // }
 
-  // Muat data dari localStorage
-  function loadFromLocalStorage() {
-    const data = JSON.parse(localStorage.getItem('barangData')) || [];
-    data.forEach(item => {
-      addRowToTable(item.kodeBarang, item.namaBarang, item.jumlahBarang, item.hargaBarang, item.totalHarga);
-    });
-  }
-
-  // Panggil loadFromLocalStorage saat halaman dimuat
-  document.addEventListener('DOMContentLoaded', loadFromLocalStorage);
+  // // Panggil loadFromLocalStorage saat halaman dimuat
+  // document.addEventListener('DOMContentLoaded', loadFromLocalStorage);
 
   // Print invoice
   document.getElementById('printInvoiceBtn').addEventListener('click', function () {
@@ -204,17 +282,17 @@
   });
 
   function fetchItemDetails(){
-    const namaBarang = $('#namabarang').val();
+    const kodeBarang = $('#kodebarang').val();
     
-    if (namaBarang) {
+    if (kodeBarang) {
       $.ajax({
         url: "<?= BASEURL; ?>/Cashier/getDetailItem",
-        data: { namabarang: namaBarang },
+        data: { kodebarang: kodeBarang },
         method: "POST",
         dataType: "json",
         success: function(data) {
           $("#harga").val(data.HARGA_JUAL);
-          $("#kodebarang").val(data.ITEM_ID);
+          $("#namabarang").val(data.ITEM_NAME);
           console.log(data);
         }
       })
@@ -229,4 +307,13 @@
       // )
     }
   }
+  // Menangkap perubahan pada dropdown
+    document.getElementById('kodebarang').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex]; // Ambil opsi yang dipilih
+        const namaBarang = selectedOption.getAttribute('data-namabarang'); // Ambil data-namabarang
+        
+        // Isi input Nama Barang
+        document.getElementById('namabarang').value = namaBarang;
+    });
+
 </script>

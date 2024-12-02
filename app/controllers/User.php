@@ -8,6 +8,7 @@ class User extends Controller {
 	$data['phonenumberError'] = '';
 	$data['emailError'] = '';
 	$data['passwordError'] = '';
+	$data['confirmPasswordError'] = '';
 	// if ( $this->model('User_model')->checkRowAcc() > 0 ) {
 	//   header('Location: ' . BASEURL . '/user/login');
 	// } else {
@@ -65,6 +66,7 @@ class User extends Controller {
 		'passwordError' => '',
 		'loginEmailError' => '',
 		'loginPasswordError' => '',
+		'confirmPasswordError' => '',
 		'judul' => 'Buat Akun'
 	];
 
@@ -78,16 +80,27 @@ class User extends Controller {
 	} elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
 		$data['emailError'] = 'Format email tidak valid.';
 	}
+
 	if (empty($data['password'])) {
 		$data['passwordError'] = 'Password tidak boleh kosong.';
-	} elseif (strlen($data['password']) < 8 || !preg_match("#[0-9]+#", $data['password']) || 
-			  !preg_match("#[A-Z]+#", $data['password']) || !preg_match("#[a-z]+#", $data['password'])) {
+	} elseif (strlen($data['password']) < 8 || 
+			  !preg_match("#[0-9]+#", $data['password']) || 
+			  !preg_match("#[A-Z]+#", $data['password']) || 
+			  !preg_match("#[a-z]+#", $data['password'])) {
 		$data['passwordError'] = 'Password harus terdiri dari minimal 8 karakter, 1 angka, 1 huruf besar, dan 1 huruf kecil.';
+	}
+	
+	// Validasi konfirmasi password
+	$data['confirmPassword'] = $_POST['confirmPassword'] ?? '';
+	if (empty($data['confirmPassword'])) {
+		$data['confirmPasswordError'] = 'Konfirmasi password tidak boleh kosong.';
+	} elseif ($data['password'] !== $data['confirmPassword']) {
+		$data['confirmPasswordError'] = 'Konfirmasi password tidak sesuai.';
 	}
 
 	// Return errors if any
 	if (!empty($data['nameError']) || !empty($data['roleError']) || !empty($data['addressError']) || 
-		!empty($data['phonenumberError']) || !empty($data['emailError']) || !empty($data['passwordError'])) {
+		!empty($data['phonenumberError']) || !empty($data['emailError']) || !empty($data['passwordError'] || !empty($data['confirmPasswordError']))) {
 		$this->view('templates/i-header', $data);
 		$this->view('user/index', $data);
 		$this->view('templates/footer');
@@ -147,6 +160,7 @@ class User extends Controller {
 	// Insert data
 	  if ($this->model('User_model')->daftarToko($_POST) > 0) {
 		  // Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
+		  $this->model('User_model')->activateStoreID();
 		  header('Location: ' . BASEURL . '/dashboard');
 		  $_SESSION['status']='success';
 		  exit;
@@ -188,6 +202,7 @@ class User extends Controller {
 			$data['captchaError'] = 'Captcha tidak boleh kosong.';
 		} else {
 			$secret = '6LdmtowqAAAAANi_nfbZ1XqYUgpZKVEwpzgt2x0w'; // Your Google reCAPTCHA secret key
+			// $secret='6LeouZIqAAAAAMs0tpXmcR874nx-mw-K7pVYbTnW';
 			$response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$data['captcha']}");
 			$responseKeys = json_decode($response, true);
 
@@ -207,7 +222,8 @@ class User extends Controller {
 		// If no errors, proceed with login
 		if ($this->model('User_model')->masuk($_POST)) {
 			// if ($this->model('User_model')->checkRowToko() == 0) {
-				header('Location: ' . BASEURL . '/dashboard');
+			$this->model('User_model')->activateStoreID();
+			header('Location: ' . BASEURL . '/dashboard');
 			// } else {
 			// 	header('Location: ' . BASEURL . '/dashboard');
 			// }

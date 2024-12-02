@@ -113,13 +113,13 @@ Class Item_model {
     return $this->db->rowCount();
   }
 
-  public function getItemByName($namabarang) {
-    $query = ('SELECT * FROM i_inventory WHERE item_name = :namabarang');
+  public function getItemByID($kodebarang) {
+    $query = ('SELECT * FROM i_inventory WHERE item_id = :kodebarang');
 
-    // var_dump($namabarang);
+    // var_dump($kodebarang);
 
     $this->db->query($query);
-    $this->db->bind('namabarang', $namabarang);
+    $this->db->bind('kodebarang', $kodebarang);
     $this->db->execute();
 
     return $this->db->single();
