@@ -1,18 +1,57 @@
-<!-- Main Content -->
-<main class="flex-1 ml-64 mt-20 p-8">
+  <!-- Main Content -->
+  <main class="flex-1 ml-64 mt-20 p-8">
     <header class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-semibold text-blue-500">Inventory</h2>
-      <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ New Stock</button>
+      <!-- <h2 class="text-2xl font-semibold text-blue-500">Inventory</h2> -->
+      <div class="wrap-cards gap-4 flex">
+        <div class="card border border-green-300 bg-green-300">
+          <div class="card-header flex justify-between p-2 w-32">
+            <p>Stok tersedia</p>
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-description"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
+          </div>
+          <div class="card-body p-2">
+            <p class="text-md mb-2">Total Produk</p>
+            <p class="text-lg font-bold">0</p>
+          </div>
+        </div>
+        <div class="card border border-green-300 bg-green-300">
+          <div class="card-header flex justify-between p-2">
+            <p>Stok Segera Habis</p>
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-description"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
+          </div>
+          <div class="card-body p-2">
+            <p class="text-md mb-2">Total Produk</p>
+            <p class="text-lg font-bold">0</p>
+          </div>
+        </div>
+        <div class="card border border-green-300 bg-green-300">
+          <div class="card-header flex justify-between p-2">
+            <p>Stok Habis</p>
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-description"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
+          </div>
+          <div class="card-body p-2">
+            <p class="text-md mb-2">Total Produk</p>
+            <p class="text-lg font-bold">0</p>
+          </div>
+        </div>
+      </div>
+      
     </header>
-    <div class="flex items-center mb-4 space-x-4">
-      <input type="text" placeholder="Quick search" class="border rounded px-4 py-2">
-      <input type="date" class="border rounded px-4 py-2">
-      <select class="border rounded px-4 py-2">
-        <option>Status</option>
-        <option>Pending</option>
-        <option>Completed</option>
-      </select>
+
+    <div class="flex items-center mb-4 space-x-4 justify-between">
+      <div class="wrap-filter flex items-center gap-4">
+        <input type="text" placeholder="Quick search" class="border rounded px-4 py-2">
+        <input type="date" class="border rounded px-4 py-2">
+        <select class="border rounded px-4 py-2">
+          <option>Status</option>
+          <option>Pending</option>
+          <option>Completed</option>
+        </select>
+      </div>
+
+      <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ New Stock</button>
     </div>
+
+
     <div class="bg-white rounded shadow">
       <table class="w-full text-left border-collapse">
         <thead>
@@ -49,6 +88,7 @@
       </table>
     </div>
   </main>
+
  <!-- Modal for Adding or Editing Stock -->
  <div id="formModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-96 p-6">
@@ -60,31 +100,37 @@
       </div>
       <form id="inventoryForm" action="<?= BASEURL; ?>/Inventory/tambah" method="post">
         <input type="hidden" id="itemId" name="ITEM_ID" value="">
+
         <!-- Nama Barang -->
         <div class="mb-3">
           <label for="ITEM_NAME" class="text-sm text-gray-700">Nama Barang</label>
           <input id="ITEM_NAME" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="ITEM_NAME" placeholder="Nama Barang" required>
         </div>
+
         <!-- Kategori Barang -->
         <div class="mb-3">
           <label for="CATEGORY_ITEM" class="text-sm text-gray-700">Kategori</label>
           <input id="CATEGORY_ITEM" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="CATEGORY_ITEM" placeholder="Kategori Barang" required>
         </div>
+
         <!-- Kuantitas -->
         <div class="mb-3">
           <label for="QUANTITY" class="text-sm text-gray-700">Kuantitas</label>
           <input id="QUANTITY" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="QUANTITY" placeholder="Kuantitas" required>
         </div>
+
         <!-- Harga Beli -->
         <div class="mb-3">
           <label for="HARGA_BELI" class="text-sm text-gray-700">Harga Beli</label>
           <input id="HARGA_BELI" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="HARGA_BELI" placeholder="Harga Beli" required>
         </div>
+
         <!-- Harga Jual -->
         <div class="mb-3">
           <label for="HARGA_JUAL" class="text-sm text-gray-700">Harga Jual</label>
           <input id="HARGA_JUAL" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="HARGA_JUAL" placeholder="Harga Jual" required>
         </div>
+
         <!-- Status -->
         <div class="mb-3">
           <label for="STATUS" class="text-sm text-gray-700">Status</label>
@@ -94,6 +140,8 @@
             <option value="Empty">Empty</option>
           </select>
         </div>
+        
+
         <!-- Submit Button -->
         <div class="flex justify-end mt-4">
           <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButton">Tambah/Edit Barang</button>
@@ -101,6 +149,7 @@
       </form>
     </div>
   </div>
+
   <!-- JavaScript -->
   <script>
     // Mendapatkan elemen modal dan tombol
@@ -116,10 +165,12 @@
       document.getElementById('itemId').value = '';
       submitButton.textContent = 'Tambah Barang';
     });
+
     // Fungsi untuk menutup modal
     closeModalButton.addEventListener('click', () => {
       modal.classList.add('hidden');
     });
+
     // Fungsi edit data barang
     function editItem(itemId) {
       // Fetch data untuk item yang ingin di-edit
@@ -133,10 +184,12 @@
           document.getElementById('HARGA_BELI').value = data.HARGA_BELI;
           document.getElementById('HARGA_JUAL').value = data.HARGA_JUAL;
           document.getElementById('STATUS').value = data.STATUS;
+
           submitButton.textContent = 'Update Barang';
           modal.classList.remove('hidden');
         });
     }
+
     // Menutup modal jika pengguna mengklik di luar modal
     window.addEventListener('click', (event) => {
       if (event.target === modal) {
@@ -144,6 +197,6 @@
       }
     });
   </script>
-    <script src="script.js"></script>
+
 </body>
 </html>
