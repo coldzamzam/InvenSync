@@ -29,7 +29,7 @@ Class Item_model {
     $this->db->execute();
     // var_dump($this->db->resultSet());
     return $this->db->resultSet();
-  }
+  }  
 
   public function getItemCount()
   {
@@ -97,8 +97,8 @@ Class Item_model {
     VALUES (:NAMABARANG, :KUANTITAS, :HARGA_BELI, :HARGA_JUAL, :STATUS, SYSDATE)";
     
     $this->db->query($query);
-    $this->db->bind('NAMABARANG', $data['NAMABARANG']);
-    $this->db->bind('KUANTITAS', $data['KUANTITAS']);
+    $this->db->bind('NAMABARANG', $data['ITEM_NAME']);
+    $this->db->bind('KUANTITAS', $data['QUANTITY']);
     $this->db->bind('HARGA_BELI', $data['HARGA_BELI']);
     $this->db->bind('HARGA_JUAL', $data['HARGA_JUAL']);
     $this->db->bind('STATUS', $data['STATUS']);

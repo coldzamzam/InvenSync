@@ -25,10 +25,11 @@
         <a href="<?= BASEURL; ?>/cashier" class="<?= ($_SESSION['user_role'] == 'Admin Gudang') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700 btnCashier">Cashier</a>
         <a href="<?= BASEURL; ?>/dashboard/toko" data-toko="<?= $_SESSION['user_id']; ?>" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700 btnProfileToko">Profile Toko</a>
       </nav>
-      <form action="<?= BASEURL; ?>/dashboard/logout" method="post">
-      <button name="logout" class="mt-12 bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-400">
-        <i class="fa-solid fa-right-from-bracket"></i> Logout
-      </button>
+      <form action="<?= BASEURL; ?>/dashboard/logout" id="LogoutForm" method="post">
+        <input type="hidden" name=logout>
+        <button type="button" class="mt-12 bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-400" onclick="logoutConfirmation()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
       </form>
     </aside>
     <nav class="left-64 p-6 bg-[#fdfdfd] fixed min-w-screen top-0 right-0 shadow-md"><p class="text-2xl font-bold text-center"><?=$data['judul']?></p></nav>
@@ -37,3 +38,27 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="<?= BASEURL; ?>/js/script.js"></script>
   <div class="flex">
+
+  <script>
+    function logoutConfirmation() {
+      Swal.fire({
+        title: 'Logout?',
+        text: "Apa anda yakin ingin keluar?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, logout!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Selamat Tinggal!",
+            text: "Semoga harimu menyenangkan!",
+            icon: "success"
+          }).then(() => {
+            document.getElementById('LogoutForm').submit();
+          });
+        }
+      });
+    }
+  </script>

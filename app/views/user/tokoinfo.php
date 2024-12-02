@@ -151,10 +151,8 @@
 		</div>
 		
 	</div>
-
-	<div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
     
-  </div>
+</div>
 
 </main>
 
@@ -168,16 +166,16 @@
     
     // Fungsi untuk membuka modal
     openModalButton.addEventListener('click', () => {
-      modal.classList.remove('hidden');
-      toko.classList.add('hidden');
-      document.getElementById('inventoryForm').reset();
-      document.getElementById('itemId').value = '';
-      submitButton.textContent = 'Tambah Barang';
+    modal.classList.remove('hidden');
+    toko.classList.add('hidden');
+    document.getElementById('inventoryForm').reset();
+    document.getElementById('itemId').value = '';
+    submitButton.textContent = 'Tambah Barang';
     });
     // Fungsi untuk menutup modal
     closeModalButton.addEventListener('click', () => {
-      modal.classList.add('hidden');
-      toko.classList.remove('hidden');
+    modal.classList.add('hidden');
+    toko.classList.remove('hidden');
     });
     // Menutup modal jika pengguna mengklik di luar modal
     // window.addEventListener('click', (event) => {
@@ -223,7 +221,7 @@
 
 		});
 
-  </script>
+</script>
 
 </body>
 </html>

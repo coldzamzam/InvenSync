@@ -1,7 +1,7 @@
 <main class="flex-1 ml-64 mt-20 p-8">
       <div class="flex items-center mb-4 space-x-4">
         <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Create Employee</button>
-        <input type="text" placeholder="Quick search" class="border rounded px-4 py-2">
+        <input type="search" placeholder="Cari berdasarkan UID/Nama." name="search" class="border rounded px-4 py-2">
         <input type="date" class="border rounded px-4 py-2">
           <select class="border rounded px-4 py-2">
           <option>Role</option>
@@ -23,6 +23,7 @@
               <th class="py-3 px-4 border">Role</th>
               <th class="py-3 px-4 border">Address</th>
               <th class="py-3 px-4 border">Phone Number</th>
+              <th class="py-3 px-4 border">Actions</th>
             </tr>
       </thead>
         <tbody>
@@ -35,6 +36,9 @@
               <td class="py-3 px-4 border"><?= $users['ROLE']; ?></td>
               <td class="py-3 px-4 border"><?= $users['ADDRESS']; ?></td>
               <td class="py-3 px-4 border"><?= $users['PHONE_NUMBER']; ?></td>
+              <td class="py-3 px-4 border flex justify-center items-center">
+                <button onclick="editModalOpen('<?= $users['USER_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600"><img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit"></button>
+              </td>
           <?php endforeach; ?>
         </tbody>
       </table>
@@ -87,7 +91,7 @@ if (isset($_SESSION['formErrors'])) {
     </div>
     <h3 class="text-l text-center">Buatkan Akun untuk Karyawanmu!</h3>
     <!-- Formulir -->
-    <form  action="<?= BASEURL; ?>/employees/createEmployee" method="POST" id="createEmployeeForm">
+    <form action="<?= BASEURL; ?>/employees/createEmployee" method="POST" id="createEmployeeForm">
       <div class="flex mt-6 gap-4 mb-6">
         <!-- Input Nama -->
         <div class="w-1/2">
@@ -158,7 +162,83 @@ if (isset($_SESSION['formErrors'])) {
   </div>
 </div>
 
+<div id="modalEdit" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+  <div class="bg-white w-full max-w-[600px] max-h-[1000px] p-6 rounded-lg shadow-lg">
+    <div class="flex justify-between items-center">
+      <h3 class="text-2xl font-semibold w-full text-center">Update Employee</h3>
+      <button onclick="editModalClose()" class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2">&times;</button>
+    </div>
+    <h3 class="text-l text-center">Update Akun untuk Karyawanmu!</h3>
+    <form action="<?= BASEURL; ?>/employees/updateEmployee" method="post" id="editEmployeeForm" class="bg-white w-full max-w-[600px] max-h-[1000px] p-6 rounded-lg" enctype="multipart/form-data">
+      <div class="flex gap-4 mb-6">
+        <input type="hidden" id="editId" name="id">
+        <!-- Input Nama -->
+        <div class="w-1/2">
+          <label for="name" class="block text-sm font-medium text-gray-700">Name<label class="text-red-500">*</label></label>
+          <input type="text" id="editName" name="name"
+                class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <span id="nameErrorEdit" class="text-red-500 error"></span>
+        </div>
+
+        <!-- Input Role -->
+        <div class="w-1/2">
+          <label for="role" class="block text-sm font-medium text-gray-700">Role<label class="text-red-500">*</label></label>
+          <input type="text" id="editRole" name="role"
+                class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <span id="roleErrorEdit" class="text-red-500 error"></span>
+        </div>
+      </div>
+      <div class="flex gap-4 mb-6">
+        <!-- Input Alamat -->
+        <div class="w-1/2"> 
+          <label for="address" class="block text-sm font-medium text-gray-700">Address<label class="text-red-500">*</label></label>
+          <input type="text" id="editAddress" name="address" 
+                class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <span id="addressErrorEdit" class="text-red-500 error"></span>
+        </div>
+
+        <!-- Input Nomor Telepon -->
+        <div class="w-1/2">
+          <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number<label class="text-red-500">*</label></label>
+          <input type="text" id="editPhonenumber" name="phone" 
+                class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <span id="phoneErrorEdit" class="text-red-500 error"></span>
+        </div>
+      </div>
+      <div class="flex gap-4 mb-6">
+        <!-- Input Email -->
+        <div class="w-1/2">
+          <label for="email" class="block text-sm font-medium text-gray-700">Email<label class="text-red-500">*</label></label>
+          <input type="email" id="editEmail" name="email" 
+                class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <span id="emailErrorEdit" class="text-red-500 error"></span>
+        </div>
+
+        <!-- Input Password -->
+        <div class="w-1/2">
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" id="editPassword" name="password" 
+                class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <span id="passwordErrorEdit" class="text-red-500 error"></span>
+        </div>
+      </div>
+      <!-- Tombol Simpan -->
+      <div class="flex gap-2">
+        <button type="submit"
+                class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+          Update Employee
+        </button>
+      </div>
+    </form>
+    <form action="<?= BASEURL;?>/employees/deleteEmployee" method="post" class="pl-6" id="deleteEmployeeForm">
+          <input type="hidden" id="deleteID" name="id">
+          <button type="button" onclick="deleteConfirmation()" class="right-0 p-2 flex items-center justify-center bg-red-500 text-white rounded hover:bg-red-600"><img src="<?= BASEURL; ?>/img/delete.png" width="20px" height="20px" alt="delete"></button>
+    </form>
+  </div>
+</div>
+
 </main>
+
 
 <?php
 if (isset($_SESSION['status'])):
@@ -184,7 +264,91 @@ if (isset($_SESSION['status'])):
     </script>
 <?php endif; ?>
 
+
     <script>
+    editModalClose();
+    closeModal();
+    
+    function deleteConfirmation(){
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          });
+          setTimeout(function() {
+            document.getElementById('deleteEmployeeForm').submit();
+          }, 2000);
+        }
+      });
+    }
+
+
+    document.getElementById('editEmployeeForm').addEventListener('submit', function(event) {
+    // Prevent form submission
+    event.preventDefault();
+
+    // Get form values
+    const name = document.getElementById('editName').value;
+    const role = document.getElementById('editRole').value;
+    const address = document.getElementById('editAddress').value;
+    const phone = document.getElementById('editPhonenumber').value;
+    const email = document.getElementById('editEmail').value;
+    const password = document.getElementById('editPassword').value;
+
+    // Validation checks
+    let errors = false;
+
+    // Clear any existing error messages
+    document.querySelectorAll('.error').forEach(function(el) {
+      el.textContent = '';
+    });
+
+    // Validate each field and show errors if any
+    if (!name) {
+      document.getElementById('nameErrorEdit').textContent = 'Nama tidak boleh kosong.';
+      errors = true;
+    }
+    if (!role) {
+      document.getElementById('roleErrorEdit').textContent = 'Role tidak boleh kosong.';
+      errors = true;
+    }
+    if (!address) {
+      document.getElementById('addressErrorEdit').textContent = 'Alamat tidak boleh kosong.';
+      errors = true;
+    }
+    if (!phone) {
+      document.getElementById('phoneErrorEdit').textContent = 'Nomor Telepon tidak boleh kosong.';
+      errors = true;
+    }
+    if (!email || !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
+      document.getElementById('emailErrorEdit').textContent = 'Email tidak valid.';
+      errors = true;
+    }
+    if (password && (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password))) {
+      document.getElementById('passwordErrorEdit').textContent = 'Password harus memiliki minimal 8 karakter, 1 angka, 1 huruf besar, dan 1 huruf kecil.';
+      errors = true;
+    }
+
+    if (errors) {
+      // Stay on the modal if there are validation errors
+      return;
+    }
+
+    // If there are no errors, proceed with form submission (can use AJAX or allow normal form submit)
+    this.submit();
+  });
+
+
 
 document.getElementById('createEmployeeForm').addEventListener('submit', function(event) {
     // Prevent form submission
@@ -241,13 +405,47 @@ document.getElementById('createEmployeeForm').addEventListener('submit', functio
     this.submit();
   });
 
-      closeModal();
       function closeModal() {
         document.getElementById('modal').classList.add('hidden');
       }
       
       function openModal() {
         document.getElementById('modal').classList.remove('hidden');
+      }
+
+      function editModalOpen(id) {
+          document.getElementById('deleteID').value = id;
+          document.getElementById('modalEdit').classList.remove('hidden');
+
+          fetch(`<?= BASEURL ?>/employees/getUserbyID/${id}`)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                  if (data) {
+                      document.getElementById('editName').value = data.NAME;
+                      document.getElementById('editRole').value = data.ROLE;
+                      document.getElementById('editAddress').value = data.ADDRESS;
+                      document.getElementById('editPhonenumber').value = data.PHONE_NUMBER;
+                      document.getElementById('editEmail').value = data.EMAIL;
+                      document.getElementById('editId').value = data.USER_ID;
+                  } else {
+                      alert('Data karyawan tidak ditemukan.');
+                  }
+              })
+              .catch(error => {
+                  console.error('Error fetching employee data:', error);
+                  alert('Terjadi kesalahan saat mengambil data: ' + error.message);
+              });
+      }
+
+
+      
+      function editModalClose(){
+          document.getElementById('modalEdit').classList.add('hidden');
       }
     </script>
 </body>

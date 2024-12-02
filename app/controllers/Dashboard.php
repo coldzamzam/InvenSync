@@ -4,7 +4,7 @@ Class Dashboard extends Controller{
 
   public function __construct(){
     if ( !isset($_SESSION['is_login']) ) {
-      header('Location: ' . BASEURL . '/user/index');
+      header('Location: ' . BASEURL . '/user/login');
     }
   }
   
@@ -124,7 +124,7 @@ Class Dashboard extends Controller{
     if(isset($_POST['logout'])){
       session_unset();
       session_destroy();
-      header('Location: ' . BASEURL . '/user/index');
+      header('Location: ' . BASEURL . '/home');
     }
   }
 }
