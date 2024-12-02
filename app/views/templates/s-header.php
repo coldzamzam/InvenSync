@@ -13,25 +13,58 @@
   <!-- <script src="https://cdn.tailwindcss.com"></script> -->
   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
 </head>
-    <aside class="bg-gray-800 text-white w-64 p-6 min-h-screen fixed">
-      <h1 class="text-xl font-bold mb-8">Selamat Datang di <br> InvenSync!</h1>
-      <nav class="space-y-4">
-        <a href="<?= BASEURL; ?>/dashboard" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Dashboard</a>
-        <a href="<?= BASEURL; ?>/employees" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Employees</a>
-        <a href="<?= BASEURL; ?>/inventory" class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Inventory</a>
-        <a href="<?= BASEURL; ?>/troublesome" class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Troublesome Items</a>
-        <a href="<?=BASEURL; ?>/dailyreport" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Daily Report</a>
-        <a href="<?=BASEURL; ?>/monthlyreport" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700">Monthly Report</a>
-        <a href="<?= BASEURL; ?>/cashier" class="<?= ($_SESSION['user_role'] == 'Admin Gudang') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700 btnCashier">Cashier</a>
-        <a href="<?= BASEURL; ?>/dashboard/toko" data-toko="<?= $_SESSION['user_id']; ?>" class="<?= ($_SESSION['user_role'] == 'Admin Gudang'||$_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?>  py-2 px-4 rounded hover:bg-gray-700 btnProfileToko">Profile Toko</a>
-      </nav>
-      <form action="<?= BASEURL; ?>/dashboard/logout" id="LogoutForm" method="post">
-        <input type="hidden" name=logout>
-        <button type="button" class="mt-12 bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-400" onclick="logoutConfirmation()">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
-        </button>
-      </form>
-    </aside>
+<aside class="fixed top-0 left-0 min-h-screen bg-gray-800 transition-all duration-300 w-20 group hover:w-64 hover:text-white">
+  <div class="p-2 hover:p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <h1 class="text-xl font-bold mb-8 hidden group-hover:block">
+      Selamat Datang di <br> InvenSync!
+    </h1>
+    <nav class="space-y-4">
+      <a href="<?= BASEURL; ?>/dashboard" 
+         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700">
+        Dashboard
+      </a>
+      <a href="<?= BASEURL; ?>/employees" 
+         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700">
+        Employees
+      </a>
+      <a href="<?= BASEURL; ?>/inventory" 
+         class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700">
+        Inventory
+      </a>
+      <a href="<?= BASEURL; ?>/troublesome" 
+         class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700">
+        Troublesome Items
+      </a>
+      <a href="<?= BASEURL; ?>/dailyreport" 
+         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700">
+        Daily Report
+      </a>
+      <a href="<?= BASEURL; ?>/monthlyreport" 
+         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700">
+        Monthly Report
+      </a>
+      <a href="<?= BASEURL; ?>/cashier" 
+         class="<?= ($_SESSION['user_role'] == 'Admin Gudang') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 btnCashier">
+        Cashier
+      </a>
+      <a href="<?= BASEURL; ?>/dashboard/toko" 
+         data-tokxko="<?= $_SESSION['user_id']; ?>" 
+         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 btnProfileToko">
+        Profile Toko
+      </a>
+    </nav>
+    <form action="<?= BASEURL; ?>/dashboard/logout" id="LogoutForm" method="post">
+      <input type="hidden" name="logout">
+      <button type="button" class="mt-12 bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-400 transition-all duration-300" onclick="logoutConfirmation()">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </form>
+  </div>
+</aside>
+
+
+
+
     <nav class="left-64 p-6 bg-[#fdfdfd] fixed min-w-screen top-0 right-0 shadow-md"><p class="text-2xl font-bold text-center"><?=$data['judul']?></p></nav>
 <body class="bg-[#fafafa]">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
