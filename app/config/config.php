@@ -1,6 +1,6 @@
 <?php
 
-define('BASEURL', 'http://localhost/invensync/public');
+define('BASEURL', 'http://localhost:8888/invensync/public');
 
 // database
 
