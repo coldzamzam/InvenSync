@@ -27,7 +27,7 @@ class User_model {
   public function checkRowToko() {
     $query = "SELECT COUNT(*) FROM i_store_info WHERE owner_id = :owner_id";
     $this->db->query($query);
-    $this->db->bind(':owner_id', $_SESSION['user_id']);
+    $this->db->bind(':owner_id', $_SESSION['owner_id']);
     $this->db->execute();
 
     $storeCount = $this->db->fetchColumn() ?? 0;
@@ -115,6 +115,12 @@ public function getStoreInfo() {
       $_SESSION['user_role'] = $user['ROLE'];
       $_SESSION['user_address'] = $user['ADDRESS'];
       $_SESSION['user_phonenumber'] = $user['PHONE_NUMBER'];
+      if($_SESSION['user_role']!='Owner'){
+        $_SESSION['owner_id'] = $user['OWNER_ID'];
+      } else {
+        $_SESSION['owner_id'] = $_SESSION['user_id'];
+      }
+      // $_SESSION['owner_id'] = $user['OWNER_ID'];
 
       $_SESSION['is_login'] = true;
       
@@ -137,6 +143,7 @@ public function getStoreInfo() {
   }
 
   public function editToko($data) {
+    
     $query = "UPDATE i_store_info SET 
                 store_name = :namatoko, 
                 store_type = :tipetoko, 
@@ -221,14 +228,18 @@ public function deleteEmployee($id = null) {
   // Return 'error' if no ID is provided
 }
 
-// public function searchEmployee(){
-//   $this->db->query("SELECT * FROM i_users WHERE is_deleted = 0 AND owner_id = :owner_id AND name LIKE :search");
-//   $this->db->bind('owner_id', $_SESSION['user_id']);
-//   $this->db->bind('search', '%' . $_GET['search'] . '%');
-//   $this->db->execute();
+public function searchEmployee($search) {
+  // Clean the search string, in case there are unwanted characters
+  $search = "%" . $search . "%";
 
-//   return $this->db->resultSet();
-// }
+  $this->db->query("SELECT * FROM i_users WHERE is_deleted = 0 AND owner_id = :owner_id AND name LIKE :search");
+  $this->db->bind('owner_id', $_SESSION['user_id']);
+  $this->db->bind('search', $search);
+  $this->db->execute();
+
+  return $this->db->resultSet();
+}
+
 
 
 }

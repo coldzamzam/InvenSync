@@ -1,4 +1,4 @@
-<main class="flex-1 ml-64 mt-20 p-8">
+<main class="flex-1 ml-24 mt-20 p-8">
   <header class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-semibold text-blue-500">Transaksi</h2>
     <div class="space-x-2">

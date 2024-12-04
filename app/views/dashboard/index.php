@@ -1,4 +1,4 @@
-<div class="flex-1 ml-64 mt-20 p-8">
+<div class="flex-1 ml-24 mt-20 p-8">
   <p class="ml-[300px]">Selamat datang di halaman utama <?=$_SESSION['user_id'];?> <b><?= $_SESSION['user_role']; ?></b>, <b><?= $_SESSION['user_name']; ?></b>.</p>
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

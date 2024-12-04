@@ -1,4 +1,4 @@
-<main class="flex-1 ml-64 mt-20 p-8"> 
+<main class="flex-1 ml-24 mt-20 p-8"> 
 	<div>
 		<div class="flex gap-4 mb-4">
 			<div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-2/5 p-6 rounded-lg ">

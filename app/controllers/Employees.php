@@ -132,7 +132,7 @@ class Employees extends Controller{
             // But we will not include the password in the update query
             unset($data['password']); // Remove password from data array
         } elseif (strlen($data['password']) < 8 || !preg_match("#[0-9]+#", $data['password']) || 
-                  !preg_match("#[A-Z]+#", $data['password']) || !preg_match("#[a-z]+#", $data['password'])) {
+                !preg_match("#[A-Z]+#", $data['password']) || !preg_match("#[a-z]+#", $data['password'])) {
             $data['passwordError'] = 'Password harus terdiri dari minimal 8 karakter, 1 angka, 1 huruf besar, dan 1 huruf kecil.';
         }
     
@@ -161,7 +161,25 @@ class Employees extends Controller{
         exit;
     }
     
-
+    public function searchEmployee() {
+        if (isset($_POST['search']) && !empty($_POST['search'])) {
+            $data = [
+                'search' => htmlspecialchars(trim($_POST['search']))
+            ];
+            $employees = $this->model('User_model')->searchEmployee($data['search']);
+            
+            if (count($employees) > 0) {
+                $_SESSION['employees'] = $employees;
+                header('Location: ' . BASEURL . '/employees');
+                exit;
+            }
+        } else {
+            // Handle the case where search input is empty or invalid
+            header('Location: ' . BASEURL . '/employees');
+            exit;
+        }
+    }
+    
     // public function deleteEmployee($id){
     //     if ($this->model('User_model')->deleteAdmin($id) > 0) {
     //         $_SESSION['status']='success';
