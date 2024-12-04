@@ -1,8 +1,11 @@
-<main class="flex-1 ml-64 mt-20 p-8">
+<main class="flex-1 ml-24 mt-20 p-8">
       <div class="flex items-center mb-4 space-x-4">
         <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Create Employee</button>
-        <input type="search" placeholder="Cari berdasarkan UID/Nama." name="search" class="border rounded px-4 py-2">
-        <input type="date" class="border rounded px-4 py-2">
+        <form action="<?= BASEURL; ?>/employees/searchEmployee" method="post" class="flex items-center">
+          <input type="search" placeholder="Cari berdasarkan UID/Nama." name="search" class="border rounded px-4 py-2">
+          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Search</button>
+        </form>
+          <input type="date" class="border rounded px-4 py-2">
           <select class="border rounded px-4 py-2">
           <option>Role</option>
           <option>Owner</option>
