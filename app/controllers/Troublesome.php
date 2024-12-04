@@ -11,7 +11,13 @@ class Troublesome extends Controller
     public function index()
     {
         $data['judul'] = 'Troublesome';
-        $this->view('templates/s-header', $data);
-        $this->view('troublesome/index', $data);
+        if($this->model('User_model')->checkRowToko() > 0) {
+            $this->view('templates/s-header', $data);
+            $this->view('troublesome/index', $data);
+        }
+        else {
+            $this->view('templates/s-header', $data);
+            $this->view('user/toko', $data);
+        }
     }
 }

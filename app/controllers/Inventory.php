@@ -20,8 +20,14 @@ class Inventory extends Controller {
 		$data['currentPage'] = $page;
 		$data['totalPages'] = $totalPages;
 	
-		$this->view('templates/s-header', $data);
-		$this->view('inventory/index', $data);
+		if($this->model('User_model')->checkRowToko() > 0) {
+			$this->view('templates/s-header', $data);
+			$this->view('inventory/index', $data);
+		}
+		else {
+			$this->view('templates/s-header', $data);
+			$this->view('user/toko', $data);
+		}
 	}
 	
 	public function tambah() {

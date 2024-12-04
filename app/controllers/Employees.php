@@ -20,8 +20,14 @@ class Employees extends Controller{
         $data['currentPage'] = $page;
         $data['totalPages'] = $totalpages;
 
-        $this->view('templates/s-header', $data);
-        $this->view('employees/index', $data);
+        if($this->model('User_model')->checkRowToko() > 0) {
+            $this->view('templates/s-header', $data);
+            $this->view('employees/index', $data);
+        }
+        else {
+            $this->view('templates/s-header', $data);
+            $this->view('user/toko', $data);
+        }
     }
 
     public function createEmployee() {
