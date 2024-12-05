@@ -13,37 +13,36 @@ Class Item_model {
       $this->db->query('
           SELECT * FROM (
               SELECT i.*, ROWNUM rnum
-              FROM i_inventory i JOIN i_users u 
-              ON i.user_id = u.user_id  
-              WHERE i.is_deleted = 0 AND u.owner_id=:owner_id
+              FROM i_inventory i   
+              WHERE i.is_deleted = 0 AND i.store_id=:store_id
           ) WHERE rnum > :startIndex AND rnum <= :endIndex
       ');
       $this->db->bind('startIndex', $start, PDO::PARAM_INT);
       $this->db->bind('endIndex', $start + $limit, PDO::PARAM_INT);
-      $this->db->bind('owner_id', $_SESSION['owner_id']);
+      $this->db->bind('store_id', $_SESSION['store_id']);
       $this->db->execute();
       return $this->db->resultSet();
   }
 
   public function getItemCount()
   {
-      $this->db->query('SELECT COUNT(*) as total FROM i_inventory i JOIN i_users u ON i.user_id = u.user_id  WHERE i.is_deleted = 0 AND u.owner_id=:owner_id');
-      $this->db->bind('owner_id',$_SESSION['owner_id']);
+      $this->db->query('SELECT COUNT(*) as total FROM i_inventory i  WHERE i.is_deleted = 0 AND i.store_id=:store_id');
+      $this->db->bind('store_id',$_SESSION['store_id']);
       $this->db->execute();
       return $this->db->single()['TOTAL'];
   }
   
   public function getAllItem(){
-    $this->db->query('SELECT * FROM i_inventory i JOIN i_users u ON i.user_id = u.user_id  WHERE i.is_deleted = 0 AND u.owner_id=:owner_id ');
-    $this->db->bind('owner_id',$_SESSION['owner_id']);
+    $this->db->query('SELECT * FROM i_inventory i WHERE i.is_deleted = 0 AND i.store_id=:store_id');
+    $this->db->bind('store_id',$_SESSION['store_id']);
     $this->db->execute();
     // var_dump($this->db->resultSet());
     return $this->db->resultSet();
   }
 
   public function getUserStore(){
-    $this->db->query('SELECT * FROM i_users WHERE is_deleted = 0 and owner_id = :owner_id');
-    $this->db->bind('owner_id', $_SESSION['owner_id']);
+    $this->db->query('SELECT * FROM i_users WHERE is_deleted = 0 and store_id = :store_id');
+    $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
     // var_dump($this->db->resultSet());
     return $this->db->resultSet();
@@ -55,11 +54,11 @@ Class Item_model {
           SELECT * FROM (
               SELECT a.*, ROWNUM rnum
               FROM i_users a
-              WHERE is_deleted = 0 and owner_id = :owner_id
+              WHERE is_deleted = 0 and store_id = :store_id
           ) WHERE rnum > :startIndex AND rnum <= :endIndex
       ');
       $this->db->bind('startIndex', $start, PDO::PARAM_INT);
-      $this->db->bind('owner_id', $_SESSION['user_id']);
+      $this->db->bind('store_id', $_SESSION['store_id']);
       $this->db->bind('endIndex', $start + $limit, PDO::PARAM_INT);
       $this->db->execute();
       return $this->db->resultSet();
@@ -67,8 +66,8 @@ Class Item_model {
 
   public function getUserCount()
   {
-      $this->db->query('SELECT COUNT(*) as total FROM i_users WHERE is_deleted = 0 and owner_id = :owner_id');
-      $this->db->bind('owner_id', $_SESSION['user_id']);
+      $this->db->query('SELECT COUNT(*) as total FROM i_users WHERE is_deleted = 0 and store_id = :store_id');
+      $this->db->bind('store_id', $_SESSION['store_id']);
       $this->db->execute();
       return $this->db->single()['TOTAL'];
   }
@@ -97,8 +96,8 @@ Class Item_model {
 
 
   public function addInventory($data) {
-    $query = "INSERT INTO I_INVENTORY (ITEM_NAME, QUANTITY, HARGA_BELI, HARGA_JUAL, STATUS, DATE_ADDED,USER_ID)
-    VALUES (:NAMABARANG, :KUANTITAS, :HARGA_BELI, :HARGA_JUAL, :STATUS, SYSDATE,:USER_ID)";
+    $query = "INSERT INTO I_INVENTORY (ITEM_NAME, QUANTITY, HARGA_BELI, HARGA_JUAL, STATUS, DATE_ADDED,USER_ID,STORE_ID)
+    VALUES (:NAMABARANG, :KUANTITAS, :HARGA_BELI, :HARGA_JUAL, :STATUS, SYSDATE,:USER_ID,:STORE_ID)";
     
     $this->db->query($query);
     $this->db->bind('NAMABARANG', $data['ITEM_NAME']);
@@ -107,6 +106,7 @@ Class Item_model {
     $this->db->bind('HARGA_JUAL', $data['HARGA_JUAL']);
     $this->db->bind('STATUS', $data['STATUS']);
     $this->db->bind('USER_ID', $_SESSION['user_id']);
+    $this->db->bind('STORE_ID', $_SESSION['store_id']);
     
     $this->db->execute();
     
