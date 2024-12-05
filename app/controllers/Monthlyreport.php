@@ -8,7 +8,7 @@ class Monthlyreport extends Controller {
     }
 
     public function index() {
-        $data['judul'] = 'Monthlyreport';
+        $data['judul'] = 'Monthly Report';
         $this->view('templates/s-header', $data);
         $this->view('monthlyreport/index', $data);
     }

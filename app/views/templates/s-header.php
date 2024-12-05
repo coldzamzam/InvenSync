@@ -31,6 +31,15 @@
       max-width: 12rem; /* Allow text to expand without breaking layout */
       opacity: 1; /* Fade-in effect */
     }
+    #sidebar button {
+  font-size: 0.875rem; /* Smaller font size */
+  padding: 0.75rem 1rem; /* Adjust padding to make the button less large */
+}
+
+#sidebar button i {
+  font-size: 1.25rem; /* Adjust icon size to match button */
+}
+
 
   </style>
 </head>
@@ -82,10 +91,10 @@
     </nav>
     <form action="<?= BASEURL; ?>/dashboard/logout" id="LogoutForm" method="post" class="mt-12">
       <input type="hidden" name="logout" value="1">
-      <button type="button" class="bg-yellow-500 text-black py-2 px-4 rounded hover:bg-yellow-400 transition-all duration-300" onclick="logoutConfirmation()">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Logout</span>
-      </button>
+      <button type="button" class="bg-yellow-500 text-black py-1.5 px-6 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center space-x-2">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    <span class="sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Logout</span>
+</button>
     </form>
   </div>
 </aside>
