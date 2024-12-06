@@ -33,8 +33,12 @@ Class Item_model {
   }
   
   public function getAllItem(){
-    $this->db->query('SELECT * FROM i_inventory i WHERE i.is_deleted = 0 AND i.store_id=:store_id');
-    $this->db->bind('store_id',$_SESSION['store_id']);
+    $this->db->query('SELECT i.*, c.category_name, b.brand_name 
+                      FROM i_master_item i 
+                      JOIN i_master_category c ON i.category_id = c.category_id
+                      JOIN i_master_brand b ON i.brand_id = b.brand_id
+                      WHERE i.is_deleted = 0 AND i.store_id=:store_id');
+    $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
     // var_dump($this->db->resultSet());
     return $this->db->resultSet();
@@ -96,17 +100,13 @@ Class Item_model {
 
 
   public function addInventory($data) {
-    $query = "INSERT INTO I_INVENTORY (ITEM_NAME, QUANTITY, HARGA_BELI, HARGA_JUAL, STATUS, DATE_ADDED,USER_ID,STORE_ID)
-    VALUES (:NAMABARANG, :KUANTITAS, :HARGA_BELI, :HARGA_JUAL, :STATUS, SYSDATE,:USER_ID,:STORE_ID)";
-    
+    $query = "INSERT INTO I_INVENTORY (QUANTITY, HARGA_BELI, USER_ID,STORE_ID) 
+              VALUES (:quantity, :harga_beli, :user_id, :store_id)";
     $this->db->query($query);
-    $this->db->bind('NAMABARANG', $data['ITEM_NAME']);
-    $this->db->bind('KUANTITAS', $data['QUANTITY']);
-    $this->db->bind('HARGA_BELI', $data['HARGA_BELI']);
-    $this->db->bind('HARGA_JUAL', $data['HARGA_JUAL']);
-    $this->db->bind('STATUS', $data['STATUS']);
-    $this->db->bind('USER_ID', $_SESSION['user_id']);
-    $this->db->bind('STORE_ID', $_SESSION['store_id']);
+    $this->db->bind('quantity', $data['quantity']);
+    $this->db->bind('harga_beli', $data['harga_beli']);
+    $this->db->bind('user_id', $_SESSION['user_id']);
+    $this->db->bind('store_id', $_SESSION['store_id']);
     
     $this->db->execute();
     
@@ -124,6 +124,56 @@ Class Item_model {
 
     return $this->db->single();
   }
+
+  public function addBrand($data) {
+    $query = "INSERT INTO i_master_brand (brand_name, store_id) VALUES (:brand_name, :store_id)";
+    $this->db->query($query);
+    $this->db->bind('brand_name', $data['brand_name']);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+    return $this->db->rowCount();
+  }
+
+  public function getAllBrand() {
+    $query = "SELECT * FROM i_master_brand WHERE store_id = :store_id";
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+    return $this->db->resultSet();
+  }
+
+  public function addCategory($data) {
+    $query = "INSERT INTO i_master_category (category_name, store_id) VALUES (:category_name, :store_id)";
+    $this->db->query($query);
+    $this->db->bind('category_name', $data['category_name']);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+    return $this->db->rowCount();
+  }
+
+  public function getAllCategory() {
+    $query = "SELECT * FROM i_master_category WHERE store_id = :store_id";
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+    return $this->db->resultSet();
+  }
+
+  public function addItem($data) {
+    $query = "INSERT INTO i_master_item (item_name, cost_price, category_id, brand_id, store_id) 
+              VALUES (:item_name, :cost_price, :category_id, :brand_id, :store_id)";
+    $this->db->query($query);
+    $this->db->bind('item_name', $data['item_name']);
+    $this->db->bind('cost_price', $data['cost_price']);
+    $this->db->bind('category_id', $data['category_id']);
+    $this->db->bind('brand_id', $data['brand_id']);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+
+    return $this->db->rowCount();
+  }
+
+
 
 }
 

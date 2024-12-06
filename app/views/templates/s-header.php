@@ -58,6 +58,11 @@
         <i class="fas fa-users"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Employees</span>
       </a>
+      <a href="<?= BASEURL; ?>/item" 
+        class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        <i class="fa-solid fa-box"></i>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Items</span>
+      </a>
       <a href="<?= BASEURL; ?>/inventory" 
         class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-boxes"></i>

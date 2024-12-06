@@ -4,13 +4,15 @@
       <!-- <h2 class="text-2xl font-semibold text-blue-500">Inventory</h2> -->
       <div class="wrap-cards gap-4 flex">
         <div class="card border border-green-300 bg-green-300">
-          <div class="card-header flex justify-between p-2 w-32">
+          <div class="card-header flex justify-between p-2">
             <p>Stok tersedia</p>
             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-description"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
           </div>
           <div class="card-body p-2">
-            <p class="text-md mb-2">Total Produk</p>
-            <p class="text-lg font-bold">0</p>
+            <p class="text-md mb-2">
+              <span class="text-lg font-bold">0</span> Produk
+            </p>
+            
           </div>
         </div>
         <div class="card border border-green-300 bg-green-300">
@@ -19,8 +21,10 @@
             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-description"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
           </div>
           <div class="card-body p-2">
-            <p class="text-md mb-2">Total Produk</p>
-            <p class="text-lg font-bold">0</p>
+            <p class="text-md mb-2">
+              <span class="text-lg font-bold">0</span> Produk
+            </p>
+            
           </div>
         </div>
         <div class="card border border-green-300 bg-green-300">
@@ -29,10 +33,13 @@
             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-description"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
           </div>
           <div class="card-body p-2">
-            <p class="text-md mb-2">Total Produk</p>
-            <p class="text-lg font-bold">0</p>
+            <p class="text-md mb-2">
+              <span class="text-lg font-bold">0</span> Produk
+            </p>
           </div>
         </div>
+
+
       </div>
       
     </header>
@@ -48,7 +55,43 @@
         </select>
       </div>
 
-      <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ New Stock</button>
+      <div>
+          <!-- Tombol Dropdown -->
+        <div class="relative inline-block text-left">
+          <div>
+            <button type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
+              Options
+              <svg class="-mr-1 size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+  
+          <!--
+            Dropdown menu, show/hide based on menu state.
+  
+            Entering: "transition ease-out duration-100"
+              From: "transform opacity-0 scale-95"
+              To: "transform opacity-100 scale-100"
+            Leaving: "transition ease-in duration-75"
+              From: "transform opacity-100 scale-100"
+              To: "transform opacity-0 scale-95"
+          -->
+          <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none hidden" id="dropdown-menu" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+            <div class="py-1" role="none">
+              <!-- Active: "bg-gray-100 text-gray-900 outline-none", Not Active: "text-gray-700" -->
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
+              <form method="POST" action="#" role="none">
+                <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+              </form>
+            </div>
+          </div>
+        </div>
+  
+        <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ New Stock</button>
+      </div>
     </div>
 
 
@@ -196,6 +239,26 @@
         modal.classList.add('hidden');
       }
     });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const menuButton = document.getElementById("menu-button");
+      const dropdownMenu = document.getElementById("dropdown-menu");
+
+      menuButton.addEventListener("click", () => {
+        const isExpanded = menuButton.getAttribute("aria-expanded") === "true";
+        menuButton.setAttribute("aria-expanded", !isExpanded);
+        dropdownMenu.classList.toggle("hidden");
+      });
+
+      // Optional: Close the menu when clicking outside
+      document.addEventListener("click", (event) => {
+        if (!menuButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+          menuButton.setAttribute("aria-expanded", "false");
+          dropdownMenu.classList.add("hidden");
+        }
+      });
+    });
+    
   </script>
 
 </body>

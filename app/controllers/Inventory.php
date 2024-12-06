@@ -10,6 +10,8 @@ class Inventory extends Controller {
 	public function index($page = 1)
 	{
 		$data['judul'] = 'Inventory';
+		$data['brand'] = $this->model('Item_model')->getAllBrand();
+		$data['category'] = $this->model('Item_model')->getAllCategory();
 	
 		$itemsPerPage = 10; // Jumlah item per halaman
 		$totalItems = $this->model('Item_model')->getItemCount(); // Total item
@@ -35,5 +37,42 @@ class Inventory extends Controller {
 			exit;
 		}
 	}
+
+	public function tambahBrand() {
+		if ($this->model('Item_model')->addBrand($_POST) > 0) {
+			// Flasher::setFlash('berhasil', 'ditambahkan', 'success');
+			header('Location: ' . BASEURL . '/Item');
+			exit;
+		} else {
+			// Flasher::setFlash('gagal', 'ditambahkan', 'danger');
+			header('Location: ' . BASEURL . '/Item');
+			exit;
+		}
+	}
+
+	public function tambahCategory() {
+		if ($this->model('Item_model')->addCategory($_POST) > 0) {
+			// Flasher::setFlash('berhasil', 'ditambahkan', 'success');			
+			header('Location: ' . BASEURL . '/Item');
+			exit;
+		} else {
+			// Flasher::setFlash('gagal', 'ditambahkan', 'danger');
+			header('Location: ' . BASEURL . '/Item');
+			exit;
+		}
+	}
+
+	public function tambahItem() {
+		if ($this->model('Item_model')->addItem($_POST) > 0) {
+			// Flasher::setFlash('berhasil', 'ditambahkan', 'success');
+			header('Location: ' . BASEURL . '/Item');
+			exit;
+		} else {
+			// Flasher::setFlash('gagal', 'ditambahkan', 'danger');
+			header('Location: ' . BASEURL . '/Item');
+			exit;
+		}
+	}
+
 }	
 

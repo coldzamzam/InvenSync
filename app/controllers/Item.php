@@ -2,12 +2,13 @@
 
 Class Item extends Controller {
   public function index(){
-    $data['judul'] = 'List Barang';
+    $data['judul'] = 'List Items';
     $data['item'] = $this->model('Item_model')->getAllItem();
+    $data['brand'] = $this->model('Item_model')->getAllBrand();
+    $data['category'] = $this->model('Item_model')->getAllCategory();
 
-    $this->view('templates/header', $data);
+    $this->view('templates/s-header', $data);
     $this->view('itemdummy/index', $data);
-    $this->view('templates/footer');
   }
 
   public function userdummy(){
