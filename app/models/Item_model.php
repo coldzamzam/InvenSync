@@ -100,13 +100,17 @@ Class Item_model {
 
 
   public function addInventory($data) {
-    $query = "INSERT INTO I_INVENTORY (QUANTITY, HARGA_BELI, USER_ID,STORE_ID) 
-              VALUES (:quantity, :harga_beli, :user_id, :store_id)";
+    $query = "INSERT INTO I_INVENTORY (ITEM_ID, QUANTITY, HARGA_BELI, USER_ID, STORE_ID) 
+              VALUES (:item_id, :quantity, :harga_beli, :user_id, :store_id)";
     $this->db->query($query);
+    
+    $this->db->bind('item_id', $data['item_id']);
     $this->db->bind('quantity', $data['quantity']);
     $this->db->bind('harga_beli', $data['harga_beli']);
     $this->db->bind('user_id', $_SESSION['user_id']);
     $this->db->bind('store_id', $_SESSION['store_id']);
+    
+    echo $query; // Untuk melihat query
     
     $this->db->execute();
     
@@ -173,7 +177,18 @@ Class Item_model {
     return $this->db->rowCount();
   }
 
+  public function getAllInventory() {
+    $query = "SELECT i.inventory_id, i.item_id, i.quantity, i.date_added, i.harga_beli, i.user_id, mi.item_name AS item_name
+              FROM i_inventory i 
+              JOIN i_master_item mi ON i.item_id = mi.item_id
+              WHERE i.store_id = :store_id";
 
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+
+    return $this->db->resultSet();
+  }
 
 }
 
