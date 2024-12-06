@@ -14,6 +14,7 @@ class Inventory extends Controller {
 		$data['brand'] = $this->model('Item_model')->getAllBrand();
 		$data['category'] = $this->model('Item_model')->getAllCategory();
 		$data['inventory'] = $this->model('Item_model')->getAllInventory();
+		$data['totalQty'] = $this->model('Item_model')->getAllTotalQuantity();
 	
 		$itemsPerPage = 10; // Jumlah item per halaman
 		$totalItems = $this->model('Item_model')->getItemCount(); // Total item

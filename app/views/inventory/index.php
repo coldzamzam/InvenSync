@@ -94,38 +94,68 @@
       </div>
     </div>
 
+    <div class="flex gap-4 mb-4">
 
-    <div class="bg-white rounded shadow">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="bg-gray-200 text-gray-600">
-            <th class="py-3 px-4 border">Inventory ID</th>
-            <th class="py-3 px-4 border">Item Name</th>
-            <th class="py-3 px-4 border">Quantity</th>
-            <th class="py-3 px-4 border">Date Added</th>
-            <th class="py-3 px-4 border">Cost Price</th>
-            <th class="py-3 px-4 border">User ID</th>
-            <th class="py-3 px-4 border">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Looping data item menggunakan PHP -->
-          <?php foreach($data['inventory'] as $item): ?>
-            <tr class="group hover:bg-gray-100 relative">
-              <td class="py-3 px-4 border"><?= $item['INVENTORY_ID']; ?></td>
-              <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
-              <td class="py-3 px-4 border"><?= $item['QUANTITY']; ?></td>
-              <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
-              <td class="py-3 px-4 border"><?= $item['HARGA_BELI']; ?></td>
-              <td class="py-3 px-4 border"><?= $item['USER_ID']; ?></td>
-              <td class="py-3 px-4 border">
-                <button class="text-blue-500" onclick="editItem(<?= $item['INVENTORY_ID']; ?>)">Edit</button>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
+      <div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-3/12 px-6 py-4 rounded-lg">
+        <p class="text-lg font-bold pb-2">Total Stock</p>
+        <div class="bg-white rounded shadow">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-gray-200 text-gray-600">
+                <th class="py-3 px-4 border">Item Name</th>
+                <th class="py-3 px-4 border">Total Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Looping data item menggunakan PHP -->
+              <?php foreach($data['totalQty'] as $total): ?>
+                <tr class="group hover:bg-gray-100 relative">
+                  <td class="py-3 px-4 border"><?= $total['ITEM_NAME']; ?></td>
+                  <td class="py-3 px-4 border"><?= $total['TOTALQUANTITY']; ?></td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
+      <div class="bg-white shadow-md px-6 py-4 border border-zinc-100 rounded-lg w-9/12">
+        <p class="text-lg font-bold pb-2">Track Inventory</p>
+        <div class="bg-white rounded shadow">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-gray-200 text-gray-600">
+                <th class="py-3 px-4 border">Inventory ID</th>
+                <th class="py-3 px-4 border">Item Name</th>
+                <th class="py-3 px-4 border">Quantity</th>
+                <th class="py-3 px-4 border">Date Added</th>
+                <th class="py-3 px-4 border">Cost Price</th>
+                <th class="py-3 px-4 border">User ID</th>
+                <th class="py-3 px-4 border">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Looping data item menggunakan PHP -->
+              <?php foreach($data['inventory'] as $item): ?>
+                <tr class="group hover:bg-gray-100 relative">
+                  <td class="py-3 px-4 border"><?= $item['INVENTORY_ID']; ?></td>
+                  <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
+                  <td class="py-3 px-4 border"><?= $item['QUANTITY']; ?></td>
+                  <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
+                  <td class="py-3 px-4 border"><?= $item['HARGA_BELI']; ?></td>
+                  <td class="py-3 px-4 border"><?= $item['USER_ID']; ?></td>
+                  <td class="py-3 px-4 border">
+                    <button class="text-blue-500" onclick="editItem(<?= $item['INVENTORY_ID']; ?>)">Edit</button>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
+
   </main>
 
  <!-- Modal for Adding or Editing Stock -->

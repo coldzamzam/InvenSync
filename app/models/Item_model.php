@@ -190,6 +190,21 @@ Class Item_model {
     return $this->db->resultSet();
   }
 
+  public function getAllTotalQuantity() {
+    $query = "SELECT mi.item_name, SUM(i.quantity) AS TOTALQUANTITY
+              FROM i_inventory i
+              JOIN i_master_item mi on mi.item_id = i.item_id
+              WHERE i.store_id = :store_id
+              GROUP BY mi.item_name";
+
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+
+    return $this->db->resultSet();
+
+  }
+
 }
 
 ?>
