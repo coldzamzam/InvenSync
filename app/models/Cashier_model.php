@@ -8,8 +8,9 @@ class Cashier_model {
   }
 
   public function createIdReceipt() {
-    $this->db->query("INSERT INTO i_receipt (user_id) VALUES (:user_id)");
+    $this->db->query("INSERT INTO i_receipt (user_id,store_id) VALUES (:user_id, :store_id)");
     $this->db->bind('user_id', $_SESSION['user_id']);
+    $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
     $receipt =$this->db->single();
 

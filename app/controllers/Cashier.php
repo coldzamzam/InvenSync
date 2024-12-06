@@ -22,8 +22,19 @@ class Cashier extends Controller {
     }
 
     public function addItem() {
+      $data=[
+        'kodebarang' => $_POST['kodebarang'],
+        'quantity' => $_POST['quantity']
+      ];
+      if (!isset($_SESSION['receipt_id'])) {
+        $this->model('Cashier_model')->createIdReceipt();
+        $this->model('Cashier_model')->addItemToReceipt($data['kodebarang'], $data['quantity']);
+
+      }
+      $this->model('Cashier_model')->firstReceiptItem();
+      $this->model('Cashier_model')->checkItemRow();
       if (isset($_SESSION['receipt_id'])) {
-        $this->model('Cashier_model')->addItemToReceipt($_POST['kodebarang'], $_POST['quantity']);
+        $this->model('Cashier_model')->addItemToReceipt($data['kodebarang'], $data['quantity']);
       }
     }
 

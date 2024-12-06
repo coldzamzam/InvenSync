@@ -24,7 +24,18 @@ Class Dashboard extends Controller{
       'emailtoko'=> $_POST['emailtoko'] ?? '',
       'yearfounded'=> $_POST['yearfounded'] ?? '',
       'judul' => 'Dashboard'
-  ];
+    ];
+
+    $userInventory = (int)$this->model('User_Model')->getInventoryUserCount();
+    $userCashier = (int)$this->model('User_Model')->getCashierUserCount();
+    $adminChartData=[
+      ['Role', 'Jumlah'],
+      ['Admin Gudang', (int)$userInventory], 
+      ['Admin Kasir', (int)$userCashier]
+    ];
+
+    $data['adminChartData'] = $adminChartData;
+
 
     if($this->model('User_model')->checkRowToko() > 0) {
       $this->view('templates/s-header', $data);
@@ -38,6 +49,9 @@ Class Dashboard extends Controller{
 
     // $this->view('templates/s-header', $data);
     // $this->view('dashboard/index', $data);
+
+    //chart employee
+
   }
   
   public function toko() {

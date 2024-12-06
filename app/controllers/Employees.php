@@ -9,14 +9,14 @@ class Employees extends Controller{
 
     public function index($page=1){
         $data['judul'] = 'Employees';
-        $data['users'] = $this->model('Item_model')->getUserStore();
-        // $data['invusers'] = $this->model('Item_model')->getInventoryUser();
-        // $data['cashusers'] = $this->model('Item_model')->getCashierUser();
+        $data['users'] = $this->model('User_model')->getUserStore();
+        // $data['invusers'] = $this->model('User_model')->getInventoryUser();
+        // $data['cashusers'] = $this->model('User_model')->getCashierUser();
         $usersperpage = 10;
-        $totalusers = $this->model('Item_model')->getUserCount();
+        $totalusers = $this->model('User_model')->getUserCount();
         $totalpages = ceil($totalusers / $usersperpage);
         $start = ($page - 1) * $usersperpage;
-        $data['users'] = $this->model('Item_model')->getPaginatedUsers($start, $usersperpage);
+        $data['users'] = $this->model('User_model')->getPaginatedUsers($start, $usersperpage);
         $data['currentPage'] = $page;
         $data['totalPages'] = $totalpages;
 

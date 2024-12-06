@@ -1,6 +1,6 @@
 <main class="flex-1 ml-24 mt-20 p-8">
   <header class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-semibold text-blue-500">Transaksi</h2>
+    <h2 class="text-2xl font-semibold text-blue-500">Transaksi<?= $_SESSION['receipt_id']?></h2>
     <div class="space-x-2">
       <button id="printInvoiceBtn" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600">Cetak Invoice</button>
       <button id="konfirmasiBtn" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Konfirmasi Pembelian</button>
@@ -33,7 +33,7 @@
       <h3 class="text-2xl font-semibold w-full text-center">Tambah/Update Barang</h3>
       <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2">&times;</button>
     </div>
-    <form id="createBarangForm" action="<?= BASEURL; ?>/cashier/transaction" method="post">
+    <form id="createBarangForm" action="<?= BASEURL; ?>/cashier/addItem" method="post">
       <div class="mt-6">
         <div class="mb-4">
           <label for="namabarang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
@@ -54,8 +54,8 @@
           <input type="text" id="harga" name="harga" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="formatHarga(this)" readonly>
         </div>
         <div class="mb-4">
-          <label for="jumlah" class="block text-sm font-medium text-gray-700">Jumlah Barang</label>
-          <input type="number" id="jumlah" name="jumlah" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="quantity" class="block text-sm font-medium text-gray-700">Jumlah Barang</label>
+          <input type="number" id="quantity" name="quantity" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
         <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Simpan</button>
       </div>
@@ -129,25 +129,25 @@
 // }
 
   // Fungsi untuk menambah baris baru di tabel
-  function addRowToTable(kodeBarang, namaBarang, jumlahBarang, hargaBarang, totalHarga) {
-    const tableBody = document.querySelector('#barangTable tbody');
-    const row = document.createElement('tr');
+  // function addRowToTable(kodeBarang, namaBarang, jumlahBarang, hargaBarang, totalHarga) {
+  //   const tableBody = document.querySelector('#barangTable tbody');
+  //   const row = document.createElement('tr');
 
-    row.innerHTML = `
-      <td class="py-3 px-4 border text-center">${kodeBarang}</td>
-      <td class="py-3 px-4 border text-center">${namaBarang}</td>
-      <td class="py-3 px-4 border text-center">${jumlahBarang}</td>
-      <td class="py-3 px-4 border text-center">Rp ${formatCurrency(hargaBarang)}</td>
-      <td class="py-3 px-4 border text-center">Rp ${formatCurrency(totalHarga)}</td>
-      <td class="py-3 px-4 border text-center">
-        <button class="bg-yellow-500 text-white py-1 px-2 rounded hover:bg-yellow-600" onclick="editRow(this)">Update</button>
-        <button class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600" onclick="deleteRow(this)">Hapus</button>
-      </td>
-    `;
+  //   row.innerHTML = `
+  //     <td class="py-3 px-4 border text-center">${kodeBarang}</td>
+  //     <td class="py-3 px-4 border text-center">${namaBarang}</td>
+  //     <td class="py-3 px-4 border text-center">${jumlahBarang}</td>
+  //     <td class="py-3 px-4 border text-center">Rp ${formatCurrency(hargaBarang)}</td>
+  //     <td class="py-3 px-4 border text-center">Rp ${formatCurrency(totalHarga)}</td>
+  //     <td class="py-3 px-4 border text-center">
+  //       <button class="bg-yellow-500 text-white py-1 px-2 rounded hover:bg-yellow-600" onclick="editRow(this)">Update</button>
+  //       <button class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600" onclick="deleteRow(this)">Hapus</button>
+  //     </td>
+  //   `;
 
-    tableBody.appendChild(row);
-    saveToLocalStorage(); // Simpan data setiap kali baris ditambahkan
-  }
+  //   tableBody.appendChild(row);
+  //   saveToLocalStorage(); // Simpan data setiap kali baris ditambahkan
+  // }
 
   // Fungsi untuk menghapus baris
   function deleteRow(button) {
@@ -171,30 +171,30 @@
   }
 
   // Menangani form submission
-  document.getElementById('createBarangForm').addEventListener('submit', function (event) {
-    event.preventDefault();
+  // document.getElementById('createBarangForm').addEventListener('submit', function (event) {
+  //   event.preventDefault();
 
-    const kodeBarang = document.getElementById('kodebarang').value.trim();
-    const namaBarang = document.getElementById('namabarang').value.trim();
-    const jumlahBarang = parseInt(document.getElementById('jumlah').value, 10);
-    const hargaBarang = parseFloat(document.getElementById('harga').value.replace(/,/g, ''));
-    const totalHarga = jumlahBarang * hargaBarang;
+  //   const kodeBarang = document.getElementById('kodebarang').value.trim();
+  //   const namaBarang = document.getElementById('namabarang').value.trim();
+  //   const jumlahBarang = parseInt(document.getElementById('jumlah').value, 10);
+  //   const hargaBarang = parseFloat(document.getElementById('harga').value.replace(/,/g, ''));
+  //   const totalHarga = jumlahBarang * hargaBarang;
 
-    if (editingRow) {
-      const cells = editingRow.querySelectorAll('td');
-      cells[0].textContent = kodeBarang;
-      cells[1].textContent = namaBarang;
-      cells[2].textContent = jumlahBarang;
-      cells[3].textContent = `Rp ${formatCurrency(hargaBarang)}`;
-      cells[4].textContent = `Rp ${formatCurrency(totalHarga)}`;
-      editingRow = null;
-    } else {
-      addRowToTable(kodeBarang, namaBarang, jumlahBarang, hargaBarang, totalHarga);
-    }
+  //   if (editingRow) {
+  //     const cells = editingRow.querySelectorAll('td');
+  //     cells[0].textContent = kodeBarang;
+  //     cells[1].textContent = namaBarang;
+  //     cells[2].textContent = jumlahBarang;
+  //     cells[3].textContent = `Rp ${formatCurrency(hargaBarang)}`;
+  //     cells[4].textContent = `Rp ${formatCurrency(totalHarga)}`;
+  //     editingRow = null;
+  //   } else {
+  //     addRowToTable(kodeBarang, namaBarang, jumlahBarang, hargaBarang, totalHarga);
+  //   }
 
-    this.reset();
-    closeModal();
-  });
+  //   this.reset();
+  //   closeModal();
+  // });
 
   // Format harga
   function formatCurrency(value) {

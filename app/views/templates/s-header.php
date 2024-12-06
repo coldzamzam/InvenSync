@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="<?= BASEURL; ?>/css/output.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
@@ -96,7 +97,7 @@
     </nav>
     <form action="<?= BASEURL; ?>/dashboard/logout" id="LogoutForm" method="post" class="mt-12">
       <input type="hidden" name="logout" value="1">
-      <button type="button" class="bg-yellow-500 text-black py-1.5 px-6 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center space-x-2">
+      <button type="button" onclick="logoutConfirmation()" class="bg-yellow-500 text-black py-1.5 px-6 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center space-x-2">
     <i class="fa-solid fa-right-from-bracket"></i>
     <span class="sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Logout</span>
 </button>

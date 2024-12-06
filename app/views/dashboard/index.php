@@ -1,8 +1,35 @@
 <div class="flex-1 ml-24 mt-20 p-8">
   <p class="ml-[300px]">Selamat datang di halaman utama <b><?=$_SESSION['user_id'];?></b> <b><?= $_SESSION['user_role']; ?></b>, <b><?= $_SESSION['user_name']; ?></b> dengan owner id <b><?= $_SESSION['owner_id']; ?></b> dan dengan store id <b><?= $_SESSION['store_id']; ?></b>.</p>
+  <div class="flex justify-between gap-4 mb-4 min-h-[600px]">
+    <div class="bg-white shadow-md border border-zinc-100 w-1/2 p-6 rounded-lg">
+      <div class="mb-6">
+        <h2 class="text-2xl font-semibold">Pemasukan</h2>
+      </div>
+    </div>
+    <div class="flex flex-col w-1/2 gap-4 justify-between">
+      <div class="bg-white shadow-md border border-zinc-100 h-full p-6 rounded-lg">
+        <div class="mb-6">
+          <h2 class="text-2xl font-semibold">Admin Toko</h2>
+        </div>
+        <div id="piechart"></div>
+      </div>
+      <div class="bg-white shadow-md border border-zinc-100 h-full p-6 rounded-lg">
+        <div class="mb-6">
+          <h2 class="text-2xl font-semibold">Pemasukan</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-full p-6 rounded-lg">
+    <div class="mb-6">
+      <h2 class="text-2xl font-semibold">Pemasukan</h2>
+    </div>
+    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+  </div>
+</div>
 
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
+    
     google.charts.load('current', {packages: ['corechart', 'bar']});
     google.charts.setOnLoadCallback(drawMaterial);
 
@@ -44,9 +71,21 @@
       var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
       materialChart.draw(data, google.charts.Bar.convertOptions(options));
     }
+
+
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(
+          <?= json_encode($data['adminChartData']) ?>
+        );
+        var options = {
+
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
   </script>
-  <div id="chart_div"></div>
-</div>
 <?php
 if (isset($_SESSION['status'])):
     $status = $_SESSION['status']; // Get status from session
