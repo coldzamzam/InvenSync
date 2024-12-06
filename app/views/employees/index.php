@@ -1,10 +1,10 @@
 <main class="flex-1 ml-24 mt-20 p-8">
       <div class="flex items-center mb-4 space-x-4">
         <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Create Employee</button>
-        <form action="<?= BASEURL; ?>/employees/searchEmployee" method="post" class="flex items-center">
-          <input type="search" placeholder="Cari berdasarkan UID/Nama." name="search" class="border rounded px-4 py-2">
-          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Search</button>
-        </form>
+        <form id="searchForm" class="flex items-center">
+  <input type="search" id="searchInput" placeholder="Cari berdasarkan UID/Nama." name="search" class="border rounded px-4 py-2">
+
+</form>
           <input type="date" class="border rounded px-4 py-2">
           <select class="border rounded px-4 py-2">
           <option>Role</option>
@@ -408,6 +408,103 @@ document.getElementById('createEmployeeForm').addEventListener('submit', functio
     this.submit();
   });
 
+// Add this function for real-time search
+document.getElementById('searchInput').addEventListener('input', function(event) {
+  // Optional: Add a slight delay to prevent too many API calls
+  clearTimeout(this.searchTimeout);
+  this.searchTimeout = setTimeout(() => {
+    performSearch();
+  }, 300); // 300ms delay
+});
+
+function performSearch() {
+  // Ambil nilai input pencarian
+  const searchValue = document.getElementById('searchInput').value.trim();
+  const tbody = document.querySelector('tbody');
+
+  // Jika input kosong, kembalikan ke tampilan awal
+  if (searchValue === "") {
+    // You might want to reload the original data here
+    // For now, we'll just keep the existing rows
+    return;
+  }
+
+  // Gunakan fetch untuk mengirim permintaan AJAX
+  fetch('<?= BASEURL; ?>/employees/searchEmployee', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      search: searchValue,
+    }),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    // Hapus semua baris tabel lama
+    tbody.innerHTML = '';
+
+    // Periksa apakah ada data
+    if (data.users && data.users.length > 0) {
+      // Tampilkan hasil pencarian dalam tabel
+      data.users.forEach((user, index) => {
+        const row = document.createElement('tr');
+        row.classList.add('hover:bg-gray-100');
+        row.innerHTML = `
+          <td scope="row" class="py-3 px-4 border">${index + 1}</td>
+          <td class="py-3 px-4 border">${user.USER_ID}</td>
+          <td class="py-3 px-4 border">${user.EMAIL}</td>
+          <td class="py-3 px-4 border">${user.NAME}</td>
+          <td class="py-3 px-4 border">${user.ROLE}</td>
+          <td class="py-3 px-4 border">${user.ADDRESS}</td>
+          <td class="py-3 px-4 border">${user.PHONE_NUMBER}</td>
+          <td class="py-3 px-4 border flex justify-center items-center">
+            <button onclick="editModalOpen('${user.USER_ID}')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
+              <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    } else {
+      // Tampilkan pesan jika tidak ada hasil
+      const noResultRow = document.createElement('tr');
+      noResultRow.innerHTML = `
+        <td colspan="8" class="text-center py-4 text-gray-500">
+          Tidak ada karyawan yang ditemukan dengan kata kunci "${searchValue}"
+        </td>
+      `;
+      tbody.appendChild(noResultRow);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Tampilkan pesan kesalahan
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="text-center py-4 text-red-500">
+          Terjadi kesalahan dalam pencarian. Silakan coba lagi.
+        </td>
+      </tr>
+    `;
+  });
+}
+
+// Optional: Tambahkan event listener untuk tombol Enter
+document.getElementById('searchInput').addEventListener('keypress', function(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault(); // Mencegah form submit
+    performSearch();
+  }
+});
+
+
+
       function closeModal() {
         document.getElementById('modal').classList.add('hidden');
       }
@@ -445,8 +542,6 @@ document.getElementById('createEmployeeForm').addEventListener('submit', functio
               });
       }
 
-
-      
       function editModalClose(){
           document.getElementById('modalEdit').classList.add('hidden');
       }
