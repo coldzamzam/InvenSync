@@ -10,8 +10,10 @@ class Inventory extends Controller {
 	public function index($page = 1)
 	{
 		$data['judul'] = 'Inventory';
+		$data['items'] = $this->model('Item_model')->getAllItem();
 		$data['brand'] = $this->model('Item_model')->getAllBrand();
 		$data['category'] = $this->model('Item_model')->getAllCategory();
+		$data['inventory'] = $this->model('Item_model')->getAllInventory();
 	
 		$itemsPerPage = 10; // Jumlah item per halaman
 		$totalItems = $this->model('Item_model')->getItemCount(); // Total item
@@ -26,7 +28,7 @@ class Inventory extends Controller {
 		$this->view('inventory/index', $data);
 	}
 	
-	public function tambah() {
+	public function tambahInventory() {
 		if ($this->model('Item_model')->addInventory($_POST) > 0) {
 			// Flasher::setFlash('berhasil', 'ditambahkan', 'success');
 			header('Location: ' . BASEURL . '/inventory');
