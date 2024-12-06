@@ -1,6 +1,7 @@
 <div class="relative min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('<?= BASEURL; ?>/img/background-login.jpg')">
   <div class="w-full max-w-2xl bg-white shadow-lg rounded-lg overflow-hidden flex" style="margin-top: 90px;">
-    <!-- Login Panel -->
+   
+  <!-- Login Panel -->
     <div class="w-3/5 px-4 py-12 flex items-center justify-center bg-white">
       <div class="w-full max-w-xs">
         <h2 class="text-center font-black text-3xl md:text-4xl py-4 text-gray-800">Login</h2>

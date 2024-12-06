@@ -3,7 +3,6 @@
         <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Create Employee</button>
         <form id="searchForm" class="flex items-center">
   <input type="search" id="searchInput" placeholder="Cari berdasarkan UID/Nama." name="search" class="border rounded px-4 py-2">
-
 </form>
           <input type="date" class="border rounded px-4 py-2">
           <select class="border rounded px-4 py-2">

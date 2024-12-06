@@ -10,6 +10,7 @@
           Loginkan!
         </a>
       </div>
+      
       <!-- Formulir Register -->
       <div class="w-3/5 px-10 py-8 bg-white">
         <h3 class="text-center font-black text-3xl md:text-4xl py-4 text-gray-800">Register Akun</h3>
