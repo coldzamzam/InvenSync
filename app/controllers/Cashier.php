@@ -9,6 +9,7 @@ class Cashier extends Controller {
     public function index(){
         $data['judul'] = 'Cashier';
         $data['item'] = $this->model('Item_model')->getAllItem();
+        $data['receiptItems']=$this->model('Cashier_model')->getAllReceiptItems();
         $this->view('templates/s-header', $data);
         $this->view('cashier/index', $data);
     }
@@ -16,60 +17,58 @@ class Cashier extends Controller {
     public function getDetailItem() {
       if ( isset($_POST['kodebarang']) ) {
         echo json_encode(
-          $this->model('Item_model')->getItemByID($_POST['kodebarang'])
+          $this->model('Cashier_model')->getItemByID($_POST['kodebarang'])
         );
       }
     }
 
     public function addItem() {
-      $data=[
-        'kodebarang' => $_POST['kodebarang'],
-        'quantity' => $_POST['quantity']
+      $data = [
+          'kodebarang' => $_POST['kodebarang'],
+          'quantity' => $_POST['quantity']
       ];
+  
+      // Pastikan receipt_id dibuat jika belum ada
       if (!isset($_SESSION['receipt_id'])) {
-        $this->model('Cashier_model')->createIdReceipt();
-        $this->model('Cashier_model')->addItemToReceipt($data['kodebarang'], $data['quantity']);
+          $maxQuantity = $this->model('Cashier_model')->CheckMaxQuantity($data['kodebarang']);
+          if ($data['quantity'] > $maxQuantity) {
+            Flasher::setFlash('Error', 'Quantity melebihi stok!', 'Tutup', 'error');
+            header('Location: ' . BASEURL . '/cashier');
+          } else {
+            $this->model('Cashier_model')->createIdReceipt();
+            $this->model('Cashier_model')->setReceipt();
+            $this->model('Cashier_model')->addItemToReceipt($data['kodebarang'], $data['quantity']);
+            header('Location: ' . BASEURL . '/cashier');
+            exit();
+          }
+      } else if (isset($_SESSION['receipt_id'])) {
+          $maxQuantity = $this->model('Cashier_model')->CheckMaxQuantity($data['kodebarang']);
+          var_dump($maxQuantity);
+          if ($data['quantity'] > $maxQuantity) {
+            Flasher::setFlash('Error', 'Quantity melebihi stok!', 'Tutup', 'error');
+            header('Location: ' . BASEURL . '/cashier');
+          }
+          else{
+            $this->model('Cashier_model')->addItemToReceipt($data['kodebarang'], $data['quantity']);
+            header('Location: ' . BASEURL . '/cashier');
+            exit();
+          }
 
       }
-      $this->model('Cashier_model')->firstReceiptItem();
-      $this->model('Cashier_model')->checkItemRow();
-      if (isset($_SESSION['receipt_id'])) {
-        $this->model('Cashier_model')->addItemToReceipt($data['kodebarang'], $data['quantity']);
+      else {
+          // Handle error jika receipt_id tidak berhasil dibuat
+          throw new Exception('Failed to create receipt ID.');
       }
-    }
+  }
 
-    // public function transaction(){
-    //   if (isset($_SESSION['receipt_id'])) {
-    //     $data['receipt_id'] = $_SESSION['receipt_id'];
-    //     $data[]
-    //   }
-    // }
-
-  //   public function processTransaction() {
-  //     // Get raw POST data from the request
-  //     $input = file_get_contents("php://input");
+  public function deleteReceiptSession(){
+    $this->model('Cashier_model')->unsetReceipt();
+    unset($_SESSION['receipt_id']);
+  }
   
-  //     // Debugging: Output raw data to ensure it's coming through correctly
-  //     var_dump($input);
-  //     die();  // Stop script execution to inspect the data
-  
-  //     // Decode the JSON data to an array
-  //     $decodedData = json_decode($input, true);
-  //     var_dump($decodedData);
-  //     die();
-  
-  //     // Proceed if barangData exists
-  //     if (isset($decodedData['barangData']) && is_array($decodedData['barangData'])) {
-  //         $barangData = $decodedData['barangData'];
-  //     } else {
-  //         echo json_encode(['success' => false, 'error' => 'barangData is missing or invalid']);
-  //         return;
-  //     }
-  
-  //     // Process the transaction
-  //     $this->model('Cashier_model')->createReceipt($barangData);
-  //     echo json_encode(['success' => true, 'message' => 'Transaction processed successfully']);
-  // }
-  
-
+  public function closeTransaction(){
+    // $this->model('Cashier_model')->confirmReceipt();
+    unset($_SESSION['receipt_id']);
+    header('Location: ' . BASEURL . '/cashier');
+  }
 }

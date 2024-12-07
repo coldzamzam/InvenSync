@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,6 +75,11 @@
         class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-exclamation-triangle"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Troublesome Items</span>
+      </a>
+      <a href="<?= BASEURL; ?>/transaction" 
+        class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        <i class="fas fa-money-bill"></i>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Transactions</span>
       </a>
       <a href="<?= BASEURL; ?>/dailyreport" 
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
@@ -152,3 +159,39 @@
       overlay.classList.add('hidden'); // Hide overlay if clicked
     });
   </script>
+
+<?php if(isset($_SESSION['receipt_id'])): ?>
+  <script>
+    document.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault(); // Cegah redirect langsung
+        const targetUrl = this.href;
+
+        Swal.fire({
+          title: 'Yakin ingin keluar?',
+          text: 'Transaksi sedang berlangsung. Data receipt akan dihapus!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ya, Keluar!',
+          cancelButtonText: 'Batal'
+        }).then((result) => {
+          if (result.isConfirmed) {
+        // Hapus session via AJAX
+        fetch('<?= BASEURL; ?>/cashier/deleteReceiptSession', {
+          method: 'POST'
+        })
+        .then(() => {
+          // Setelah session dihapus, langsung arahkan ke URL
+          window.location.href = targetUrl; // Redirect setelah berhasil
+        })
+        .catch(() => {
+          Swal.fire("Terjadi kesalahan!", "Silakan coba lagi.", "error");
+        });
+          }
+        });
+      });
+    });
+  </script>
+<?php endif; ?>
