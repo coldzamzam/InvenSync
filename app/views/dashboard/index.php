@@ -4,6 +4,11 @@
     <div class="bg-white shadow-md border border-zinc-100 w-1/2 p-6 rounded-lg">
       <div class="mb-6">
         <h2 class="text-2xl font-semibold">Pemasukan</h2>
+        <?php foreach ($data['chartPenghasilan'] as $pemasukan) : ?>
+          <p>
+            <?= $pemasukan['BULAN']; ?> - <?= $pemasukan['TOTAL_PENDAPATAN']; ?>
+          </p>
+        <?php endforeach; ?>
       </div>
     </div>
     <div class="flex flex-col w-1/2 gap-4 justify-between">
@@ -15,7 +20,12 @@
       </div>
       <div class="bg-white shadow-md border border-zinc-100 h-full p-6 rounded-lg">
         <div class="mb-6">
-          <h2 class="text-2xl font-semibold">Pemasukan</h2>
+          <h2 class="text-2xl font-semibold">Pengeluaran</h2>
+          <?php foreach ($data['chartPenghasilan'] as $pengeluaran) : ?>
+            <p>
+            <?= $pengeluaran['BULAN']; ?> - <?= $pengeluaran['TOTAL_PENGELUARAN']; ?>
+            </p>
+          <?php endforeach; ?>
         </div>
       </div>
     </div>
@@ -51,7 +61,7 @@
         ['September', 13000000, 6000000],
         ['Oktober', 14000000, 6500000],
         ['November', 15000000, 7000000],
-        ['Desember', 16000000, 7500000]
+        ['Desember', 16000000, 7500000],
       ]);
 
       var options = {

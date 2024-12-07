@@ -2,9 +2,12 @@
     <div>
         <?php foreach($data['receiptDetails'] as $receipt ) : ?>
         <h1 class="text-2xl font-semibold text-gray-800">Transaksi <?= $receipt['RECEIPT_ID']; ?> pada Tanggal <?= $receipt['DATE_ADDED']; ?></h1>
-        <table>
+        <table class="w-full text-left border-collapse">
             <thead>
-                <tr>
+                <tr class="bg-gray-200 text-gray-600">
+                    <th>Kode Barang</th>
+                    <th>Merk Barang</th>
+                    <th>Kategori Barang</th>
                     <th>Nama Barang</th>
                     <th>Harga Barang</th>
                     <th>Jumlah Barang</th>
@@ -13,7 +16,7 @@
             </thead>
             <tbody>
             <?php foreach($data['receiptDetails'] as $items ) : ?>
-                <tr>
+                <tr class="group hover:bg-gray-100 relative">
                     <td><?= $items['ITEM_ID']; ?></td>
                     <td><?= $items['ITEM_NAME']; ?></td>
                     <td><?= $items['BRAND_NAME']; ?></td>

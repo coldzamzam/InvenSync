@@ -28,6 +28,7 @@ Class Dashboard extends Controller{
 
     $userInventory = (int)$this->model('User_Model')->getInventoryUserCount();
     $userCashier = (int)$this->model('User_Model')->getCashierUserCount();
+    $data['chartPenghasilan'] = $this->model('Dashboard_model')->getPengeluaranPendapatan(); 
     $adminChartData=[
       ['Role', 'Jumlah'],
       ['Admin Gudang', (int)$userInventory], 
