@@ -2,46 +2,51 @@
   <main class="flex-1 ml-24 mt-20 p-8">
     <header class="flex justify-between items-center mb-6">
       <!-- <h2 class="text-2xl font-semibold text-blue-500">Inventory</h2> -->
-      <div class="wrap-cards gap-4 flex">
-        <div class="card border border-green-300 bg-green-300">
-          <div class="card-header flex justify-between p-2">
-            <p>Stok tersedia</p>
-            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-description"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
-          </div>
-          <div class="card-body p-2">
-            <p class="text-md mb-2">
-              <span class="text-lg font-bold">0</span> Produk
-            </p>
-            
-          </div>
-        </div>
-        <div class="card border border-green-300 bg-green-300">
-          <div class="card-header flex justify-between p-2">
-            <p>Stok Segera Habis</p>
-            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-description"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
-          </div>
-          <div class="card-body p-2">
-            <p class="text-md mb-2">
-              <span class="text-lg font-bold">0</span> Produk
-            </p>
-            
-          </div>
-        </div>
-        <div class="card border border-green-300 bg-green-300">
-          <div class="card-header flex justify-between p-2">
-            <p>Stok Habis</p>
-            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-description"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
-          </div>
-          <div class="card-body p-2">
-            <p class="text-md mb-2">
-              <span class="text-lg font-bold">0</span> Produk
-            </p>
-          </div>
-        </div>
-
-
+      <div class="flex justify-center mt-10">
+  <div class="wrap-cards flex gap-6">
+    <!-- Card 1 -->
+    <div class="card border border-green-300 bg-green-300 rounded-lg w-64 h-48 shadow-lg flex flex-col">
+      <div class="card-header flex justify-between p-4 border-b border-green-400">
+        <p>Stok Tersedia</p>
       </div>
-      
+      <!-- Garis setelah header -->
+      <hr class="border-green-400 mb-2">
+      <div class="card-body p-4 flex-grow flex items-center justify-center">
+        <p class="text-md">
+          <span class="text-lg font-bold">0</span> Produk
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card border border-yellow-300 bg-yellow-300 rounded-lg w-64 h-48 shadow-lg flex flex-col">
+      <div class="card-header flex justify-between p-4 border-b border-yellow-400">
+        <p>Stok Segera Habis</p>
+      </div>
+      <!-- Garis setelah header -->
+      <hr class="border-yellow-400 mb-2">
+      <div class="card-body p-4 flex-grow flex items-center justify-center">
+        <p class="text-md">
+          <span class="text-lg font-bold">0</span> Produk
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card border border-red-300 bg-red-300 rounded-lg w-64 h-48 shadow-lg flex flex-col">
+      <div class="card-header flex justify-between p-4 border-b border-red-400">
+        <p>Stok Habis</p>
+      </div>
+      <!-- Garis setelah header -->
+      <hr class="border-red-400 mb-2">
+      <div class="card-body p-4 flex-grow flex items-center justify-center">
+        <p class="text-md">
+          <span class="text-lg font-bold">0</span> Produk
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
     </header>
 
     <div class="flex items-center mb-4 space-x-4 justify-between">
@@ -94,104 +99,96 @@
       </div>
     </div>
 
-    <div class="flex gap-4 mb-4">
 
-      <div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-3/12 px-6 py-4 rounded-lg">
-        <p class="text-lg font-bold pb-2">Total Stock</p>
-        <div class="bg-white rounded shadow">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-gray-200 text-gray-600">
-                <th class="py-3 px-4 border">Item Name</th>
-                <th class="py-3 px-4 border">Total Quantity</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Looping data item menggunakan PHP -->
-              <?php foreach($data['totalQty'] as $total): ?>
-                <tr class="group hover:bg-gray-100 relative">
-                  <td class="py-3 px-4 border"><?= $total['ITEM_NAME']; ?></td>
-                  <td class="py-3 px-4 border"><?= $total['TOTALQUANTITY']; ?></td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
-  
-      <div class="bg-white shadow-md px-6 py-4 border border-zinc-100 rounded-lg w-9/12">
-        <p class="text-lg font-bold pb-2">Track Inventory</p>
-        <div class="bg-white rounded shadow">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-gray-200 text-gray-600">
-                <th class="py-3 px-4 border">Inventory ID</th>
-                <th class="py-3 px-4 border">Item Name</th>
-                <th class="py-3 px-4 border">Quantity</th>
-                <th class="py-3 px-4 border">Date Added</th>
-                <th class="py-3 px-4 border">Cost Price</th>
-                <th class="py-3 px-4 border">User ID</th>
-                <th class="py-3 px-4 border">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Looping data item menggunakan PHP -->
-              <?php foreach($data['inventory'] as $item): ?>
-                <tr class="group hover:bg-gray-100 relative">
-                  <td class="py-3 px-4 border"><?= $item['INVENTORY_ID']; ?></td>
-                  <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
-                  <td class="py-3 px-4 border"><?= $item['QUANTITY']; ?></td>
-                  <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
-                  <td class="py-3 px-4 border"><?= $item['HARGA_BELI']; ?></td>
-                  <td class="py-3 px-4 border"><?= $item['USER_ID']; ?></td>
-                  <td class="py-3 px-4 border">
-                    <button class="text-blue-500" onclick="editItem(<?= $item['INVENTORY_ID']; ?>)">Edit</button>
-                  </td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
+    <div class="bg-white rounded shadow">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-gray-200 text-gray-600">
+            <th class="py-3 px-4 border">Item ID</th>
+            <th class="py-3 px-4 border">Item Name</th>
+            <!-- <th class="py-3 px-4 border">Category Item</th> -->
+            <th class="py-3 px-4 border">Quantity</th>
+            <th class="py-3 px-4 border">Date Added</th>
+            <th class="py-3 px-4 border">Purchase Price</th>
+            <th class="py-3 px-4 border">Selling Price</th>
+            <th class="py-3 px-4 border">Status</th>
+            <th class="py-3 px-4 border">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Looping data item menggunakan PHP -->
+          <?php foreach($data['item'] as $item): ?>
+            <tr class="group hover:bg-gray-100 relative">
+              <td class="py-3 px-4 border"><?= $item['ITEM_ID']; ?></td>
+              <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
+              <!-- <td class="py-3 px-4 border"><?= $item['CATEGORY_ITEM']; ?></td> -->
+              <td class="py-3 px-4 border"><?= $item['QUANTITY']; ?></td>
+              <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
+              <td class="py-3 px-4 border"><?= $item['HARGA_BELI']; ?></td>
+              <td class="py-3 px-4 border"><?= $item['HARGA_JUAL']; ?></td>
+              <td class="py-3 px-4 border"><?= $item['STATUS']; ?></td>
+              <td class="py-3 px-4 border">
+                <button class="text-blue-500" onclick="editItem(<?= $item['ITEM_ID']; ?>)">Edit</button>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
     </div>
-
   </main>
 
  <!-- Modal for Adding or Editing Stock -->
  <div id="formModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-96 p-6">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold text-blue-600">Tambah Stok Barang</h2>
+        <h2 class="text-xl font-semibold text-blue-600">Tambah/Edit Barang</h2>
         <button id="closeModalButton" class="text-gray-500 hover:text-gray-700">
           <span class="text-2xl">&times;</span>
         </button>
       </div>
-      <form id="inventoryForm" action="<?= BASEURL; ?>/Inventory/tambahInventory" method="post">
+      <form id="inventoryForm" action="<?= BASEURL; ?>/Inventory/tambah" method="post">
         <input type="hidden" id="itemId" name="ITEM_ID" value="">
 
         <!-- Nama Barang -->
         <div class="mb-3">
-          <label for="item_id" class="text-sm text-gray-700">Nama Barang</label>
-          <select id="item_id" name="item_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
-            <option value="" disabled selected>-- Pilih Nama Barang --</option>
-            <?php foreach($data['items'] as $item): ?>
-              <option value="<?= $item['ITEM_ID']; ?>"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></option>
-            <?php endforeach; ?>
-          </select>
+          <label for="ITEM_NAME" class="text-sm text-gray-700">Nama Barang</label>
+          <input id="ITEM_NAME" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="ITEM_NAME" placeholder="Nama Barang" required>
+        </div>
+
+        <!-- Kategori Barang -->
+        <div class="mb-3">
+          <label for="CATEGORY_ITEM" class="text-sm text-gray-700">Kategori</label>
+          <input id="CATEGORY_ITEM" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="CATEGORY_ITEM" placeholder="Kategori Barang" required>
         </div>
 
         <!-- Kuantitas -->
         <div class="mb-3">
-          <label for="quantity" class="text-sm text-gray-700">Kuantitas</label>
-          <input id="quantity" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="quantity" placeholder="Kuantitas" required>
+          <label for="QUANTITY" class="text-sm text-gray-700">Kuantitas</label>
+          <input id="QUANTITY" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="QUANTITY" placeholder="Kuantitas" required>
         </div>
 
         <!-- Harga Beli -->
         <div class="mb-3">
-          <label for="harga_beli" class="text-sm text-gray-700">Harga Beli</label>
-          <input id="harga_beli" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="harga_beli" placeholder="Harga Beli" required>
+          <label for="HARGA_BELI" class="text-sm text-gray-700">Harga Beli</label>
+          <input id="HARGA_BELI" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="HARGA_BELI" placeholder="Harga Beli" required>
         </div>
+
+        <!-- Harga Jual -->
+        <div class="mb-3">
+          <label for="HARGA_JUAL" class="text-sm text-gray-700">Harga Jual</label>
+          <input id="HARGA_JUAL" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="HARGA_JUAL" placeholder="Harga Jual" required>
+        </div>
+
+        <!-- Status -->
+        <div class="mb-3">
+          <label for="STATUS" class="text-sm text-gray-700">Status</label>
+          <select id="STATUS" name="STATUS" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+            <option value="Ready">Ready</option>
+            <option value="Pending">Pending</option>
+            <option value="Empty">Empty</option>
+          </select>
+        </div>
+        
 
         <!-- Submit Button -->
         <div class="flex justify-end mt-4">
