@@ -43,8 +43,6 @@ public function getStoreInfo() {
   return $this->db->single(); // Ambil 1 baris data saja
 }
 
-
-
   public function daftar($data) {
     $query = "INSERT INTO i_users (name, role, address, phone_number, email, password)
     VALUES (:name, :role, :address, :phonenumber, :email, :password)";
@@ -60,6 +58,36 @@ public function getStoreInfo() {
     // var_dump($this->db->single());
 
     return $this->db->rowCount();
+  }
+
+  public function cekEmail($email) {
+    $this->db->query('SELECT * FROM i_users WHERE email = :email');
+    $this->db->bind('email', $email);
+    return $this->db->single();
+  }
+
+  public function cekEmailToko($email) {
+    $this->db->query('SELECT * FROM i_store_info WHERE email = :email');
+    $this->db->bind('email', $email);
+    return $this->db->single();
+  }
+
+  public function cekPassword($password) {
+    $this->db->query('SELECT * FROM i_users WHERE password = :password');
+    $this->db->bind('password', hash('sha256', $password));
+    return $this->db->single();        
+  }
+
+  public function cekNomorTelepon($nomor_telepon) {
+    $this->db->query('SELECT * FROM i_users WHERE phone_number = :nomor_telepon');
+    $this->db->bind('nomor_telepon', $nomor_telepon);
+    return $this->db->single();
+  }
+  
+  public function cekNomorTeleponToko($nomor_telepon) {
+    $this->db->query('SELECT * FROM i_store_info WHERE phone_number = :nomor_telepon');
+    $this->db->bind('nomor_telepon', $nomor_telepon);
+    return $this->db->single();
   }
 
   public function daftarAdmin($data) {

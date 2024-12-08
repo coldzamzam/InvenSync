@@ -129,6 +129,12 @@ Class Item_model {
     return $this->db->single();
   }
 
+  public function cekBrand($brand_name) {
+    $this->db->query('SELECT * FROM i_master_brand WHERE brand_name = :brand_name');
+    $this->db->bind('brand_name', $brand_name);
+    return $this->db->single();
+  }
+
   public function addBrand($data) {
     $query = "INSERT INTO i_master_brand (brand_name, store_id) VALUES (:brand_name, :store_id)";
     $this->db->query($query);
@@ -205,6 +211,7 @@ Class Item_model {
 
   }
 
+  
 }
 
 ?>

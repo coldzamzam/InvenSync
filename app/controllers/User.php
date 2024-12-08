@@ -69,25 +69,39 @@ class User extends Controller {
 		'confirmPasswordError' => '',
 		'judul' => 'Buat Akun'
 	];
+	$cekemail=$this->model('User_model')->cekEmail($data['email']);
+	$cekpassword=$this->model('User_model')->cekPassword($data['password']);
+	$ceknomortelepon=$this->model('User_model')->cekNomorTelepon($data['phonenumber']);
 
 	// Validate data
 	if (empty($data['name'])) $data['nameError'] = 'Nama tidak boleh kosong.';
 	if (empty($data['role'])) $data['roleError'] = 'Role tidak boleh kosong.';
 	if (empty($data['address'])) $data['addressError'] = 'Alamat tidak boleh kosong.';
-	if (empty($data['phonenumber'])) $data['phonenumberError'] = 'Nomor Telepon tidak boleh kosong.';
+	if (empty($data['phonenumber'])) {
+		$data['phonenumberError'] = 'Nomor Telepon tidak boleh kosong.';
+	} elseif ($ceknomortelepon > 0) {
+		$data['phonenumberError'] = 'Nomor Telepon sudah terdaftar.';
+	} elseif (!preg_match("/^08[0-9]{9,11}$/", $data['phonenumber'])) {
+		$data['phonenumberError'] = 'Format nomor telepon tidak valid.';
+	}
+
 	if (empty($data['email'])) {
 		$data['emailError'] = 'Email tidak boleh kosong.';
 	} elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
 		$data['emailError'] = 'Format email tidak valid.';
+	} elseif ($cekemail > 0) {
+		$data['emailError'] = 'Email sudah terdaftar.';
 	}
 
 	if (empty($data['password'])) {
 		$data['passwordError'] = 'Password tidak boleh kosong.';
 	} elseif (strlen($data['password']) < 8 || 
-			  !preg_match("#[0-9]+#", $data['password']) || 
-			  !preg_match("#[A-Z]+#", $data['password']) || 
-			  !preg_match("#[a-z]+#", $data['password'])) {
+			!preg_match("#[0-9]+#", $data['password']) || 
+			!preg_match("#[A-Z]+#", $data['password']) || 
+			!preg_match("#[a-z]+#", $data['password'])) {
 		$data['passwordError'] = 'Password harus terdiri dari minimal 8 karakter, 1 angka, 1 huruf besar, dan 1 huruf kecil.';
+	} elseif ($cekpassword > 0) {
+		$data['passwordError'] = 'Password sudah terdaftar.';
 	}
 	
 	// Validasi konfirmasi password
@@ -107,10 +121,11 @@ class User extends Controller {
 		return;
 	}
 
-	// Insert data
+	
+
 	if ($this->model('User_model')->daftar($data) > 0) {
-		Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
-		header('Location: ' . BASEURL . '/user/login');
+		Flasher::setFlash('Error', 'Quantity melebihi stok!', 'Tutup', 'error');
+		header('Location: ' . BASEURL . '/user/index');
 		exit;
 	} else {
 		Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
@@ -135,17 +150,25 @@ class User extends Controller {
 		'yearfoundedError' => '',
 		'judul' => 'Profile Toko'
 	];
+	$cekemail=$this->model('User_model')->cekEmailToko($data['emailtoko']);
+	$ceknomortelepon=$this->model('User_model')->cekNomorTeleponToko($data['telepontoko']);
 
 	// Validate data
 	if (empty($data['namatoko'])) $data['namatokoError'] = 'Nama tidak boleh kosong.';
 	if (empty($data['tipetoko'])) $data['tipetokoError'] = 'Tipe toko tidak boleh kosong.';
 	if (empty($data['lokasi'])) $data['lokasiError'] = 'Alamat tidak boleh kosong.';
-	if (empty($data['telepontoko'])) $data['telepontokoError'] = 'Nomor Telepon tidak boleh kosong.';
+	if (empty($data['telepontoko'])) {
+		$data['telepontokoError'] = 'Nomor Telepon tidak boleh kosong.';
+	} elseif ($ceknomortelepon > 0) {
+		$data['telepontokoError'] = 'Nomor Telepon sudah terdaftar.';
+	}
 	if (empty($data['yearfounded'])) $data['yearfoundedError'] = 'Tahun didirikan tidak boleh kosong.';
 	if (empty($data['emailtoko'])) {
 		$data['emailtokoError'] = 'emailtoko tidak boleh kosong.';
 	} elseif (!filter_var($data['emailtoko'], FILTER_VALIDATE_EMAIL)) {
 		$data['emailtokoError'] = 'Format email toko tidak valid.';
+	} elseif ($cekemail > 0) {
+		$data['emailtokoError'] = 'Email sudah terdaftar.';
 	}
 
 	// Return errors if any
@@ -257,6 +280,8 @@ class User extends Controller {
 			'yearfoundedError' => '',
 			'judul' => 'Profile Toko'
 		];
+		$cekemail = $this->model('User_model')->cekEmailToko($data['emailtoko']);
+		$ceknomortelepon = $this->model('User_model')->cekNomorTeleponToko($data['telepontoko']);
 	
 		// Validate data
 		if (empty($data['namatoko'])) $data['namatokoError'] = 'Nama tidak boleh kosong.';
@@ -268,7 +293,15 @@ class User extends Controller {
 			$data['emailtokoError'] = 'emailtoko tidak boleh kosong.';
 		} elseif (!filter_var($data['emailtoko'], FILTER_VALIDATE_EMAIL)) {
 			$data['emailtokoError'] = 'Format email toko tidak valid.';
+		} elseif ($cekemail > 0) {
+			$data['emailtokoError'] = 'Email toko sudah terdaftar.';
 		}
+		if (empty($data['telepontoko'])) {
+			$data['telepontokoError'] = 'Nomor Telepon tidak boleh kosong.';
+		} elseif ($ceknomortelepon > 0) {
+			$data['telepontokoError'] = 'Nomor Telepon sudah terdaftar.';
+		}
+
 	
 		// Return errors if any
 		if (!empty($data['namatokoError']) || !empty($data['tipetokoError']) || !empty($data['lokasiError']) || 

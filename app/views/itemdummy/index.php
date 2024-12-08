@@ -149,7 +149,8 @@
         <!-- Nama Brand -->
         <div class="mb-3">
           <label for="brand_name" class="text-sm text-gray-700">Nama Brand</label>
-          <input id="brand_name" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="brand_name" placeholder="Nama Barang" required>
+          <input id="brand_name" name='brand_name' class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="brand_name" placeholder="Nama Barang">
+          <span class="text-red-500"><?= $data['brandError']; ?></span>
         </div>
         <!-- Submit Button -->
         <div class="flex justify-end mt-4">
@@ -173,8 +174,10 @@
         <!-- Nama Category -->
         <div class="mb-3">
           <label for="ITEM_NAME" class="text-sm text-gray-700">Nama Category</label>
-          <input id="ITEM_NAME" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="category_name" placeholder="Nama Barang" required>
+          <input id="ITEM_NAME" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="category_name" placeholder="Nama Barang">
+          <span class="text-red-500"><?= $data['categoryError']; ?></span>
         </div>
+        s
         <!-- Submit Button -->
         <div class="flex justify-end mt-4">
           <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButtonCategory">Tambah Category</button>

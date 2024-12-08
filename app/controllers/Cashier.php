@@ -43,7 +43,6 @@ class Cashier extends Controller {
           }
       } else if (isset($_SESSION['receipt_id'])) {
           $maxQuantity = $this->model('Cashier_model')->CheckMaxQuantity($data['kodebarang']);
-          var_dump($maxQuantity);
           if ($data['quantity'] > $maxQuantity) {
             Flasher::setFlash('Error', 'Quantity melebihi stok!', 'Tutup', 'error');
             header('Location: ' . BASEURL . '/cashier');

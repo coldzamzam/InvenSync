@@ -2,7 +2,11 @@
 
 Class Item extends Controller {
   public function index(){
-    $data['judul'] = 'List Items';
+    $data = [
+      'judul' => 'List Items',
+      'brandError'=>'',
+      'categoryError'=>''
+    ];
     $data['item'] = $this->model('Item_model')->getAllItem();
     $data['brand'] = $this->model('Item_model')->getAllBrand();
     $data['category'] = $this->model('Item_model')->getAllCategory();

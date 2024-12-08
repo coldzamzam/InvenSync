@@ -102,18 +102,36 @@ class Cashier_model {
     $this->db->execute();
   }
 
-  public function getReceiptDetails(){
-    $query = "SELECT * FROM i_master_category mc 
-              join i_master_item mi using (category_id) 
-              join i_receipt_item ri using (item_id) 
-              join i_receipt r using (receipt_id) 
-              join i_master_brand mb using (brand_id)
-              WHERE ri.is_deleted = 0 AND r.store_id = :store_id";
+  public function getReceiptID(){
+    $this->db->query('SELECT receipt_id FROM i_receipt');
+    $this->db->execute();
+    return $this->db->single();
+  }
+
+  public function getAllReceipts() {
+    $query = "SELECT * FROM i_receipt WHERE store_id = :store_id";
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
+
+    return $this->db->resultSet();  // returns all receipts
+}
+
+
+  public function getReceiptDetails($receipt_id){
+    $query = "SELECT * FROM i_master_category mc 
+              join i_master_item mi using (category_id) 
+              join i_receipt_item ri using (item_id) 
+              join i_master_brand mb using (brand_id)
+              WHERE ri.is_deleted = 0 AND ri.store_id = :store_id 
+              AND ri.receipt_id = :receipt_id";
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->bind('receipt_id', $receipt_id);
+    $this->db->execute();
     return $this->db->resultSet();
   }
+  
 
   public function confirmReceipt(){
     //INI BELOM SA

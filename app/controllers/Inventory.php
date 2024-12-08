@@ -43,7 +43,7 @@ class Inventory extends Controller {
 
 	public function tambahBrand() {
 		if ($this->model('Item_model')->addBrand($_POST) > 0) {
-			// Flasher::setFlash('berhasil', 'ditambahkan', 'success');
+			Flasher::setFlash('berhasil', 'ditambahkan','tutup', 'success');
 			header('Location: ' . BASEURL . '/Item');
 			exit;
 		} else {
