@@ -494,15 +494,6 @@ function performSearch() {
   });
 }
 
-// Optional: Tambahkan event listener untuk tombol Enter
-document.getElementById('searchInput').addEventListener('keypress', function(event) {
-  if (event.key === 'Enter') {
-    event.preventDefault(); // Mencegah form submit
-    performSearch();
-  }
-});
-
-
 
       function closeModal() {
         document.getElementById('modal').classList.add('hidden');
