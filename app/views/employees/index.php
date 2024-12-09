@@ -253,17 +253,29 @@ if (isset($_SESSION['status'])):
     <script>
         // Handle SweetAlert based on session status
         let status = '<?= $status ?>';
-        if (status === 'success') {
-            Swal.fire({
-                title: 'Success',
-                text: 'Employee has been added successfully!',
-                icon: 'success'
-            });
-        } else if (status === 'error') {
+        if (status === 'errorPassword') {
             Swal.fire({
                 title: 'Error',
-                text: 'Failed to add employee!',
+                text: 'Password tidak tersedia!',
+                icon: 'success'
+            });
+        } else if (status === 'errorEmail') {
+            Swal.fire({
+                title: 'Error',
+                text: 'Email tidak tersedia!',
                 icon: 'error'
+            });
+        } else if (status === 'errorNomorTelepon') {
+            Swal.fire({
+                title: 'Error',
+                text: 'Nomor Telepon tidak tersedia!',
+                icon: 'error'
+            });
+        } else {
+          Swal.fire({
+                title: 'Success',
+                text: 'Karyawan Berhasil Ditambahkan!',
+                icon: 'success'
             });
         }
     </script>

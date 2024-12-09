@@ -62,7 +62,7 @@ if (isset($_SESSION['status'])):
         let status = '<?= $status ?>';
         if (status === 'verified') {
             Swal.fire({
-                title: 'Success',
+                title: 'Berhasil',
                 text: 'Akun telah diverifikasi!',
                 icon: 'success'
             });
