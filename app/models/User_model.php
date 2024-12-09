@@ -43,22 +43,47 @@ public function getStoreInfo() {
   return $this->db->single(); // Ambil 1 baris data saja
 }
 
-  public function daftar($data) {
-    $query = "INSERT INTO i_users (name, role, address, phone_number, email, password)
-    VALUES (:name, :role, :address, :phonenumber, :email, :password)";
+public function daftar($data) {
+    $query = "INSERT INTO i_users (name, role, address, phone_number, email, password, verification_token, is_email_verified)
+              VALUES (:name, :role, :address, :phonenumber, :email, :password, :verificationToken, 0)";
+              
     $this->db->query($query);
     $this->db->bind('name', $data['name']);
     $this->db->bind('role', $data['role']);
     $this->db->bind('address', $data['address']);
     $this->db->bind('phonenumber', $data['phonenumber']);
     $this->db->bind('email', $data['email']);
-    $this->db->bind('password', hash('sha256', $data['password']) );
+    $this->db->bind('password', hash('sha256', $data['password']));
+    $this->db->bind('verificationToken', $data['verificationCode']);
 
     $this->db->execute();
-    // var_dump($this->db->single());
 
-    return $this->db->rowCount();
-  }
+    return $this->db->rowCount(); // Mengembalikan jumlah baris yang ditambahkan
+}
+
+public function getUserByToken($token) {
+  $query = "SELECT * FROM i_users WHERE verification_token = :token";
+  $this->db->query($query);
+  $this->db->bind('token', $token);
+  return $this->db->single();
+}
+
+
+public function verifyUserEmail($user_id) {
+  $query = "UPDATE i_users SET is_email_verified = 1 WHERE user_id = :user_id";
+  $this->db->query($query);
+  $this->db->bind('user_id', $user_id);
+  $this->db->execute();
+}
+
+public function removeVerificationToken($user_id) {
+  $query = "UPDATE i_users SET verification_token = NULL WHERE user_id = :user_id";
+  $this->db->query($query);
+  $this->db->bind('user_id', $user_id);
+  $this->db->execute();
+}
+
+
 
   public function cekEmail($email) {
     $this->db->query('SELECT * FROM i_users WHERE email = :email');

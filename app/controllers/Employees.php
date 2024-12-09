@@ -8,6 +8,7 @@ class Employees extends Controller{
     }
 
     public function index($page=1){
+
         $data['judul'] = 'Employees';
         $data['users'] = $this->model('User_model')->getUserStore();
         // $data['invusers'] = $this->model('User_model')->getInventoryUser();
@@ -32,49 +33,28 @@ class Employees extends Controller{
             'phonenumber' => $_POST['phonenumber'] ?? '',
             'email' => $_POST['email'] ?? '',
             'password' => $_POST['password'] ?? '',
-            'nameError' => '',
-            'roleError' => '',
-            'addressError' => '',
-            'phonenumberError' => '',
-            'emailError' => '',
-            'passwordError' => '',
-            'loginEmailError' => '',
-            'loginPasswordError' => '',
             'judul' => 'Buat Akun'
         ];
-    
-        // Validate data
-        if (empty($data['name'])) $data['nameError'] = 'Nama tidak boleh kosong.';
-        if (empty($data['role'])) $data['roleError'] = 'Role tidak boleh kosong.';
-        if (empty($data['address'])) $data['addressError'] = 'Alamat tidak boleh kosong.';
-        if (empty($data['phonenumber'])) $data['phonenumberError'] = 'Nomor Telepon tidak boleh kosong.';
-        if (empty($data['email'])) {
-            $data['emailError'] = 'Email tidak boleh kosong.';
-        } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            $data['emailError'] = 'Format email tidak valid.';
-        }
-        if (empty($data['password'])) {
-            $data['passwordError'] = 'Password tidak boleh kosong.';
-        } elseif (strlen($data['password']) < 8 || !preg_match("#[0-9]+#", $data['password']) || 
-            !preg_match("#[A-Z]+#", $data['password']) || !preg_match("#[a-z]+#", $data['password'])) {
-            $data['passwordError'] = 'Password harus terdiri dari minimal 8 karakter, 1 angka, 1 huruf besar, dan 1 huruf kecil.';
-        }
-    
-        // Return errors if any
-        if (!empty($data['nameError']) || !empty($data['roleError']) || !empty($data['addressError']) || 
-            !empty($data['phonenumberError']) || !empty($data['emailError']) || !empty($data['passwordError'])) {
-            $_SESSION['formErrors'] = $data;
+        $cekemail=$this->model('User_model')->cekEmail($data['email']);
+        $cekpassword=$this->model('User_model')->cekPassword($data['password']);
+        $ceknomortelepon=$this->model('User_model')->cekNomorTelepon($data['phonenumber']);
+        if ($cekemail>0) {
+            $_SESSION['status']='errorEmail';
             header('Location: ' . BASEURL . '/employees');
-            return;
-        }
-        if ($this->model('User_model')->daftarAdmin($data) > 0) {
+        } elseif ($cekpassword>0){
+            $_SESSION['status']='errorPassword';
+            header('Location: ' . BASEURL . '/employees');
+        } elseif ($ceknomortelepon>0){
+            $_SESSION['status']='errorNomorTelepon';
+            header('Location: ' . BASEURL . '/employees');
+        } else{
             $_SESSION['status']='success';
-        } else {
-            $_SESSION['status']='error';
+            header('Location: ' . BASEURL . '/employees');
+            exit;
         }
-        header('Location: ' . BASEURL . '/employees');
-        exit;
     }
+
+    
 
     public function deleteEmployee($id = null) {
         if (isset($_POST['id']) && !empty($_POST['id'])) {

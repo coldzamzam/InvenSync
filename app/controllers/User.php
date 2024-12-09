@@ -1,6 +1,14 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+//Load Composer's autoloader
+require '../vendor/autoload.php';
+
 class User extends Controller {
+	
   public function index(){
 	$data['nameError'] = '';
 	$data['roleError'] = '';
@@ -51,6 +59,9 @@ class User extends Controller {
   }
 
   public function createAcc() {
+
+	$mail = new PHPMailer(true);
+
 	$data = [
 		'name' => $_POST['name'] ?? '',
 		'role' => $_POST['role'] ?? '',
@@ -67,6 +78,7 @@ class User extends Controller {
 		'loginEmailError' => '',
 		'loginPasswordError' => '',
 		'confirmPasswordError' => '',
+		'verificationCode' => bin2hex(random_bytes(16)),
 		'judul' => 'Buat Akun'
 	];
 	$cekemail=$this->model('User_model')->cekEmail($data['email']);
@@ -112,6 +124,8 @@ class User extends Controller {
 		$data['confirmPasswordError'] = 'Konfirmasi password tidak sesuai.';
 	}
 
+
+	
 	// Return errors if any
 	if (!empty($data['nameError']) || !empty($data['roleError']) || !empty($data['addressError']) || 
 		!empty($data['phonenumberError']) || !empty($data['emailError']) || !empty($data['passwordError'] || !empty($data['confirmPasswordError']))) {
@@ -120,21 +134,97 @@ class User extends Controller {
 		$this->view('templates/footer');
 		return;
 	}
-
-	
-
 	if ($this->model('User_model')->daftar($data) > 0) {
-		Flasher::setFlash('Error', 'Quantity melebihi stok!', 'Tutup', 'error');
-		header('Location: ' . BASEURL . '/user/index');
-		exit;
-	} else {
-		Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
-		header('Location: ' . BASEURL . '/user');
-		exit;
-	}
-  }
+		try {
+			//Server settings
+			$mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
+			$mail->isSMTP();                                            //Send using SMTP
+			$mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+			$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+			$mail->Username   = 'rifatok123@gmail.com';                     //SMTP username
+			$mail->Password   = 'xpbn gjvc kkve rvcq';                               //SMTP password
+			$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+			$mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+		
+			//Recipients
+			$mail->setFrom('from@InvenSync.com', 'Verification');
+			$mail->addAddress($data['email'], $data['name']);     //Add a recipient
+			// $mail->addAddress('ellen@example.com');               //Name is optional
+			// $mail->addReplyTo('info@example.com', 'Information');
+			// $mail->addCC('cc@example.com');
+			// $mail->addBCC('bcc@example.com');
+		
+			// //Attachments
+			// $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+			// $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+		
+			//Content
+			$mail->isHTML(true);                                  //Set email format to HTML
+			$mail->Subject = 'Verifikasi Akun';
+			$mail->Body = "
+                <h1>Halo, {$data['name']}!</h1>
+                <p>Klik tautan di bawah ini untuk memverifikasi akun Anda:</p>
+                <a href='" . BASEURL . "/user/verify/{$data['verificationCode']}'>
+                Verifikasi Akun Anda
+                </a>
+                <p>Terima kasih!</p>
+            ";		
+			if ($mail->send()) {
+                Flasher::setFlash('Berhasil', 'Email verifikasi telah dikirim!', 'Tutup', 'success');
+            } else {
+                Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
+            }
+
+        } catch (Exception $e) {
+            Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
+        }
+    } else {
+        Flasher::setFlash('Gagal', 'Registrasi akun gagal.', 'Tutup', 'danger');
+    }
+
+    header('Location: ' . BASEURL . '/user/index');
+    exit;
+// } else {
+// 	Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
+// 	header('Location: ' . BASEURL . '/user');
+// 	exit;
+// }
+
+	// } else {
+	// 	Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
+	// 	header('Location: ' . BASEURL . '/user');
+	// 	exit;
+	// }
+}
+
+public function verify($code = null) {
+    if (!$code) {
+        Flasher::setFlash('Gagal', 'Token tidak valid.', 'Tutup', 'danger');
+        header('Location: ' . BASEURL . '/fesbuk'); 
+        exit;
+    }
+
+    $user = $this->model('User_model')->getUserByToken($code);
+
+    if (!$user) {
+        Flasher::setFlash('Gagal', 'Token tidak valid atau sudah kadaluarsa.', 'Tutup', 'danger');
+        header('Location: ' . BASEURL . '/fesbuk');
+        exit;
+    }
+
+	$this->model('User_model')->verifyUserEmail($user['USER_ID']);
+	$this->model('User_model')->removeVerificationToken($user['USER_ID']);
+	$_SESSION['status'] = 'verified';
+
+	header('Location: ' . BASEURL . 'user/login');
+    exit;
+}
+
+
 
   public function createToko() {
+	
+
 	$data = [
 		'namatoko' => $_POST['namatoko'] ?? '',
 		'tipetoko' => $_POST['tipetoko'] ?? '',

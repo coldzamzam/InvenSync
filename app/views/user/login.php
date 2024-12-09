@@ -51,3 +51,27 @@
     </div>
   </div>
 </div>
+
+<?php
+if (isset($_SESSION['status'])):
+    $status = $_SESSION['status']; // Get status from session
+    unset($_SESSION['status']); // Remove status from session after using it
+?>
+    <script>
+        // Handle SweetAlert based on session status
+        let status = '<?= $status ?>';
+        if (status === 'verified') {
+            Swal.fire({
+                title: 'Success',
+                text: 'Akun telah diverifikasi!',
+                icon: 'success'
+            });
+        } else if (status === 'errorEmail') {
+            Swal.fire({
+                title: 'Error',
+                text: 'Email tidak tersedia!',
+                icon: 'error'
+            });
+        }
+    </script>
+<?php endif; ?>
