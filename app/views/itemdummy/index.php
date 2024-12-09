@@ -3,7 +3,7 @@
 
     <div class="flex items-center mb-4 space-x-4 justify-between">
       <div class="wrap-filter flex items-center gap-4">
-        <input type="text" placeholder="Quick search" class="border rounded px-4 py-2">
+      <input type="text" id="quickSearchInput" placeholder="Quick search" class="border rounded px-4 py-2">
         <!-- <input type="date" class="border rounded px-4 py-2">
         <select class="border rounded px-4 py-2">
           <option>Status</option>
@@ -289,8 +289,37 @@
         }
       });
     });
-    
-  </script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const quickSearchInput = document.getElementById("quickSearchInput");
+  const tableRows = document.querySelectorAll("tbody tr");
 
+  quickSearchInput.addEventListener("input", () => {
+    const query = quickSearchInput.value.toLowerCase();
+
+    tableRows.forEach(row => {
+      const rowText = row.innerText.toLowerCase();
+      row.style.display = rowText.includes(query) ? "" : "none";
+    });
+  });
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const quickSearchInput = document.getElementById("quickSearchInput");
+  const tableRows = document.querySelectorAll("tbody tr");
+
+  quickSearchInput.addEventListener("input", () => {
+    const query = quickSearchInput.value.toLowerCase();
+
+    tableRows.forEach(row => {
+      const columns = row.querySelectorAll("td"); // Ambil semua kolom di baris ini
+      const isMatch = Array.from(columns).some(column =>
+        column.innerText.toLowerCase().includes(query)
+      );
+      
+      row.style.display = isMatch ? "" : "none"; // Tampilkan/hilangkan baris berdasarkan hasil
+    });
+  });
+});
+
+  </script>
 </body>
 </html>

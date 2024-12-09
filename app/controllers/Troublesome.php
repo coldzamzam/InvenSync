@@ -10,7 +10,7 @@ class Troublesome extends Controller
     }
     public function index()
     {
-        $data['judul'] = 'Troublesome';
+        $data['judul'] = 'Troublesome Items';
         $this->view('templates/s-header', $data);
         $this->view('troublesome/index', $data);
     }
