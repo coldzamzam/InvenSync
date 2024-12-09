@@ -6,7 +6,7 @@
         <h2 class="text-2xl font-semibold">Pemasukan</h2>
         <?php foreach ($data['chartPenghasilan'] as $pemasukan) : ?>
           <p>
-            <?= $pemasukan['BULAN']; ?> - <?= $pemasukan['TOTAL_PENDAPATAN']; ?>
+            <?= $pemasukan['BULAN']; ?> - Rp<?= number_format($pemasukan['TOTAL_PENDAPATAN'], 2, ',', '.'); ?>
           </p>
         <?php endforeach; ?>
       </div>
@@ -23,7 +23,7 @@
           <h2 class="text-2xl font-semibold">Pengeluaran</h2>
           <?php foreach ($data['chartPenghasilan'] as $pengeluaran) : ?>
             <p>
-            <?= $pengeluaran['BULAN']; ?> - <?= $pengeluaran['TOTAL_PENGELUARAN']; ?>
+            <?= $pengeluaran['BULAN']; ?> - Rp<?= number_format($pengeluaran['TOTAL_PENGELUARAN'], 2, ',', '.'); ?>
             </p>
           <?php endforeach; ?>
         </div>
@@ -39,39 +39,43 @@
 </div>
 
   <script type="text/javascript">
-    
-    google.charts.load('current', {packages: ['corechart', 'bar']});
-    google.charts.setOnLoadCallback(drawMaterial);
 
-    function drawMaterial() {
+    const chartPenghasilan = <?= json_encode(array_map(function($item) {
+      return [
+        $item['BULAN'],
+        (float)$item['TOTAL_PENDAPATAN'] ?? 0, // Pendapatan
+        (float)$item['TOTAL_PENGELUARAN']     // Pengeluaran
+      ];
+    }, $data['chartPenghasilan'])); ?>;
+
+    console.log(chartPenghasilan); // Debug: Cek outputnya di console
+
+    // Load Google Charts sekali saja
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawCharts);
+
+    function drawCharts() {
+      drawMaterialChart();
+      drawPieChart();
+    }
+
+    function drawMaterialChart() {
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Bulan');
       data.addColumn('number', 'Pemasukan');
       data.addColumn('number', 'Pengeluaran');
 
-      data.addRows([
-        ['Januari', 5000000, 2000000],
-        ['Februari', 6000000, 2500000],
-        ['Maret', 7000000, 3000000],
-        ['April', 8000000, 3500000],
-        ['Mei', 9000000, 4000000],
-        ['Juni', 10000000, 4500000],
-        ['Juli', 11000000, 5000000],
-        ['Agustus', 12000000, 5500000],
-        ['September', 13000000, 6000000],
-        ['Oktober', 14000000, 6500000],
-        ['November', 15000000, 7000000],
-        ['Desember', 16000000, 7500000],
-      ]);
+      // Tambahkan data dari chartPenghasilan
+      data.addRows(chartPenghasilan);
 
       var options = {
         title: 'Pemasukan dan Pengeluaran per Bulan',
         hAxis: {
-          title: 'Bulan',
+            title: 'Bulan',
         },
         vAxis: {
-          title: 'Jumlah (Rp)',
-          format: 'decimal'
+            title: 'Jumlah (Rp)',
+            format: 'decimal'
         },
         bars: 'vertical',
         legend: { position: 'top' },
@@ -82,20 +86,22 @@
       materialChart.draw(data, google.charts.Bar.convertOptions(options));
     }
 
+    function drawPieChart() {
+      var data = google.visualization.arrayToDataTable(
+        <?= json_encode($data['adminChartData']) ?>
+      );
 
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable(
-          <?= json_encode($data['adminChartData']) ?>
-        );
-        var options = {
+      var options = {
+          title: 'Distribusi Pendapatan dan Pengeluaran'
+      };
 
-        };
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        chart.draw(data, options);
-      }
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+      chart.draw(data, options);
+    }
+
   </script>
+        
+
 <?php
 if (isset($_SESSION['status'])):
     $status = $_SESSION['status']; // Get status from session
