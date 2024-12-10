@@ -131,6 +131,17 @@ class Cashier_model {
     $this->db->execute();
     return $this->db->resultSet();
   }
+
+  public function getTotalPrice(){
+    $query = "SELECT SUM(total_per_item * quantity) AS total_price 
+              FROM i_receipt_item 
+              WHERE is_deleted = 0 AND store_id = :store_id
+              GROUP BY receipt_id";
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+    return $this->db->single();
+  }
   
 
   public function confirmReceipt(){

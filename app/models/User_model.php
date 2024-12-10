@@ -161,7 +161,7 @@ public function removeVerificationToken($user_id) {
   }
 
   public function masuk($data) {
-    $query = "SELECT * FROM i_users WHERE email = :email AND password = :password";
+    $query = "SELECT * FROM i_users WHERE email = :email AND password = :password AND is_email_verified = 1 AND verification_token IS NULL";
     $this->db->query($query);
     $this->db->bind('email', $data['email']);
     $this->db->bind('password', hash('sha256', $data['password']));

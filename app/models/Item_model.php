@@ -187,7 +187,7 @@ Class Item_model {
     $query = "SELECT i.inventory_id, i.item_id, i.quantity, i.date_added, i.harga_beli, i.user_id, mi.item_name AS item_name
               FROM i_inventory i 
               JOIN i_master_item mi ON i.item_id = mi.item_id
-              WHERE i.store_id = :store_id";
+              AND i.store_id = :store_id";
 
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
@@ -197,9 +197,9 @@ Class Item_model {
   }
 
   public function getAllTotalQuantity() {
-    $query = "SELECT mi.item_name, SUM(i.quantity) AS TOTALQUANTITY
+    $query = "SELECT mi.item_name, NVL(SUM(i.quantity), 0) AS TOTALQUANTITY
               FROM i_inventory i
-              JOIN i_master_item mi on mi.item_id = i.item_id
+              LEFT JOIN i_master_item mi on mi.item_id = i.item_id
               WHERE i.store_id = :store_id
               GROUP BY mi.item_name";
 

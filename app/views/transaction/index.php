@@ -6,7 +6,7 @@
                 <p class="text-gray-600 text-xl font-bold">
                     Transaksi dengan ID : <span class="text-blue-600"><?= $receipt_id; ?></span> - Pada Tanggal : <?= $receipt['date_added']; ?>
                 </p>
-                    <h2 class="text-xl font-semibold text-gray-800 flex">Total:<p class="text-green-600">dummy</p></h2>
+                    <h2 class="text-xl font-semibold text-gray-800 flex">Total:<p class="text-green-600">Rp<?= number_format($receipt['total'], 2); ?></p></h2>
                     <button id="printInvoiceBtn" type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButton">Print Invoice <i class="fa fa-print"></i></button>
                 </div>
                 <table id="table-<?= $receipt_id; ?>" class="w-full text-left border-collapse hidden mt-6">
@@ -16,6 +16,7 @@
                             <th>Item Name</th>
                             <th>Quantity</th>
                             <th>Price</th>
+                            <th>Total Price</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,6 +26,7 @@
                                 <td><?= $item['ITEM_NAME']; ?></td>
                                 <td><?= $item['QUANTITY']; ?></td>
                                 <td><?= number_format($item['COST_PRICE'], 2); ?></td>
+                                <td><?= number_format(($item['COST_PRICE'] * $item['QUANTITY']), 2); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
