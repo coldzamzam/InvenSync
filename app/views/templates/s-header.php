@@ -49,55 +49,66 @@
 <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden transition-all duration-300"></div>
 <aside id="sidebar" class="fixed top-0 left-0 z-10 bg-gray-800 text-white w-24 hover:w-64 min-h-screen overflow-hidden transition-all duration-300">
   <div class="p-4">
-    <h1 class="text-lg font-bold hidden hover:block">InvenSync</h1>
+    <h1 class="ml-2 pb-4 font-black text-xl text-center sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">InvenSync</h1>
+    <h1 class="
+    <?php 
+    if($_SESSION['user_role']=='Admin Gudang'){
+      echo'bg-red-400';
+    } elseif($_SESSION['user_role']=='Admin Kasir'){
+      echo'bg-green-400';
+    } elseif($_SESSION['user_role']=='Owner') {
+      echo'bg-purple-400';
+    } ?> rounded-3xl ml-2 font-black text-m text-center sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">
+    Anda Login Sebagai <br> <?= $_SESSION['user_role'] ?>
+    </h1>
     <nav class="mt-6 space-y-4">
       <a href="<?= BASEURL; ?>/dashboard" 
-        class="py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-tachometer-alt"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Dashboard</span>
       </a>
       <a href="<?= BASEURL; ?>/employees" 
-        class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-users"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Employees</span>
       </a>
       <a href="<?= BASEURL; ?>/item" 
-        class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fa-solid fa-box"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Items</span>
       </a>
       <a href="<?= BASEURL; ?>/inventory" 
-        class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-boxes"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Inventory</span>
       </a>
       <a href="<?= BASEURL; ?>/troublesome" 
-        class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-exclamation-triangle"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Troublesome Items</span>
       </a>
       <a href="<?= BASEURL; ?>/transaction" 
-        class="py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-money-bill"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Transactions</span>
       </a>
       <a href="<?= BASEURL; ?>/dailyreport" 
-        class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-calendar-day"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Daily Report</span>
       </a>
       <a href="<?= BASEURL; ?>/monthlyreport" 
-        class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-calendar-alt"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Monthly Report</span>
       </a>
       <a href="<?= BASEURL; ?>/cashier"
-        class="<?= ($_SESSION['user_role'] == 'Admin Gudang') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="<?= ($_SESSION['user_role'] == 'Admin Gudang') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-cash-register"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Cashier</span>
       </a>
       <a href="<?= BASEURL; ?>/dashboard/toko" 
-        class="py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-info-circle"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Profile Toko</span>
       </a>

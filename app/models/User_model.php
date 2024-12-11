@@ -160,6 +160,8 @@ public function removeVerificationToken($user_id) {
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->bind('user_id', $_SESSION['user_id']);
+
+    $this->db->execute();
   }
 
   public function masuk($data) {
@@ -333,8 +335,9 @@ public function searchEmployee($search) {
 }
 
 public function getUserStore(){
-  $this->db->query('SELECT * FROM i_users WHERE is_deleted = 0 and store_id = :store_id');
+  $this->db->query('SELECT * FROM i_users WHERE is_deleted = 0 and store_id = :store_id and owner_id = :owner_id');
   $this->db->bind('store_id', $_SESSION['store_id']);
+  $this->db->bind('owner_id', $_SESSION['user_id']);
   $this->db->execute();
   // var_dump($this->db->resultSet());
   return $this->db->resultSet();
@@ -346,11 +349,12 @@ public function getPaginatedUsers($start, $limit)
         SELECT * FROM (
             SELECT a.*, ROWNUM rnum
             FROM i_users a
-            WHERE is_deleted = 0 and store_id = :store_id
+            WHERE is_deleted = 0 and store_id = :store_id and owner_id = :owner_id
         ) WHERE rnum > :startIndex AND rnum <= :endIndex
     ');
     $this->db->bind('startIndex', $start, PDO::PARAM_INT);
     $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->bind('owner_id', $_SESSION['user_id']);
     $this->db->bind('endIndex', $start + $limit, PDO::PARAM_INT);
     $this->db->execute();
     return $this->db->resultSet();

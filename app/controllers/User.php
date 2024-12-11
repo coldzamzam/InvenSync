@@ -273,6 +273,7 @@ public function verify($code = null) {
 	  if ($this->model('User_model')->daftarToko($_POST) > 0) {
 		  // Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
 		  $this->model('User_model')->activateStoreID();
+		  $this->model('User_model')->setOwnerStoreID();
 		  header('Location: ' . BASEURL . '/dashboard');
 		  $_SESSION['status']='success';
 		  exit;
