@@ -1,9 +1,17 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+require '../vendor/autoload.php';
+
 class Employees extends Controller{
     public function __construct(){
         if ( !isset($_SESSION['is_login']) ) {
         header('Location: ' . BASEURL . '/user/login');
+        }
+        if ($_SESSION['user_role'] != 'Owner') {
+        header('Location: ' . BASEURL . '/dashboard');          
         }
     }
 
@@ -21,18 +29,31 @@ class Employees extends Controller{
         $data['currentPage'] = $page;
         $data['totalPages'] = $totalpages;
 
-        $this->view('templates/s-header', $data);
-        $this->view('employees/index', $data);
+        if($this->model('User_model')->checkRowToko() > 0) {
+            $this->view('templates/s-header', $data);
+            $this->view('employees/index', $data);
+        }
+        else {
+            header('Location: ' . BASEURL . '/dashboard/toko');
+        }
     }
 
     public function createEmployee() {
+
+        $mail = new PHPMailer(true);
+
+        function sanitizeInput($input) {
+            return strtolower(trim($input));
+        }
+
         $data = [
             'name' => $_POST['name'] ?? '',
             'role' => $_POST['role'] ?? '',
             'address' => $_POST['address'] ?? '',
             'phonenumber' => $_POST['phonenumber'] ?? '',
-            'email' => $_POST['email'] ?? '',
+            'email' => sanitizeInput($_POST['email']) ?? '',
             'password' => $_POST['password'] ?? '',
+            'verificationCode' => bin2hex(random_bytes(16)),
             'judul' => 'Buat Akun'
         ];
         $cekemail=$this->model('User_model')->cekEmail($data['email']);
@@ -41,19 +62,82 @@ class Employees extends Controller{
         if ($cekemail>0) {
             $_SESSION['status']='errorEmail';
             header('Location: ' . BASEURL . '/employees');
-        } elseif ($cekpassword>0){
-            $_SESSION['status']='errorPassword';
-            header('Location: ' . BASEURL . '/employees');
         } elseif ($ceknomortelepon>0){
             $_SESSION['status']='errorNomorTelepon';
             header('Location: ' . BASEURL . '/employees');
         } else{
-            $_SESSION['status']='success';
-            header('Location: ' . BASEURL . '/employees');
-            exit;
+            if ($this->model('User_model')->daftarAdmin($data)) {
+                try {
+                    //Server settings
+                    $mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
+                    $mail->isSMTP();                                            //Send using SMTP
+                    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+                    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+                    $mail->Username   = 'rifatok123@gmail.com';                     //SMTP username
+                    $mail->Password   = 'xpbn gjvc kkve rvcq';                               //SMTP password
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+                    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+                
+                    //Recipients
+                    $mail->setFrom('from@InvenSync.com', 'Verification');
+                    $mail->addAddress($data['email'], $data['name']);     //Add a recipient
+                    // $mail->addAddress('ellen@example.com');               //Name is optional
+                    // $mail->addReplyTo('info@example.com', 'Information');
+                    // $mail->addCC('cc@example.com');
+                    // $mail->addBCC('bcc@example.com');
+                
+                    // //Attachments
+                    // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+                    // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+                
+                    //Content
+                    $mail->isHTML(true);                                  //Set email format to HTML
+                    $mail->Subject = 'Verifikasi Akun';
+                    $mail->Body = "
+                        <h1>Halo, {$data['name']}!</h1>
+                        <p>Anda Telah diundang untuk menjadi karyawan dari toko ".$_SESSION['store_name']." :</p>
+                        <a href='" . BASEURL . "/employees/verify/{$data['verificationCode']}'>
+                        Verifikasi Akun Anda
+                        </a>
+                        <p>Terima kasih!</p>
+                    ";		
+                    if ($mail->send()) {
+                        $_SESSION['status'] = 'success';
+                    } else {
+                        Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
+                    }
+        
+                } catch (Exception $e) {
+                    Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
+                }
+                header('Location: ' . BASEURL . '/employees');
+                exit;
+            }
         }
     }
 
+    public function verify($code = null) {
+        if (!$code) {
+            Flasher::setFlash('Gagal', 'Token tidak valid.', 'Tutup', 'danger');
+            header('Location: ' . BASEURL . '/fesbuk'); 
+            exit;
+        }
+    
+        $user = $this->model('User_model')->getUserByToken($code);
+    
+        if (!$user) {
+            Flasher::setFlash('Gagal', 'Token tidak valid atau sudah kadaluarsa.', 'Tutup', 'danger');
+            header('Location: ' . BASEURL . '/fesbuk');
+            exit;
+        }
+    
+        $this->model('User_model')->verifyUserEmail($user['USER_ID']);
+        $this->model('User_model')->removeVerificationToken($user['USER_ID']);
+        $_SESSION['status'] = 'verified';
+    
+        header('Location: ' . BASEURL . '/user/login');
+        exit;
+    }
     
 
     public function deleteEmployee($id = null) {

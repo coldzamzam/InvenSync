@@ -116,9 +116,9 @@ public function removeVerificationToken($user_id) {
   }
 
   public function daftarAdmin($data) {
-    $query="INSERT INTO i_users (name, role, address, phone_number, email, password, owner_id, store_id)
-    VALUES (:name, :role, :address, :phonenumber, :email, :password, :owner_id, :store_id)";
-
+    $query="INSERT INTO i_users (name, role, address, phone_number, email, password, owner_id, store_id, verification_token, is_email_verified)
+    VALUES (:name, :role, :address, :phonenumber, :email, :password, :owner_id, :store_id,:verificationToken, 0)";
+  
     $this->db->query($query);  
     $this->db->bind('name', $data['name']);
     $this->db->bind('role', $data['role']);
@@ -126,13 +126,14 @@ public function removeVerificationToken($user_id) {
     $this->db->bind('phonenumber', $data['phonenumber']);
     $this->db->bind('email', $data['email']);
     $this->db->bind('password', hash('sha256', $data['password']) );
+    $this->db->bind('verificationToken', $data['verificationCode']);
     $this->db->bind('owner_id', $_SESSION['user_id']);
     $this->db->bind('store_id', $_SESSION['store_id']);
-
+  
     $this->db->execute();
-
+  
     return $this->db->rowCount();
-}
+  }
 
   public function daftarToko($data) {
     $query = "INSERT INTO i_store_info (store_name, store_type, location, phone_number, email, year_founded, owner_id)
@@ -148,6 +149,7 @@ public function removeVerificationToken($user_id) {
 
     $this->db->execute();
     $_SESSION['store_id'] = $data['store_id'];
+    $_SESSION['store_name'] = $data['namatoko'];
     // var_dump($this->db->single());
 
     return $this->db->rowCount();
@@ -212,6 +214,15 @@ public function removeVerificationToken($user_id) {
         return false; // Indicate failure
     }
 }
+
+  public function activateStoreName(){
+    $query = "SELECT store_name FROM i_store_info WHERE owner_id = :owner_id";
+    $this->db->query($query);
+    $this->db->bind('owner_id', $_SESSION['owner_id']);
+    $this->db->execute();
+    $store = $this->db->single();
+    $_SESSION['store_name'] = $store['STORE_NAME'];
+  }
 
 
   public function getEditToko($id) {

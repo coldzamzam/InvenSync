@@ -1,6 +1,15 @@
 <?php
 
 Class Item extends Controller {
+
+  public function __construct() {
+    if (!isset($_SESSION['is_login'])) {
+        header('Location: ' . BASEURL . '/user/login');
+    }
+    elseif ($_SESSION['user_role'] != 'Owner' && $_SESSION['user_role'] != 'Admin Gudang') {
+      header('Location: ' . BASEURL . '/dashboard');
+    }
+  }
   public function index(){
     $data = [
       'judul' => 'List Items',
@@ -11,9 +20,14 @@ Class Item extends Controller {
     $data['brand'] = $this->model('Item_model')->getAllBrand();
     $data['category'] = $this->model('Item_model')->getAllCategory();
 
-    $this->view('templates/s-header', $data);
-    $this->view('itemdummy/index', $data);
+    if($this->model('User_model')->checkRowToko() > 0) {
+      $this->view('templates/s-header', $data);
+      $this->view('itemdummy/index', $data);
   }
+  else {
+    header('Location: ' . BASEURL . '/dashboard/toko');
+  }  
+}
 
   public function userdummy(){
     $data['judul'] = 'List User';

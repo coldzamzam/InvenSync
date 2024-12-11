@@ -5,6 +5,9 @@ class Inventory extends Controller {
         if (!isset($_SESSION['is_login'])) {
             header('Location: ' . BASEURL . '/user/login');
         }
+		if ($_SESSION['user_role'] != 'Owner' && $_SESSION['user_role'] != 'Admin Gudang') {
+			header('Location: ' . BASEURL . '/dashboard');
+		}
     }
 
 	public function index($page = 1)
@@ -25,8 +28,13 @@ class Inventory extends Controller {
 		$data['currentPage'] = $page;
 		$data['totalPages'] = $totalPages;
 	
-		$this->view('templates/s-header', $data);
-		$this->view('inventory/index', $data);
+        if($this->model('User_model')->checkRowToko() > 0) {
+            $this->view('templates/s-header', $data);
+            $this->view('inventory/index', $data);
+        }
+        else {
+            header('Location: ' . BASEURL . '/dashboard/toko');
+        }	
 	}
 	
 	public function tambahInventory() {

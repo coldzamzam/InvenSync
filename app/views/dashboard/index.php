@@ -1,5 +1,5 @@
 <div class="flex-1 ml-24 mt-20 p-8">
-  <p class="ml-[300px]">Selamat datang di halaman utama <b><?=$_SESSION['user_id'];?></b> <b><?= $_SESSION['user_role']; ?></b>, <b><?= $_SESSION['user_name']; ?></b> dengan owner id <b><?= $_SESSION['owner_id']; ?></b> dan dengan store id <b><?= $_SESSION['store_id']; ?></b>.</p>
+  <p class="ml-[300px]">Selamat datang di halaman utama <b><?=$_SESSION['user_id'];?></b> <b><?= $_SESSION['user_role']; ?></b>, <b><?= $_SESSION['user_name']; ?></b> dengan owner id <b><?= $_SESSION['owner_id']; ?></b> dan dengan store id <b><?= $_SESSION['store_id']; ?></b> bernama <b><?= $_SESSION['store_name']; ?></b>.</p>
   <div class="flex justify-between gap-4 mb-4 min-h-[600px]">
     <div class="bg-white shadow-md border border-zinc-100 w-1/2 p-6 rounded-lg">
       <div class="mb-6">

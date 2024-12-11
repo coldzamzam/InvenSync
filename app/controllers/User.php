@@ -60,6 +60,10 @@ class User extends Controller {
 
   public function createAcc() {
 
+	function sanitizeInput($input) {
+		return strtolower(trim($input));
+	}
+
 	$mail = new PHPMailer(true);
 
 	$data = [
@@ -67,7 +71,7 @@ class User extends Controller {
 		'role' => $_POST['role'] ?? '',
 		'address' => $_POST['address'] ?? '',
 		'phonenumber' => $_POST['phonenumber'] ?? '',
-		'email' => $_POST['email'] ?? '',
+		'email' => sanitizeInput($_POST['email']) ?? '',
 		'password' => $_POST['password'] ?? '',
 		'nameError' => '',
 		'roleError' => '',
@@ -75,14 +79,11 @@ class User extends Controller {
 		'phonenumberError' => '',
 		'emailError' => '',
 		'passwordError' => '',
-		'loginEmailError' => '',
-		'loginPasswordError' => '',
 		'confirmPasswordError' => '',
 		'verificationCode' => bin2hex(random_bytes(16)),
 		'judul' => 'Buat Akun'
 	];
 	$cekemail=$this->model('User_model')->cekEmail($data['email']);
-	$cekpassword=$this->model('User_model')->cekPassword($data['password']);
 	$ceknomortelepon=$this->model('User_model')->cekNomorTelepon($data['phonenumber']);
 
 	// Validate data
@@ -91,8 +92,6 @@ class User extends Controller {
 	if (empty($data['address'])) $data['addressError'] = 'Alamat tidak boleh kosong.';
 	if (empty($data['phonenumber'])) {
 		$data['phonenumberError'] = 'Nomor Telepon tidak boleh kosong.';
-	} elseif ($ceknomortelepon > 0) {
-		$data['phonenumberError'] = 'Nomor Telepon sudah terdaftar.';
 	} elseif (!preg_match("/^08[0-9]{9,11}$/", $data['phonenumber'])) {
 		$data['phonenumberError'] = 'Format nomor telepon tidak valid.';
 	}
@@ -170,7 +169,7 @@ class User extends Controller {
                 <p>Terima kasih!</p>
             ";		
 			if ($mail->send()) {
-                Flasher::setFlash('Berhasil', 'Email verifikasi telah dikirim!', 'Tutup', 'success');
+                $_SESSION['status'] = 'success';
             } else {
                 Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
             }
@@ -216,7 +215,7 @@ public function verify($code = null) {
 	$this->model('User_model')->removeVerificationToken($user['USER_ID']);
 	$_SESSION['status'] = 'verified';
 
-	header('Location: ' . BASEURL . 'user/login');
+	header('Location: ' . BASEURL . '/user/login');
     exit;
 }
 
@@ -288,9 +287,14 @@ public function verify($code = null) {
 
 
   public function loginAcc() {
+
+	function sanitizeInput($input) {
+		return strtolower(trim($input));
+	}
+
 		$data = [
 			'judul' => 'Login',
-			'email' => $_POST['email'] ?? '',
+			'email' => sanitizeInput($_POST['email']) ?? '',
 			'password' => $_POST['password'] ?? '',
 			'captcha' => $_POST['g-recaptcha-response'] ?? '',
 			'loginEmailError' => '',
@@ -336,6 +340,7 @@ public function verify($code = null) {
 		if ($this->model('User_model')->masuk($_POST)) {
 			// if ($this->model('User_model')->checkRowToko() == 0) {
 			$this->model('User_model')->activateStoreID();
+			$this->model('User_model')->activateStoreName();
 			header('Location: ' . BASEURL . '/dashboard');
 			// } else {
 			// 	header('Location: ' . BASEURL . '/dashboard');

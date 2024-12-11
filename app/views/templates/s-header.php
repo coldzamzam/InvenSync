@@ -52,7 +52,7 @@
     <h1 class="text-lg font-bold hidden hover:block">InvenSync</h1>
     <nav class="mt-6 space-y-4">
       <a href="<?= BASEURL; ?>/dashboard" 
-        class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-tachometer-alt"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Dashboard</span>
       </a>
@@ -77,7 +77,7 @@
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Troublesome Items</span>
       </a>
       <a href="<?= BASEURL; ?>/transaction" 
-        class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-money-bill"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Transactions</span>
       </a>
@@ -97,7 +97,7 @@
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Cashier</span>
       </a>
       <a href="<?= BASEURL; ?>/dashboard/toko" 
-        class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block'?> py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
+        class="py-2 px-4 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-info-circle"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Profile Toko</span>
       </a>

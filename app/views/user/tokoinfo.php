@@ -134,18 +134,23 @@
 						<label for="yearfounded" class="text-sm text-gray-700 block mb-1">Tahun Didirikan</label>
 						<p class="text-gray-900 font-medium"><?=$data['yearfounded']?></p>
 					</div>
-
-					<div class="flex">
+					
+					<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'Owner') { 
+						echo"
+											<div class='flex'>
 						<button
-							id="openModalButton"
-							type="submit"
-							name="simpan"
-							class="btnEditToko bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
-							onclick="berhasil()"
+							id='openModalButton'
+							type='submit'
+							name='simpan'
+							class='btnEditToko bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200'
+							onclick='berhasil()'
 						>
 							Edit Informasi
 						</button>
 					</div>
+						";
+					}
+					?>
 				</div>
 			</div>
 		</div>

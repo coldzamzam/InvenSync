@@ -29,8 +29,13 @@ class Transaction extends Controller
         }
 
         // Kirim data ke view
-        $this->view('templates/s-header', $data);
-        $this->view('transaction/index', $data);
+        if($this->model('User_model')->checkRowToko() > 0) {
+            $this->view('templates/s-header', $data);
+            $this->view('transaction/index', $data);
+        }
+        else {
+            header('Location: ' . BASEURL . '/dashboard/toko');
+        }    
     }
 
 
