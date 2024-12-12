@@ -58,7 +58,7 @@
       echo'bg-green-400';
     } elseif($_SESSION['user_role']=='Owner') {
       echo'bg-purple-400';
-    } ?> rounded-3xl ml-2 font-black text-m text-center sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">
+    } ?> rounded-3xl ml-2 text-sm font-black text-m text-center sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">
     Anda Login Sebagai <br> <?= $_SESSION['user_role'] ?>
     </h1>
     <nav class="mt-6 space-y-4">
@@ -81,11 +81,6 @@
         class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-boxes"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Inventory</span>
-      </a>
-      <a href="<?= BASEURL; ?>/troublesome" 
-        class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Troublesome Items</span>
       </a>
       <a href="<?= BASEURL; ?>/transaction" 
         class="py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">

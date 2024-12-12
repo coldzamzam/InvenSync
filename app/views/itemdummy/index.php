@@ -47,7 +47,6 @@
       </div>
     </div>
 
-
     <div class="bg-white rounded shadow">
       <table class="w-full text-left border-collapse">
         <thead>
@@ -71,14 +70,119 @@
               <td class="py-3 px-4 border"><?= $item['BRAND_NAME']; ?></td>
               <td class="py-3 px-4 border">Rp<?= number_format($item['COST_PRICE'], 2, '.', ','); ?></td>
               <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
-              <td class="py-3 px-4 border">
-                <button class="text-blue-500" data-item-id="<?= $item['ITEM_ID']; ?>" onclick="editItem(<?= $item['ITEM_ID']; ?>)">Edit</button>
+              <td class="py-3 px-4 border flex justify-center items-center">
+                <button onclick="editModalOpen('<?= $users['ITEM_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600"><img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit"></button>
               </td>
             </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
     </div>
+    
+    <!----edit--->
+    <div id="formModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white rounded-lg shadow-lg w-1/2 p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-blue-600">Update Item</h2>
+        <button id="closeModalButton" class="text-gray-500 hover:text-gray-700">
+          <span class="text-2xl">&times;</span>
+        </button>
+      </div>
+      <form id="itemForm" action="<?= BASEURL; ?>/itemdummy/updateItem" method="post">
+        <input type="hidden" id="itemId" name="ITEM_ID" value="">
+
+        <!-- Nama Barang -->
+        <div class="mb-3">
+          <label for="item_name" class="text-sm text-gray-700">Nama Barang</label>
+          <input id="item_name" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="item_name" placeholder="Nama Barang" required>
+        </div>
+        
+        <!-- Category -->
+        <div class="mb-3">
+          <label for="category_id" class="text-sm text-gray-700">Category</label>
+          <select id="category_id" name="category_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+            <option value="" disabled selected>-- Pilih Category --</option>
+            <?php foreach($data['category'] as $category): ?>
+              <option value="<?= $category['CATEGORY_ID']; ?>"><?= $category['CATEGORY_NAME']; ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        
+        <!-- brand -->
+        <div class="mb-3">
+          <label for="brand_id" class="text-sm text-gray-700">Brand</label>
+          <select id="brand_id" name="brand_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+            <option value="" disabled selected>-- Pilih Brand --</option>
+            <?php foreach($data['brand'] as $brand): ?>
+              <option value="<?= $brand['BRAND_ID']; ?>"><?= $brand['BRAND_NAME']; ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        
+        <!-- Harga Jual -->
+        <div class="mb-3">
+          <label for="cost_price" class="text-sm text-gray-700">Harga Jual</label>
+          <input id="cost_price" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="cost_price" placeholder="Harga Jual" required>
+        </div>
+        
+        <!-- Submit Button -->
+        <div class="flex justify-end mt-4">
+          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButton">Tambah/Edit Barang</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalBrand" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-blue-600">Tambah Brand</h2>
+        <button id="closeModalBrand" class="text-gray-500 hover:text-gray-700">
+          <span class="text-2xl">&times;</span>
+        </button>
+      </div>
+      <form id="itemForm" action="<?= BASEURL; ?>/itemdummy/editBrand" method="post">
+        <input type="hidden" id="itemId" name="ITEM_ID" value="">
+
+        <!-- Nama Brand -->
+        <div class="mb-3">
+          <label for="brand_name" class="text-sm text-gray-700">Nama Brand</label>
+          <input id="brand_name" name='brand_name' class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="brand_name" placeholder="Nama Barang">
+          <span class="text-red-500"><?= $data['brandError']; ?></span>
+        </div>
+        <!-- Submit Button -->
+        <div class="flex justify-end mt-4">
+          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButtonBrand">Tambah Brand</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalCategory" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-blue-600">Tambah Category</h2>
+        <button id="closeModalCategory" class="text-gray-500 hover:text-gray-700">
+          <span class="text-2xl">&times;</span>
+        </button>
+      </div>
+      <form id="itemForm" action="<?= BASEURL; ?>/itemdummy/editCategory" method="post">
+        <input type="hidden" id="itemId" name="ITEM_ID" value="">
+
+        <!-- Nama Category -->
+        <div class="mb-3">
+          <label for="ITEM_NAME" class="text-sm text-gray-700">Nama Category</label>
+          <input id="ITEM_NAME" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="category_name" placeholder="Nama Barang">
+          <span class="text-red-500"><?= $data['categoryError']; ?></span>
+        </div>
+        <!-- Submit Button -->
+        <div class="flex justify-end mt-4">
+          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButtonCategory">Tambah Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   </main>
 
  <!-- Modal for Adding or Editing Stock -->
@@ -177,7 +281,6 @@
           <input id="ITEM_NAME" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="category_name" placeholder="Nama Barang">
           <span class="text-red-500"><?= $data['categoryError']; ?></span>
         </div>
-        s
         <!-- Submit Button -->
         <div class="flex justify-end mt-4">
           <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButtonCategory">Tambah Category</button>
@@ -185,7 +288,7 @@
       </form>
     </div>
   </div>
-
+  
   <!-- JavaScript -->
   <script>
     // Mendapatkan elemen modal dan tombol
