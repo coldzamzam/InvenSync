@@ -117,7 +117,7 @@
               <?php foreach($data['totalQty'] as $total): ?>
                 <tr class="group hover:bg-gray-100 relative">
                   <td class="py-3 px-4 border"><?= $total['ITEM_NAME']; ?></td>
-                  <td class="py-3 px-4 border"><?= $total['TOTALQUANTITY']; ?></td>
+                  <td class="py-3 px-4 border"><?= $total['STOCK_AVAILABLE']; ?></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>
