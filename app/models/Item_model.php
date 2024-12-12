@@ -197,11 +197,28 @@ Class Item_model {
   }
 
   public function getAllTotalQuantity() {
-    $query = "SELECT mi.item_name, NVL(SUM(i.quantity), 0) AS TOTALQUANTITY
-              FROM i_inventory i
-              LEFT JOIN i_master_item mi on mi.item_id = i.item_id
-              WHERE i.store_id = :store_id
-              GROUP BY mi.item_name";
+    $query = "SELECT 
+                  m.ITEM_ID, 
+                  m.ITEM_NAME, 
+                  NVL(i.TOTAL_IN, 0) AS TOTAL_IN,
+                  NVL(r.TOTAL_OUT, 0) AS TOTAL_OUT,
+                  NVL(i.TOTAL_IN, 0) - NVL(r.TOTAL_OUT, 0) AS STOCK_AVAILABLE
+              FROM 
+                  I_MASTER_ITEM m
+              LEFT JOIN (
+                  SELECT ITEM_ID, SUM(QUANTITY) AS TOTAL_IN
+                  FROM I_INVENTORY
+                  WHERE IS_DELETED = 0 AND STORE_ID = :store_id
+                  GROUP BY ITEM_ID
+                  ) i ON m.ITEM_ID = i.ITEM_ID
+              LEFT JOIN (
+                  SELECT ITEM_ID, SUM(QUANTITY) AS TOTAL_OUT
+                  FROM I_RECEIPT_ITEM
+                  WHERE IS_DELETED = 0 AND STORE_ID = :store_id
+                  GROUP BY ITEM_ID
+                  ) r ON m.ITEM_ID = r.ITEM_ID
+              WHERE 
+                  m.IS_DELETED = 0 AND m.STORE_ID = :store_id";
 
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
