@@ -12,27 +12,27 @@
     <table id="barangTable" class="w-full text-left border-collapse">
       <thead>
         <tr class="bg-gray-200 text-gray-600">
-          <th class="py-3 px-4 border text-center">Kode Barang</th>
-          <th class="py-3 px-4 border text-center">Merk Barang</th>
-          <th class="py-3 px-4 border text-center">Kategori Barang</th>
-          <th class="py-3 px-4 border text-center">Nama Barang</th>
-          <th class="py-3 px-4 border text-center">Jumlah Barang</th>
-          <th class="py-3 px-4 border text-center">Harga Barang</th>
-          <th class="py-3 px-4 border text-center">Total Harga</th>
-          <th id="optionSect" class="py-3 px-4 border text-center">Option</th>
+          <th class="py-3 px-4 border">Kode Barang</th>
+          <th class="py-3 px-4 border">Merk Barang</th>
+          <th class="py-3 px-4 border">Kategori Barang</th>
+          <th class="py-3 px-4 border">Nama Barang</th>
+          <th class="py-3 px-4 border">Jumlah Barang</th>
+          <th class="py-3 px-4 border">Harga Barang</th>
+          <th class="py-3 px-4 border">Total Harga</th>
+          <th id="optionSect" class="py-3 px-4 border text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
         <!-- Looping data item menggunakan PHP -->
         <?php foreach($data['receiptItems'] as $item): ?>
           <tr class="group hover:bg-gray-100 relative">
-            <td class="py-3 px-4 border text-center"><?= $item['ITEM_ID']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $item['BRAND_NAME']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $item['CATEGORY_NAME']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $item['ITEM_NAME']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $item['QUANTITY']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $item['COST_PRICE']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $item['QUANTITY']*$item['COST_PRICE']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['ITEM_ID']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['BRAND_NAME']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['CATEGORY_NAME']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['QUANTITY']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['COST_PRICE']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['QUANTITY']*$item['COST_PRICE']; ?></td>
             <td id="optionSect" class="py-3 px-4 border text-center">
               <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Hapus</button>
             </td>
@@ -48,7 +48,7 @@
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">
   <div class="bg-white w-full max-w-[600px] p-6 rounded-lg shadow-lg">
     <div class="flex justify-between items-center">
-      <h3 class="text-2xl font-semibold w-full text-center">Tambah/Update Barang</h3>
+      <h3 class="text-2xl font-semibold w-full text-center">Tambah Barang</h3>
       <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2">&times;</button>
     </div>
     <form id="createBarangForm" action="<?= BASEURL; ?>/cashier/addItem" method="post">

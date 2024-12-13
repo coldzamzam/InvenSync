@@ -7,9 +7,9 @@
         class="border rounded px-4 py-2 w-full"
         onkeyup="filterTable()">
         </form>
-          <input type="date" class="border rounded px-4 py-2">
-          <select class="border rounded px-4 py-2">
-          <option>Role</option>
+          <select id="roleFilter" class="border rounded px-4 py-2" onchange="filterByRole()">
+          <option value="" disabled selected>Role</option>
+          <option>All</option>
           <option>Owner</option>
           <option>Admin Kasir</option>
           <option>Admin Gudang</option>
@@ -22,14 +22,14 @@
       <thead>
       <tr class="bg-gray-200 text-gray-600">
               <th class="py-3 px-4 border">No.</th>
-              <th class="py-3 px-4 border">User Id</th>
+              <th class="py-3 px-4 border">User ID</th>
               <th class="py-3 px-4 border">Email</th>
               <th class="py-3 px-4 border">Name</th>
               <th class="py-3 px-4 border">Role</th>
               <th class="py-3 px-4 border">Address</th>
               <th class="py-3 px-4 border">Phone Number</th>
               <th class="py-3 px-4 border">Status</th>
-              <th class="py-3 px-4 border">Actions</th>
+              <th class="py-3 px-4 border text-center">Actions</th>
             </tr>
       </thead>
         <tbody>
@@ -42,7 +42,7 @@
               <td class="py-3 px-4 border"><?= $users['ROLE']; ?></td>
               <td class="py-3 px-4 border"><?= $users['ADDRESS']; ?></td>
               <td class="py-3 px-4 border"><?= $users['PHONE_NUMBER']; ?></td>
-              <td class="py-3 px-4 border<?php if ($users['IS_EMAIL_VERIFIED'] == 1) { echo " bg-green-300 hover:bg-green-200"; } else { echo " bg-red-300 hover:bg-red-200"; } ?>"><?php if ($users['IS_EMAIL_VERIFIED'] == 1) { echo "Akun Aktif"; } else { echo "Perlu Verifikasi"; } ?></td>
+              <td class="py-3 px-4 border text-center<?php if ($users['IS_EMAIL_VERIFIED'] == 1) { echo " bg-green-300 hover:bg-green-200"; } else { echo " bg-red-300 hover:bg-red-200"; } ?>"><?php if ($users['IS_EMAIL_VERIFIED'] == 1) { echo "Akun Aktif"; } else { echo "Perlu Verifikasi"; } ?></td>
               <td class="py-3 px-4 border flex justify-center items-center">
                 <button onclick="editModalOpen('<?= $users['USER_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600"><img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit"></button>
               </td>
@@ -487,5 +487,22 @@ document.getElementById('createEmployeeForm').addEventListener('submit', functio
           document.getElementById('modalEdit').classList.add('hidden');
       }
     </script>
+
+<script>
+  function filterByRole() {
+    const selectedRole = document.getElementById('roleFilter').value.toLowerCase();
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      const roleCell = row.querySelector('td:nth-child(5)').textContent.toLowerCase(); // Kolom Role
+      if (selectedRole === 'all' || roleCell === selectedRole) {
+        row.style.display = ''; // Tampilkan baris
+      } else {
+        row.style.display = 'none'; // Sembunyikan baris
+      }
+    });
+  }
+</script>
+
 </body>
 </html>

@@ -137,7 +137,7 @@
                 <th class="py-3 px-4 border">Date Added</th>
                 <th class="py-3 px-4 border">Cost Price</th>
                 <th class="py-3 px-4 border">User ID</th>
-                <th class="py-3 px-4 border">Actions</th>
+                <th class="py-3 px-4 border text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -150,9 +150,9 @@
                   <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
                   <td class="py-3 px-4 border"><?= $item['HARGA_BELI']; ?></td>
                   <td class="py-3 px-4 border"><?= $item['USER_ID']; ?></td>
-                  <td class="py-3 px-4 border">
-                    <button class="text-blue-500" onclick="editItem(<?= $item['INVENTORY_ID']; ?>)">Edit</button>
-                  </td>
+                  <td class="py-3 px-4 border flex justify-center items-center">
+                <button onclick="editItem('<?= $users['INVENTORY_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600"><img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit"></button>
+              </td>
                 </tr>
               <?php endforeach; ?>
             </tbody>
