@@ -12,7 +12,19 @@ class Cashier extends Controller {
     public function index(){
         $data['judul'] = 'Cashier';
         $data['item'] = $this->model('Item_model')->getAllItem();
-        $data['receiptItems']=$this->model('Cashier_model')->getAllReceiptItems();
+        if (isset($_SESSION['receipt_id'])) {
+          // if ($this->model('Cashier_model')->checkRowSelectedItems() < 1) {
+          //   $data['receiptItems'] = [];
+          //   $this->model('Cashier_model')->unsetReceipt();
+          // } else {
+            $data['receiptItems'] = $this->model('Cashier_model')->getAllReceiptItems();
+          // }
+        } else {
+          $data['receiptItems'] = [];
+        }
+        
+
+
         if($this->model('User_model')->checkRowToko() > 0) {
           $this->view('templates/s-header', $data);
           $this->view('cashier/index', $data);
@@ -45,6 +57,7 @@ class Cashier extends Controller {
             $this->model('Cashier_model')->createIdReceipt();
             $this->model('Cashier_model')->setReceipt();
             $this->model('Cashier_model')->addItemToReceipt($data['kodebarang'], $data['quantity']);
+            $this->model('Cashier_model')->setTotalPrice($_SESSION['receipt_id']);
             header('Location: ' . BASEURL . '/cashier');
             exit();
           }
@@ -56,6 +69,7 @@ class Cashier extends Controller {
           }
           else{
             $this->model('Cashier_model')->addItemToReceipt($data['kodebarang'], $data['quantity']);
+            $this->model('Cashier_model')->setTotalPrice($_SESSION['receipt_id']);
             header('Location: ' . BASEURL . '/cashier');
             exit();
           }
@@ -65,6 +79,12 @@ class Cashier extends Controller {
           // Handle error jika receipt_id tidak berhasil dibuat
           throw new Exception('Failed to create receipt ID.');
       }
+  }
+
+  public function removeItem() {
+    $this->model('Cashier_model')->removeItem($_POST['receipt_item_id']);
+    $this->model('Cashier_model')->setTotalPrice($_SESSION['receipt_id']);
+    header('Location: ' . BASEURL . '/cashier');
   }
 
   public function deleteReceiptSession(){

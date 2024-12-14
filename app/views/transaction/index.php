@@ -1,22 +1,22 @@
 <div class="flex-1 ml-24 mt-20 p-8">
     <?php if (!empty($data['receiptDetails'])): ?>
         <?php foreach ($data['receiptDetails'] as $receipt_id => $receipt): ?>
-            <div onclick="toggleTable('table-<?= $receipt_id; ?>')" class="cursor-pointer bg-gray-100 shadow-lg rounded-lg p-6">
+            <div onclick="toggleTable('table-<?= $receipt_id; ?>')" class="cursor-pointer bg-gray-100 shadow-lg rounded-lg p-6 mb-2">
                 <div class="flex justify-between items-center">
                 <p class="text-gray-600 text-xl font-bold">
                     Transaksi dengan ID : <span class="text-blue-600"><?= $receipt_id; ?></span> - Pada Tanggal : <?= $receipt['date_added']; ?>
                 </p>
-                    <h2 class="text-xl font-semibold text-gray-800 flex">Total:<p class="text-green-600">Rp<?= number_format($receipt['total'], 2); ?></p></h2>
+                    <h2 class="text-xl font-semibold text-gray-800 flex">Total:<p class="text-green-600">Rp.<?= number_format($receipt['total'], 2); ?></p></h2>
                     <button id="printInvoiceBtn" type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButton">Print Invoice <i class="fa fa-print"></i></button>
                 </div>
                 <table id="table-<?= $receipt_id; ?>" class="w-full text-left border-collapse hidden mt-6">
                     <thead>
-                        <tr class="bg-gray-200 text-gray-600">
+                        <tr class="bg-[#393E46] text-white">
                             <th>Item ID</th>
                             <th>Item Name</th>
                             <th>Quantity</th>
                             <th>Price</th>
-                            <th>Total Price</th>
+                            <th>Total Price per Item</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,6 +29,10 @@
                                 <td><?= number_format(($item['COST_PRICE'] * $item['QUANTITY']), 2); ?></td>
                             </tr>
                         <?php endforeach; ?>
+                        <tr class="bg-[#FFD369]">
+                            <td colspan="4" class="text-right font-bold">Total:</td>
+                            <td class="font-bold"><?= number_format($receipt['total'], 2); ?></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

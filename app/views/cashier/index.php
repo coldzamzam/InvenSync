@@ -1,14 +1,61 @@
-<main class="flex-1 ml-24 mt-20 p-8">
-  <header class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-semibold text-blue-500">Transaksi Kasir</h2>
-    <div class="space-x-2">
+<main class="flex-1 ml-24 p-8 mt-14">
+  <header class="flex justify-between items-center mb-6 z-[1]">
+    <div class="ml-4 w-1/3 top-0 right-0 fixed min-h-screen p-10 bg-white mt-16 shadow-lg">
+      <h1 class="text-2xl font-bold mb-4">Barang yang Dipilih</h1>
+      <div class="flex flex-col bg-gray-100 p-4 mb-4">
+        <?php foreach($data['receiptItems'] as $item): ?>
+        <div class="flex items-center p-2 mb-2 gap-3 shadow-sm bg-white group">
+            <div>
+              <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" width="50px">
+            </div>
+            <div class="w-full">
+              <div class="flex justify-between">
+                  <h2 class="font-bold"><?= $item['ITEM_ID']; ?>-<?= $item['ITEM_NAME']; ?></h2>
+                  <h2 class="font-bold">Jumlah : <?= $item['QUANTITY']; ?></h2>
+              </div>
+              <div>
+                <h3>Total Harga : Rp.<?= $item['TOTAL_PER_ITEM']*$item['QUANTITY']; ?></h3>
+              </div>
+            </div>
+            <form action="<?= BASEURL; ?>/cashier/removeItem" method="post">
+              <input type="hidden" name="receipt_item_id" value="<?= $item['RECEIPT_ITEM_ID']; ?>">
+              <button type="submit" class="hidden group-hover:block absolute bg-red-500 text-white px-2 rounded-full">
+                  -
+              </button>
+            </form>
+        </div>
+        <?php endforeach; ?>
+      </div>
+      <div class="space-x-2">
       <?php if (isset($_SESSION['receipt_id'])):?>
-        <button id="konfirmasiBtn" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Konfirmasi Pembelian</button>
+        <button id="konfirmasiBtn" class="bg-green-500 text-white w-full py-2 px-4 rounded hover:bg-green-600 bottom-0">Konfirmasi Pembelian</button>
       <?php endif;?>
-      <button id="tambahBarangBtn" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Tambah Barang</button>
+      </div>
     </div>
   </header>
-  <div class="bg-white rounded shadow">
+  <h1 class="text-2xl font-bold mb-4">Barang Yang Tersedia</h1>
+  <div class="flex w-3/5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+    <?php foreach($data['item'] as $item): ?>
+      <button id="tambahBarangBtn_<?= $item['ITEM_ID']; ?>" 
+              data-itemid="<?= $item['ITEM_ID']; ?>" 
+              data-itemname="<?= $item['ITEM_NAME']; ?>"
+              class="group bg-white rounded-lg shadow-lg w-full">
+        <div class="flex flex-col items-center px-20 py-5">
+          <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" class="group-hover:hidden w-full h-full object-cover">
+          <img src="<?= BASEURL; ?>/img/add-cart (1).png" class="w-full h-full  hidden group-hover:block" alt="">
+        </div>
+        <div class="bg-[#FFD369] rounded-lg flex flex-col">
+          <span class="mb-2 font-semibold text-lg"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></span>
+          <span class="text-gray-600">Rp.<?= number_format($item['COST_PRICE'], 2); ?></span>
+        </div>
+      </button>
+    <?php endforeach; ?>
+
+    </div>
+  </div>
+
+  <!-- <div class="bg-white rounded shadow">
     <table id="barangTable" class="w-full text-left border-collapse">
       <thead>
         <tr class="bg-gray-200 text-gray-600">
@@ -22,8 +69,7 @@
           <th id="optionSect" class="py-3 px-4 border text-center">Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Looping data item menggunakan PHP -->
+      <tbody>Looping data item menggunakan PHP
         <?php foreach($data['receiptItems'] as $item): ?>
           <tr class="group hover:bg-gray-100 relative">
             <td class="py-3 px-4 border"><?= $item['ITEM_ID']; ?></td>
@@ -40,12 +86,34 @@
         <?php endforeach; ?>
       </tbody>
     </table>
-  </div>
+  </div> -->
   <?php Flasher::flash(); ?>
 </main>
 
-<!-- Modal -->
+<!-- Modal Input Quantity -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">
+  <div class="bg-white w-full max-w-[600px] p-6 rounded-lg shadow-lg">
+    <div class="flex justify-between items-center">
+      <h3 class="text-2xl font-semibold w-full text-center">Tambah Barang</h3>
+      <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2">&times;</button>
+    </div>
+    <form id="createBarangForm" action="<?= BASEURL; ?>/cashier/addItem" method="post">
+      <input type="hidden" id="itemId" name="item_id">
+      <div class="mb-4">
+        <label for="itemName" class="block text-sm font-medium text-gray-700">Nama Barang</label>
+        <input type="hidden" id="itemCode" name="kodebarang" class="w-full bg-gray-200 p-3 rounded-lg" readonly>
+        <input type="text" id="itemName" name="item_name" class="w-full bg-gray-200 p-3 rounded-lg" readonly>
+      </div>
+      <div class="mb-4">
+        <label for="quantity" class="block text-sm font-medium text-gray-700">Jumlah</label>
+        <input type="number" id="quantity" name="quantity" class="w-full bg-gray-200 p-3 rounded-lg" required>
+      </div>
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Simpan</button>
+    </form>
+  </div>
+</div>
+
+<!-- <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">
   <div class="bg-white w-full max-w-[600px] p-6 rounded-lg shadow-lg">
     <div class="flex justify-between items-center">
       <h3 class="text-2xl font-semibold w-full text-center">Tambah Barang</h3>
@@ -83,7 +151,8 @@
       </div>
     </form>
   </div>
-</div>
+</div> -->
+
 
 <!-- Modal Konfirmasi Pembayaran -->
 <div id="konfirmasiPembayaranModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">
@@ -110,10 +179,21 @@
     editingRow = null;
   }
   // Menampilkan modal untuk tambah barang
-  document.getElementById('tambahBarangBtn').addEventListener('click', function () {
-    document.getElementById('modal').style.display = 'flex';
-    document.getElementById('createBarangForm').reset();
+  document.querySelectorAll('[id^="tambahBarangBtn_"]').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const itemId = this.dataset.itemid;
+      const itemName = this.dataset.itemname;
+
+      // Isi data form modal
+      document.getElementById('itemId').value = itemId;
+      document.getElementById('itemName').value = itemName;
+      document.getElementById('itemCode').value = itemId;
+
+      // Tampilkan modal
+      document.getElementById('modal').style.display = 'flex';
+    });
   });
+
   
 
   function closeModalPembayaran() {
@@ -136,6 +216,34 @@
     }).catch((error) => {
         console.log(error);
     })
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const konfirmasiBtn = document.getElementById('konfirmasiBtn');
+    const itemsContainer = document.querySelector('.flex-col.bg-gray-100');
+
+    // Fungsi untuk memeriksa apakah ada item yang dipilih
+    function checkItemsSelected() {
+        const items = itemsContainer.querySelectorAll('.group');
+        if (items.length > 0) {
+            // Menampilkan tombol konfirmasi jika ada item
+            konfirmasiBtn.classList.remove('hidden');
+        } else {
+            // Menyembunyikan tombol konfirmasi jika tidak ada item
+            konfirmasiBtn.classList.add('hidden');
+        }
+    }
+
+    // Menambahkan event listener pada tombol tambah item
+    document.querySelectorAll('[id^="tambahBarangBtn_"]').forEach(btn => {
+        btn.addEventListener('click', function () {
+            // Memanggil fungsi untuk memeriksa apakah ada item yang dipilih setelah menambah item
+            checkItemsSelected();
+        });
+    });
+
+    // Memanggil fungsi ketika halaman pertama kali dimuat
+    checkItemsSelected();
 });
 
 

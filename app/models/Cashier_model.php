@@ -47,8 +47,9 @@ class Cashier_model {
   }
 
   public function getAllReceiptItems(){
-    $this->db->query("SELECT * FROM i_receipt_item ri JOIN i_master_item mi using (item_id) join i_master_category mc on (mi.category_id = mc.category_id) join i_master_brand mb on (mi.brand_id = mb.brand_id) WHERE receipt_id = :receipt_id");
+    $this->db->query("SELECT * FROM i_receipt_item ri JOIN i_master_item mi using (item_id) join i_master_category mc on (mi.category_id = mc.category_id) join i_master_brand mb on (mi.brand_id = mb.brand_id) WHERE receipt_id = :receipt_id AND ri.is_deleted = 0 AND ri.store_id = :store_id");
     $this->db->bind('receipt_id', $_SESSION['receipt_id']);
+    $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
     return $this->db->resultSet();
   }
@@ -61,19 +62,39 @@ class Cashier_model {
   }
 
   public function CheckMaxQuantity($itemId) {
-    $this->db->query("SELECT SUM(quantity) AS total_quantity FROM i_inventory WHERE item_id = :item_id AND store_id = :store_id");
-    $this->db->bind('item_id', $itemId);
-    $this->db->bind('store_id', $_SESSION['store_id']);
-    $this->db->execute();
+    $this->db->query("SELECT 
+          NVL(i.TOTAL_IN, 0) - NVL(r.TOTAL_OUT, 0) AS STOCK_AVAILABLE
+      FROM 
+          I_MASTER_ITEM m
+      LEFT JOIN (
+          SELECT ITEM_ID, SUM(QUANTITY) AS TOTAL_IN
+          FROM I_INVENTORY
+          WHERE IS_DELETED = 0 AND STORE_ID = :store_id AND ITEM_ID = :item_id
+          GROUP BY ITEM_ID
+          ) i ON m.ITEM_ID = i.ITEM_ID
+      LEFT JOIN (
+          SELECT ITEM_ID, SUM(QUANTITY) AS TOTAL_OUT
+          FROM I_RECEIPT_ITEM
+          WHERE IS_DELETED = 0 AND STORE_ID = :store_id AND ITEM_ID = :item_id
+          GROUP BY ITEM_ID
+          ) r ON m.ITEM_ID = r.ITEM_ID
+      WHERE 
+          m.IS_DELETED = 0 AND m.STORE_ID = :store_id AND m.ITEM_ID = :item_id");
+
+          $this->db->bind('item_id', $itemId);
+          $this->db->bind('store_id', $_SESSION['store_id']);
+    
+          $this->db->execute();
     
     $result = $this->db->single();
     if ($result) {
-        $totalQuantity = $result['TOTAL_QUANTITY'];
+        $totalQuantity = $result['STOCK_AVAILABLE'];
         return $totalQuantity;
     } else {
         return 0;
     }
 }
+
 
   public function addItemToReceipt($itemId, $quantity) {
     $this->db->query("INSERT INTO i_receipt_item (receipt_id,total_per_item, item_id, quantity, store_id) VALUES (:receipt_id,(SELECT COST_PRICE FROM i_master_item WHERE item_id = :item_id ) , :item_id, :quantity, :store_id)");
@@ -85,7 +106,7 @@ class Cashier_model {
   }
 
   public function getReceiptItems() {
-    $this->db->query("SELECT * FROM i_receipt_item WHERE receipt_id = :receipt_id");
+    $this->db->query("SELECT * FROM i_receipt_item WHERE receipt_id = :receipt_id ");
     $this->db->bind('receipt_id', $_SESSION['receipt_id']);
     $this->db->execute();
     return $this->db->resultSet();
@@ -100,6 +121,21 @@ class Cashier_model {
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->bind('receipt_id', $_SESSION['receipt_id']);
     $this->db->execute();
+  }
+
+  public function removeItem($receiptItemID){
+    $this->db->query('UPDATE i_receipt_item SET is_deleted=1 WHERE receipt_item_id = :receipt_item_id AND receipt_id = :receipt_id AND is_deleted = 0 AND store_id = :store_id');
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->bind('receipt_id', $_SESSION['receipt_id']);
+    $this->db->bind('receipt_item_id', $receiptItemID);
+    $this->db->execute();
+  }
+
+  public function checkRowSelectedItems(){
+    $this->db->query("SELECT * FROM i_receipt_item WHERE receipt_id = :receipt_id AND is_deleted = 0");
+    $this->db->bind('receipt_id', $_SESSION['receipt_id']);
+    $this->db->execute();
+    return $this->db->fetchColumn();
   }
 
   public function getReceiptID(){
@@ -130,6 +166,16 @@ class Cashier_model {
     $this->db->bind('receipt_id', $receipt_id);
     $this->db->execute();
     return $this->db->resultSet();
+  }
+
+  public function setTotalPrice($receipt_id){
+    $query = "UPDATE i_receipt SET total_price = (SELECT SUM(quantity * total_per_item)
+      FROM i_receipt_item where receipt_id= :receipt_id and store_id = :store_id and is_deleted = 0
+      GROUP BY receipt_id) WHERE receipt_id = :receipt_id AND store_id = :store_id";
+    $this->db->query($query);
+    $this->db->bind('receipt_id', $receipt_id);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
   }
 
   public function getTotalPrice(){

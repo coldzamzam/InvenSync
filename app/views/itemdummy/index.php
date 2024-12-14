@@ -125,8 +125,7 @@
         <!-- Harga Jual -->
         <div class="mb-3">
   <label for="cost_price" class="text-sm text-gray-700">Harga Jual</label>
-  <input id="formatted_cost_price" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" placeholder="Harga Jual" required>
-  <input id="cost_price" name="cost_price" type="hidden">
+  <input id="formatted_cost_price" name="cost_price" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" placeholder="Harga Jual" required>
 </div>
 
         

@@ -47,7 +47,7 @@
   </style>
 </head>
 <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden transition-all duration-300"></div>
-<aside id="sidebar" class="fixed top-0 left-0 z-10 bg-gray-800 text-white w-24 hover:w-64 min-h-screen overflow-hidden transition-all duration-300">
+<aside id="sidebar" class="fixed top-0 left-0 z-10 bg-[#393E46] text-white w-24 hover:w-64 min-h-screen overflow-hidden transition-all duration-300">
   <div class="p-4">
     <h1 class="ml-2 pb-4 font-black text-xl text-center sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">InvenSync</h1>
     <h1 class="
@@ -110,7 +110,7 @@
     </nav>
     <form action="<?= BASEURL; ?>/dashboard/logout" id="LogoutForm" method="post" class="mt-12">
       <input type="hidden" name="logout" value="1">
-      <button type="button" onclick="logoutConfirmation()" class="bg-yellow-500 text-black py-1.5 px-6 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center space-x-2">
+      <button type="button" onclick="logoutConfirmation()" class="bg-[#FFD369] text-black py-1.5 px-6 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center space-x-2">
     <i class="fa-solid fa-right-from-bracket"></i>
     <span class="sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Logout</span>
 </button>
@@ -119,7 +119,7 @@
 </aside>
 
 
-  <nav class="left-0 p-6 bg-[#fdfdfd] fixed min-w-screen top-0 right-0 shadow-md"><p class="text-2xl font-bold text-center"><?=$data['judul']?></p></nav>
+  <nav class="left-0 p-6 bg-[#fdfdfd] fixed min-w-screen top-0 right-0 shadow-md z-[5]"><p class="text-2xl font-bold text-center"><?=$data['judul']?></p></nav>
   <body class="bg-[#fafafa]">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -19,11 +19,10 @@ class Transaction extends Controller
         // Ambil detail tiap receipt
         foreach ($receipts as $receipt) {
             $receipt_id = $receipt['RECEIPT_ID'];
-            $details = $this->model('Cashier_model')->getReceiptDetails($receipt_id);
-            $total = $this->model('Cashier_model')->getTotalPrice($receipt_id);            
+            $details = $this->model('Cashier_model')->getReceiptDetails($receipt_id);          
             $data['receiptDetails'][$receipt_id] = [
                 'date_added' => $receipt['DATE_ADDED'],
-                'total' => $total['TOTAL_PRICE'],
+                'total' => $receipt['TOTAL_PRICE'],
                 'items' => $details
             ];
         }

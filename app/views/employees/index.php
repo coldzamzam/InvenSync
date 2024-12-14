@@ -1,6 +1,6 @@
 <main class="flex-1 ml-24 mt-20 p-8">
       <div class="flex items-center mb-4 space-x-4">
-        <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Create Employee</button>
+        <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Tambahkan Karyawan</button>
         <form id="searchForm" class="flex items-center">
         <input type="text" id="searchInput" placeholder="Quick Search" 
         name="search" 
@@ -10,7 +10,6 @@
           <select id="roleFilter" class="border rounded px-4 py-2" onchange="filterByRole()">
           <option value="" disabled selected>Role</option>
           <option>All</option>
-          <option>Owner</option>
           <option>Admin Kasir</option>
           <option>Admin Gudang</option>
         </select>
@@ -20,7 +19,7 @@
       
       <table class="w-full text-left border-collapse">
       <thead>
-      <tr class="bg-gray-200 text-gray-600">
+      <tr class="bg-[#FFD369] text-gray-600">
               <th class="py-3 px-4 border">No.</th>
               <th class="py-3 px-4 border">User ID</th>
               <th class="py-3 px-4 border">Email</th>
