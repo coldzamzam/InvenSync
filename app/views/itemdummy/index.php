@@ -71,9 +71,17 @@
               <td class="py-3 px-4 border">Rp<?= number_format($item['COST_PRICE'], 2, '.', ','); ?></td>
               <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
               <td class="py-3 px-4 border flex justify-center items-center">
-              <button onclick="editModalOpen('<?= $item['ITEM_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
-              <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
-              </button>
+              <button onclick="editModalOpen('<?= $item['ITEM_ID']; ?>')" 
+        data-item-id="<?= $item['ITEM_ID']; ?>" 
+        data-item-name="<?= $item['ITEM_NAME']; ?>" 
+        data-category-id="<?= $item['CATEGORY_ID']; ?>" 
+        data-brand-id="<?= $item['BRAND_ID']; ?>" 
+        data-cost-price="<?= $item['COST_PRICE']; ?>" 
+        class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
+    <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
+</button>
+
+
               </td>
             </tr>
           <?php endforeach; ?>
@@ -128,10 +136,9 @@
   <input id="formatted_cost_price" name="cost_price" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" placeholder="Harga Jual" required>
 </div>
 
-        
         <!-- Submit Button -->
         <div class="flex justify-end mt-4">
-          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButton">Tambah/Edit Barang</button>
+          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButton">Tambah Barang</button>
         </div>
       </form>
       <form action="<?= BASEURL;?>/Inventory/deleteItem" method="post" class="pl-6" id="deleteItemForm">
@@ -193,12 +200,73 @@
     </div>
   </div>
 
+<!---edit--->
+<div id="modalEdit" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white rounded-lg shadow-lg w-1/2 p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-blue-600">Update List Barang</h2>
+        <button id="closeModalEditButton" class="text-gray-500 hover:text-gray-700">
+  <span class="text-2xl">&times;</span>
+</button>
+      </div>
+      <form action="<?= BASEURL; ?>/inventory/updateItem" method="post" id="editItemForm" class="bg-white w-full max-w-[600px] max-h-[1000px] p-6 rounded-lg" enctype="multipart/form-data">
+        <input type="hidden" id="itemId" name="ITEM_ID" value="">
+
+        <!-- Nama Barang -->
+        <div class="mb-3">
+          <label for="item_name" class="text-sm text-gray-700">Nama Barang</label>
+          <input id="item_name" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="item_name" placeholder="Nama Barang" required>
+        </div>
+        
+        <!-- Category -->
+        <div class="mb-3">
+          <label for="category_id" class="text-sm text-gray-700">Category</label>
+          <select id="category_id" name="category_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+            <option value="" disabled selected>-- Pilih Category --</option>
+            <?php foreach($data['category'] as $category): ?>
+              <option value="<?= $category['CATEGORY_ID']; ?>"><?= $category['CATEGORY_NAME']; ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        
+        <!-- brand -->
+        <div class="mb-3">
+          <label for="brand_id" class="text-sm text-gray-700">Brand</label>
+          <select id="brand_id" name="brand_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+            <option value="" disabled selected>-- Pilih Brand --</option>
+            <?php foreach($data['brand'] as $brand): ?>
+              <option value="<?= $brand['BRAND_ID']; ?>"><?= $brand['BRAND_NAME']; ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        
+        <!-- Harga Jual -->
+        <div class="mb-3">
+  <label for="cost_price" class="text-sm text-gray-700">Harga Jual</label>
+  <input id="formatted_cost_price" name="cost_price" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" placeholder="Harga Jual" required>
+</div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-end mt-4">
+          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButton">Tambah/Edit Barang</button>
+        </div>
+      </form>
+      <form action="<?= BASEURL;?>/Inventory/deleteItem" method="post" class="pl-6" id="deleteItemForm">
+          <input type="hidden" id="deleteID" name="id">
+          <button type="button" onclick="deleteConfirmation()" class="right-0 p-2 flex items-center justify-center bg-red-500 text-white rounded hover:bg-red-600"><img src="<?= BASEURL; ?>/img/delete.png" width="20px" height="20px" alt="delete"></button>
+    </form>
+  </div>
+    </div>
+  </div>
+
+
   <!-- JavaScript -->
   <script>
     // Mendapatkan elemen modal dan tombol
     const modal = document.getElementById('formModal');
     const openModalButton = document.getElementById('openModalButton');
     const closeModalButton = document.getElementById('closeModalButton');
+    const closeModalEditButton = document.getElementById('closeModalEditButton');
     const submitButton = document.getElementById('submitButton');
 
     const modalBrand = document.getElementById('modalBrand');
@@ -245,7 +313,10 @@
         modal.classList.add('hidden');
       }
     });
-
+    //menutup modal update
+    closeModalEditButton.addEventListener('click', () => {
+  document.getElementById('modalEdit').classList.add('hidden');
+});
     window.addEventListener('click', (event) => {
       if (event.target === modalBrand) {
         modalBrand.classList.add('hidden');
@@ -276,7 +347,7 @@
         }
       });
     });
-    document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
   const quickSearchInput = document.getElementById("quickSearchInput");
   const tableRows = document.querySelectorAll("tbody tr");
 
@@ -306,6 +377,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+
+function editModalOpen(itemId) {
+  // Ambil tombol yang diklik
+  const editButton = document.querySelector(`button[data-item-id='${itemId}']`);
+
+  // Ambil data dari atribut tombol
+  const itemName = editButton.getAttribute('data-item-name');
+  const categoryId = editButton.getAttribute('data-category-id');
+  const brandId = editButton.getAttribute('data-brand-id');
+  const costPrice = editButton.getAttribute('data-cost-price');
+
+  // Isi form modal dengan data
+  document.getElementById('itemId').value = itemId;
+  document.getElementById('item_name').value = itemName;
+  document.getElementById('category_id').value = categoryId;
+  document.getElementById('brand_id').value = brandId;
+  document.getElementById('formatted_cost_price').value = costPrice;
+
+  // Ubah teks tombol submit
+  document.getElementById('submitButton').textContent = 'Update Barang';
+
+  // Tampilkan modal
+  document.getElementById('formModal').classList.remove('hidden');
+}
 
   </script>
 </body>

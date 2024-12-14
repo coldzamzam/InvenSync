@@ -1,4 +1,5 @@
 <div class="flex-1 ml-24 mt-20 p-8">
+<input type="text" id="quickSearchInput" placeholder="Quick search" class="border rounded px-4 py-2">
     <?php if (!empty($data['receiptDetails'])): ?>
         <?php foreach ($data['receiptDetails'] as $receipt_id => $receipt): ?>
             <div onclick="toggleTable('table-<?= $receipt_id; ?>')" class="cursor-pointer bg-gray-100 shadow-lg rounded-lg p-6 mb-2">
@@ -84,4 +85,34 @@ document.getElementById('printInvoiceBtn').addEventListener('click', function ()
     printWindow.document.close();
     printWindow.print();
 });
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('quickSearchInput'); // Input pencarian
+    const transactionDivs = document.querySelectorAll('.bg-gray-100'); // Elemen transaksi
+
+    searchInput.addEventListener('input', function () {
+        const filter = searchInput.value.toLowerCase(); // Ambil teks input pencarian
+        let found = false;
+
+        transactionDivs.forEach(div => {
+            const transactionId = div.querySelector('span.text-blue-600').textContent.toLowerCase(); // Ambil ID Transaksi
+            const transactionDate = div.querySelector('p.text-gray-600').textContent.toLowerCase(); // Ambil tanggal transaksi
+            const matches = transactionId.includes(filter) || transactionDate.includes(filter); // Cek apakah cocok dengan ID atau tanggal
+            
+            if (matches) {
+                div.style.display = ''; // Tampilkan div jika cocok
+                found = true;
+            } else {
+                div.style.display = 'none'; // Sembunyikan div jika tidak cocok
+            }
+        });
+
+        if (!found) {
+            // Tampilkan pesan jika tidak ada hasil pencarian
+            document.querySelector('.text-center.text-gray-600').style.display = '';
+        } else {
+            document.querySelector('.text-center.text-gray-600').style.display = 'none';
+        }
+    });
+});
+
 </script>

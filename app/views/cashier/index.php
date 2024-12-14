@@ -34,6 +34,7 @@
     </div>
   </header>
   <h1 class="text-2xl font-bold mb-4">Barang Yang Tersedia</h1>
+  <input type="text" id="quickSearchInput" placeholder="Quick search" class="border rounded px-6 py-2">
   <div class="flex w-3/5">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
     <?php foreach($data['item'] as $item): ?>
@@ -46,7 +47,7 @@
           <img src="<?= BASEURL; ?>/img/add-cart (1).png" class="w-full h-full  hidden group-hover:block" alt="">
         </div>
         <div class="bg-[#FFD369] rounded-lg flex flex-col">
-          <span class="mb-2 font-semibold text-lg"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></span>
+        <span class="mb-2 font-semibold text-lg"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></span>
           <span class="text-gray-600">Rp.<?= number_format($item['COST_PRICE'], 2); ?></span>
         </div>
       </button>
@@ -314,4 +315,42 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('namabarang').value = namaBarang;
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+    const quickSearchInput = document.getElementById('quickSearchInput');
+    const itemButtons = document.querySelectorAll('[id^="tambahBarangBtn_"]');
+
+    console.log('Quick Search Setup:');
+    console.log('Search Input:', quickSearchInput);
+    console.log('Found Item Buttons:', itemButtons.length);
+
+    quickSearchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase().trim();
+        console.log('Current Search Term:', searchTerm);
+
+        itemButtons.forEach((button, index) => {
+            // Debugging: Log each button's details
+            const itemId = button.dataset.itemid;
+            const itemName = button.dataset.itemname;
+            const priceElement = button.querySelector('.text-gray-600');
+            const itemPrice = priceElement ? priceElement.textContent : 'No Price Found';
+
+            console.log(`Button ${index}:`, {
+                itemId,
+                itemName,
+                itemPrice
+            });
+
+            // Matching logic
+            const matchesSearch = 
+                itemId.toLowerCase().includes(searchTerm) || 
+                itemName.toLowerCase().includes(searchTerm) || 
+                itemPrice.toLowerCase().includes(searchTerm);
+
+            console.log(`Match for Button ${index}:`, matchesSearch);
+
+            // Toggle display
+            button.style.display = matchesSearch ? 'block' : 'none';
+        });
+    });
+});
 </script>
