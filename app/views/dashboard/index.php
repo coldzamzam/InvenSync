@@ -1,40 +1,75 @@
-<div class="flex-1 ml-24 mt-20 p-8">
-  <p class="ml-[300px]">Selamat datang di halaman utama <b><?=$_SESSION['user_id'];?></b> <b><?= $_SESSION['user_role']; ?></b>, <b><?= $_SESSION['user_name']; ?></b> dengan owner id <b><?= $_SESSION['owner_id']; ?></b> dan dengan store id <b><?= $_SESSION['store_id']; ?></b> bernama <b><?= $_SESSION['store_name']; ?></b>.</p>
-  <div class="flex justify-between gap-4 mb-4 min-h-[600px]">
-    <div class="bg-white shadow-md border border-zinc-100 w-1/2 p-6 rounded-lg">
-      <div class="mb-6">
-        <h2 class="text-2xl font-semibold">Pemasukan</h2>
-        <?php foreach ($data['chartPenghasilan'] as $pemasukan) : ?>
-          <p>
-            <?= $pemasukan['BULAN']; ?> - Rp<?= number_format($pemasukan['TOTAL_PENDAPATAN'], 2, ',', '.'); ?>
-          </p>
-        <?php endforeach; ?>
+<div class="flex-1 ml-24 mt-24 px-8">
+
+  <div class="flex justify-between gap-2 mb-4">
+    <!-- APUS AJA KEDUA BORDERNYA, CUMA BUAT NGECEK -->
+    <div class="w-1/5 px-6 rounded-lg">
+      <div class="">
+        <h4 class="text-xl">Selamat Datang,</h4>
+        <p><b><?= $_SESSION['user_role']; ?></b></p>
+        <h2 class="text-2xl"><b><?= $_SESSION['user_name']; ?></b></h2>
       </div>
     </div>
-    <div class="flex flex-col w-1/2 gap-4 justify-between">
-      <div class="bg-white shadow-md border border-zinc-100 h-full p-6 rounded-lg">
+    <div class="w-4/5">
+      <div class="flex justify-between">
+        <h4 class="text-xl pb-2 font-semibold">Ada apa di bulan ini?</h4>
+        <h4 class="text-xl pb-2 font-semibold"><?= $data['today']['DATE']; ?></h4>
+      </div>
+      <div class="flex justify-between gap-2">
+        <div class="bg-[#2B87FF] border border-zinc-100 rounded-lg p-6 w-1/3">
+          <div class="text-white">
+            <p>Total Profit/Margin</p>
+            <h2 class="text-2xl font-semibold"><b>Rp<?= number_format($data['revenue']['PROFIT'], 2, ',', '.'); ?></b><span class="text-sm">/<?= number_format(($data['revenue']['PROFIT']/$data['revenue']['TOTAL_PENGELUARAN'] * 100), 2, ',', '.'); ?>%
+              </span>
+            </h2>
+          </div>
+        </div>
+        <div class="bg-[#041A3D] border border-zinc-100 rounded-lg p-6 w-1/3">
+          <div class="text-white">
+            <p>Total Barang Masuk</p>
+            <h2 class="text-3xl font-semibold">
+              <b><?= $data['availInventory']['TOTAL_INVENTORY']; ?></b><span class="text-sm">pcs</span>
+            </h2>
+          </div>
+        </div>
+        <div class="bg-[#00D0C2] border border-zinc-100 rounded-lg p-6 w-1/3">
+          <div class="text-white">
+            <p>Total Barang Terjual</p>
+            <h2 class="text-3xl font-semibold"><b><?= $data['totalSoldItem']['TOTAL_SOLD']; ?></b><span class="text-sm">pcs</span></h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-between gap-4 mb-4">
+    <div class="bg-white shadow-md border border-zinc-100 w-3/5 p-6 rounded-lg">
+      <div class="mb-6">
+        <h2 class="text-2xl font-semibold">Pemasukan dan Pengeluaran</h2>
+      </div>
+      <div id="chart_div""></div>
+    </div>
+    <div class="flex flex-col w-2/5 gap-4 justify-between">
+      <div class="bg-white shadow-md border border-zinc-100 p-6 rounded-lg">
         <div class="mb-6">
           <h2 class="text-2xl font-semibold">Admin Toko</h2>
         </div>
         <div id="piechart"></div>
       </div>
-      <div class="bg-white shadow-md border border-zinc-100 h-full p-6 rounded-lg">
-        <div class="mb-6">
-          <h2 class="text-2xl font-semibold">Pengeluaran</h2>
-          <?php foreach ($data['chartPenghasilan'] as $pengeluaran) : ?>
-            <p>
-            <?= $pengeluaran['BULAN']; ?> - Rp<?= number_format($pengeluaran['TOTAL_PENGELUARAN'], 2, ',', '.'); ?>
-            </p>
-          <?php endforeach; ?>
-        </div>
-      </div>
     </div>
   </div>
-  <div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-full p-6 rounded-lg">
-    <div class="mb-6">
-      <h2 class="text-2xl font-semibold">Pemasukan</h2>
+  <div class="flex justify-between gap-4">
+    <div class="bg-white shadow-md border border-zinc-100 w-1/2 p-6 rounded-lg">
+      <h2 class="text-md font-semibold">Produk Terlaris</h2>
+      <h2 class="text-3xl font-semibold"><b><?= $data['produkTerlaris']['ITEM_NAME'] ?></b></h2>
+      <h2 class="text-md font-semibold"><?= $data['produkTerlaris']['BRAND_NAME'] ?></h2>
+      <h2 class="text-2xl font-semibold text-[#2B87FF]"><b><?= $data['produkTerlaris']['TOTAL_QUANTITY'] ?><span class="text-sm">pcs</span></b></h2>
     </div>
-    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+    <div class="bg-white shadow-md border border-zinc-100 w-1/2 p-6 rounded-lg">
+      <h2 class="text-md font-semibold">Produk Kurang Laris</h2>
+      <h2 class="text-3xl font-semibold"><b><?= $data['produkKurangLaris']['ITEM_NAME'] ?></b></h2>
+      <h2 class="text-md font-semibold"><?= $data['produkKurangLaris']['BRAND_NAME'] ?></h2>
+      <h2 class="text-2xl font-semibold text-[#00D0C2]"><b><?= $data['produkKurangLaris']['TOTAL_QUANTITY'] ?><span class="text-sm">pcs</span></b></h2>
+    </div>
+    
   </div>
 </div>
 
@@ -70,6 +105,7 @@
 
       var options = {
         title: 'Pemasukan dan Pengeluaran per Bulan',
+        colors: ['#2B87FF', '#FFD369'],
         hAxis: {
             title: 'Bulan',
         },
@@ -79,7 +115,7 @@
         },
         bars: 'vertical',
         legend: { position: 'top' },
-        height: 500
+        height: 300
       };
 
       var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
@@ -92,7 +128,12 @@
       );
 
       var options = {
-          title: 'Distribusi Pendapatan dan Pengeluaran'
+          is3D: false,
+          slices: {
+            0: { color: '#FFD369' },
+            1: { color: '#041A3D' }
+          },
+          height: 300
       };
 
       var chart = new google.visualization.PieChart(document.getElementById('piechart'));

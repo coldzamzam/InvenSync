@@ -26,16 +26,22 @@ Class Dashboard extends Controller{
       'judul' => 'Dashboard'
     ];
 
-    $userInventory = (int)$this->model('User_Model')->getInventoryUserCount();
-    $userCashier = (int)$this->model('User_Model')->getCashierUserCount();
-    $data['chartPenghasilan'] = $this->model('Dashboard_model')->getPengeluaranPendapatan(); 
+    $userInventory = (int)$this->model('Dashboard_Model')->getInventoryUserCount();
+    $userCashier = (int)$this->model('Dashboard_Model')->getCashierUserCount();
     $adminChartData=[
       ['Role', 'Jumlah'],
       ['Admin Gudang', (int)$userInventory], 
       ['Admin Kasir', (int)$userCashier]
     ];
-
+    
     $data['adminChartData'] = $adminChartData;
+    $data['chartPenghasilan'] = $this->model('Dashboard_model')->getPengeluaranPendapatan(); 
+    $data['totalSoldItem'] = $this->model('Dashboard_model')->getTotalSoldItemThisMonth();
+    $data['revenue'] = $this->model('Dashboard_model')->getRevenueThisMonth();
+    $data['today'] = $this->model('Dashboard_model')->dateToday();
+    $data['availInventory'] = $this->model('Dashboard_model')->getTotalInventory();
+    $data['produkTerlaris'] = $this->model('Dashboard_model')->getProdukTerlaris();
+    $data['produkKurangLaris'] = $this->model('Dashboard_model')->getProdukKurangLaris();
 
 
     if($this->model('User_model')->checkRowToko() > 0) {
