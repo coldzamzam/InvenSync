@@ -43,6 +43,12 @@ if (isset($_SESSION['status'])):
                 text: 'Akun dan Toko anda telah dihapus!',
                 icon: 'success'
             });
+        } else if (status === 'deleteRequest') {
+            Swal.fire({
+                title: 'Permintaan Hapus terkirim!',
+                text: 'Tolong verifikasi di email anda.',
+                icon: 'warning'
+            });
         } else if (status === 'gagaldihapus') {
             Swal.fire({
                 title: 'Error',

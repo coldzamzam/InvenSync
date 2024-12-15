@@ -1,54 +1,60 @@
 <main class="flex-1 ml-24 p-8 mt-14">
   <header class="flex justify-between items-center mb-6 z-[1]">
-  <div class="flex-1">
-      <h1 class="text-2xl font-bold mt-8 mb-3">Barang Yang Tersedia</h1>
-      <input type="text" id="quickSearchInput" placeholder="Quick search" class="border rounded px-4 py-2 mb-6">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Contoh Produk -->
-        <div class="group bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-4">
-          <div class="flex flex-col items-center">
-            <img src="https://via.placeholder.com/100" alt="Gambar Tidak Tersedia" class="w-24 h-24 object-cover rounded mb-4">
-            <img src="https://via.placeholder.com/100" class="hidden group-hover:block w-24 h-24 object-cover" alt="add to cart">
-          </div>
-          <div class="text-center">
-            <h2 class="font-bold text-lg mb-2">Produk A</h2>
-            <p class="text-gray-600 mb-2">Rp50.000</p>
-            <button class="bg-[#FFD369] text-white py-2 px-4 rounded-lg hover:bg-[#e4c24e]">
-              Tambah
-            </button>
-          </div>
+    <div class="ml-4 w-1/3 top-0 right-0 fixed min-h-screen p-10 bg-white mt-16 shadow-lg">
+      <h1 class="text-2xl font-bold mb-4">Barang yang Dipilih</h1>
+      <div class="flex flex-col bg-gray-100 p-4 mb-4">
+        <?php foreach($data['receiptItems'] as $item): ?>
+        <div class="flex items-center p-2 mb-2 gap-3 shadow-sm bg-white group">
+            <div>
+              <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" width="50px">
+            </div>
+            <div class="w-full">
+              <div class="flex justify-between">
+                  <h2 class="font-bold"><?= $item['ITEM_ID']; ?>-<?= $item['ITEM_NAME']; ?></h2>
+                  <h2 class="font-bold">Jumlah : <?= $item['QUANTITY']; ?></h2>
+              </div>
+              <div>
+                <h3>Total Harga : Rp.<?= $item['TOTAL_PER_ITEM']*$item['QUANTITY']; ?></h3>
+              </div>
+            </div>
+            <form action="<?= BASEURL; ?>/cashier/removeItem" method="post">
+              <input type="hidden" name="receipt_item_id" value="<?= $item['RECEIPT_ITEM_ID']; ?>">
+              <button type="submit" class="hidden group-hover:block absolute bg-red-500 text-white px-2 rounded-full">
+                  -
+              </button>
+            </form>
         </div>
+        <?php endforeach; ?>
+      </div>
+      <div class="space-x-2">
+      <?php if (isset($_SESSION['receipt_id'])):?>
+        <button id="konfirmasiBtn" class="bg-green-500 text-white w-full py-2 px-4 rounded hover:bg-green-600 bottom-0">Konfirmasi Pembelian</button>
+      <?php endif;?>
       </div>
     </div>
+  </header>
+  <h1 class="text-2xl font-bold mb-4">Barang Yang Tersedia</h1>
+  <input type="text" id="quickSearchInput" placeholder="Quick search" class="border rounded px-6 py-2">
+  <div class="flex w-3/5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+    <?php foreach($data['item'] as $item): ?>
+      <button id="tambahBarangBtn_<?= $item['ITEM_ID']; ?>" 
+              data-itemid="<?= $item['ITEM_ID']; ?>" 
+              data-itemname="<?= $item['ITEM_NAME']; ?>"
+              class="group bg-white rounded-lg shadow-lg w-full">
+        <div class="flex flex-col items-center px-20 py-5">
+          <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" class="group-hover:hidden w-full h-full object-cover">
+          <img src="<?= BASEURL; ?>/img/add-cart (1).png" class="w-full h-full  hidden group-hover:block" alt="">
+        </div>
+        <div class="bg-[#FFD369] rounded-lg flex flex-col">
+        <span class="mb-2 font-semibold text-lg"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></span>
+          <span class="text-gray-600">Rp.<?= number_format($item['COST_PRICE'], 2); ?></span>
+        </div>
+      </button>
+    <?php endforeach; ?>
 
-    <!-- Kolom Kanan: Keranjang Belanja -->
-    <aside class="w-1/2 bg-white p-5 shadow-lg rounded-lg">
-      <h1 class="text-2xl font-bold mb-3">Barang yang Dipilih</h1>
-      <div class="space-y-4">
-        <!-- Contoh Item di Keranjang -->
-        <div class="flex items-center gap-4 p-4 shadow-sm bg-gray-100 rounded-lg group">
-          <img src="https://via.placeholder.com/50" alt="Gambar Tidak Tersedia" class="w-16 h-16 object-cover rounded">
-          <div class="flex-1">
-            <div class="flex justify-between items-center">
-              <h2 class="font-bold">Produk A</h2>
-              <span class="font-semibold text-gray-600">Jumlah: 2</span>
-            </div>
-            <p class="text-gray-500">Total Harga: Rp100.000</p>
-          </div>
-          <button class="hidden group-hover:block bg-red-500 text-white px-3 py-1 rounded-lg">
-            Hapus
-          </button>
-        </div>
-      </div>
-      <div class="mt-6 border-t pt-4">
-        <div class="flex justify-between font-semibold text-lg mb-4">
-          <span>Total:</span>
-          <span>Rp100.000</span>
-        </div>
-        <button class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600">
-          Konfirmasi Pembelian
-        </button>
-      </div>
+    </div>
+  </div>
 
   <!-- <div class="bg-white rounded shadow">
     <table id="barangTable" class="w-full text-left border-collapse">

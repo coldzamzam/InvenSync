@@ -39,7 +39,11 @@ class User_model {
 
 public function getStoreInfo() {
   $this->db->query('SELECT * FROM i_store_info WHERE owner_id = :owner_id and is_deleted = 0');
-  $this->db->bind(':owner_id', $_SESSION['user_id']);
+  if($_SESSION['user_role'] == 'Owner') {
+    $this->db->bind(':owner_id', $_SESSION['user_id']);
+  } else {
+    $this->db->bind(':owner_id', $_SESSION['owner_id']);
+  }
   return $this->db->single(); // Ambil 1 baris data saja
 }
 
@@ -163,7 +167,7 @@ public function removeVerificationToken($user_id) {
   }
 
   public function masuk($data) {
-    $query = "SELECT * FROM i_users WHERE email = :email AND password = :password AND is_email_verified = 1 AND verification_token IS NULL AND is_deleted = 0";
+    $query = "SELECT * FROM i_users WHERE email = :email AND password = :password AND is_email_verified = 1 AND is_deleted = 0";
     $this->db->query($query);
     $this->db->bind('email', $data['email']);
     $this->db->bind('password', hash('sha256', $data['password']));
@@ -186,7 +190,9 @@ public function removeVerificationToken($user_id) {
       }
       $_SESSION['store_id'] = $user['STORE_ID'];
       // $_SESSION['owner_id'] = $user['OWNER_ID'];
-
+      if(isset($user['VERIFICATION_TOKEN'])) {
+        $_SESSION['verification_token'] = $user['VERIFICATION_TOKEN'];
+      }
       $_SESSION['is_login'] = true;
       
       return $user;
@@ -195,10 +201,10 @@ public function removeVerificationToken($user_id) {
     }
   }
 
-  public function checkDeleted($email){
-    $query = "SELECT * FROM i_users WHERE email = :email AND is_deleted = 1";
+  public function checkDeleted($userid){
+    $query = "SELECT * FROM i_users WHERE user_id = :user_id AND is_deleted = 0 AND is_email_verified = 1 AND verification_token IS NOT NULL";
     $this->db->query($query);
-    $this->db->bind('email', $email);
+    $this->db->bind('user_id', $userid);
     $this->db->execute();
     $user = $this->db->single();
     if($user){
@@ -428,10 +434,10 @@ public function checkDeletionEmployees(){
 }
 
 
-public function setDeleteToken($deleteToken,$email){
-  $this->db->query("UPDATE i_users SET verification_token = :token WHERE email = :email and is_deleted = 0");
+public function setDeleteToken($deleteToken,$storeID){
+  $this->db->query("UPDATE i_users SET verification_token = :token WHERE store_id = :store_id and is_deleted = 0");
   $this->db->bind('token', $deleteToken);
-  $this->db->bind('email', $email);
+  $this->db->bind('store_id', $storeID);
   $this->db->execute();
 }
 
@@ -496,5 +502,11 @@ public function removeDeleteToken($code){
   $this->db->execute();
 
 }
+
+  public function cancelDeletion($store_id){
+    $this->db->query("UPDATE i_users SET verification_token = null WHERE store_id = :store_id and is_deleted = 0");
+    $this->db->bind('store_id', $store_id);
+    $this->db->execute();
+  }
 }
 ?>

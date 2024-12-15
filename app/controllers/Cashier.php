@@ -7,11 +7,15 @@ class Cashier extends Controller {
         if ($_SESSION['user_role'] != 'Admin Kasir' && $_SESSION['user_role'] != 'Owner') {
           header('Location: ' . BASEURL . '/dashboard');          
         }
+        if($this->model('User_model')->checkDeleted($_SESSION['user_id']) > 0) {
+          header('Location: ' . BASEURL . '/dashboard');
+        }
       }
 
     public function index(){
         $data['judul'] = 'Cashier';
         $data['item'] = $this->model('Item_model')->getAllItem();
+        // $data['stok'] = $this->model('Cashier_model')->getAllTotalQuantity();
         if (isset($_SESSION['receipt_id'])) {
           // if ($this->model('Cashier_model')->checkRowSelectedItems() < 1) {
           //   $data['receiptItems'] = [];

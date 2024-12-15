@@ -7,8 +7,8 @@ use PHPMailer\PHPMailer\Exception;
 //Load Composer's autoloader
 require '../vendor/autoload.php';
 
+
 class User extends Controller {
-	
   public function index(){
 	$data['nameError'] = '';
 	$data['roleError'] = '';
@@ -431,13 +431,14 @@ public function verify($code = null) {
 	public function deleteToko() {
 		$data = [
 			'id' => $_POST['id'] ?? '',
+			'store_id' => $_POST['storeID'] ?? '',
 			'email' => $_POST['email'] ?? '',
 			'name' => $_POST['name'] ?? '',
 			'deleteVerificationCode' => bin2hex(random_bytes(16)),
 		];
 		$mail = new PHPMailer(true);
 
-		$this->model('User_model')->setDeleteToken($data['deleteVerificationCode'],$data['email']);
+		$this->model('User_model')->setDeleteToken($data['deleteVerificationCode'],$data['store_id']);
 
 		try {
 			//Server settings
@@ -466,14 +467,15 @@ public function verify($code = null) {
                 <p>Terima kasih!</p>
             ";		
 			if ($mail->send()) {
-                $_SESSION['status'] = 'success';
+                $_SESSION['status'] = 'deleteRequest';
+				header('Location: ' . BASEURL . '/home');
             } else {
                 Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
             }
-
         } catch (Exception $e) {
             Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
         }
+
 	}
 
 	public function deletewholeaccount($code = null) {
@@ -505,6 +507,13 @@ public function verify($code = null) {
 		exit;
 	}
 
+	public function cancelDeletion($token=null) {
+		$this->model('User_model')->cancelDeletion($_SESSION['store_id']);
+		$data['status']='cancelled';
+
+		header('Location: ' . BASEURL . '/dashboard');
+		exit;
+	}
 }
 
 ?>

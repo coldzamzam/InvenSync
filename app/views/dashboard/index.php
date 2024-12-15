@@ -143,7 +143,7 @@
   </script>
         
 
-<?php
+        <?php
 if (isset($_SESSION['status'])):
     $status = $_SESSION['status']; // Get status from session
     unset($_SESSION['status']); // Remove status from session after using it
@@ -157,12 +157,36 @@ if (isset($_SESSION['status'])):
                 text: 'Selamat Datang di Invensync!',
                 icon: 'success'
             });
-        } else if (status === 'error') {
+        } else if (status === 'ownerDeleted') {
             Swal.fire({
-                title: 'Error',
-                text: 'Failed to add employee!',
-                icon: 'error'
+                title: 'Akun Anda Sudah dihapus dan Perlu Konfirmasi.',
+                text: 'Apakah anda berubah pikiran dan ingin mengembalikan akun ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Kembalikan Akun',
+                cancelButtonText: 'Tidak',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '<?= BASEURL; ?>/user/cancelDeletion/<?= $_SESSION['verification_token'] ?>';
+                } else {
+                  document.getElementById('LogoutForm').submit();
+                }
             });
-        }
+        } else if (status === 'employeeDeleted') {
+            Swal.fire({
+                title: 'Toko ini sudah dihapus.',
+                text: 'Apabila ini sebuah kesalahan, silahkan hubungi owner toko.',
+                icon: 'warning',
+            }).then(() => {
+                document.getElementById('LogoutForm').submit();
+            });
+        } else if (status === 'cancelled') {
+          Swal.fire({
+                title: 'Penghapusan Dibatalkan!',
+                text: 'Selamat Datang kembali di Invensync!',
+                icon: 'success'
+            });    
+        } 
     </script>
 <?php endif; ?>

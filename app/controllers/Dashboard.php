@@ -6,7 +6,14 @@ Class Dashboard extends Controller{
     if ( !isset($_SESSION['is_login']) ) {
       header('Location: ' . BASEURL . '/user/login');
     }
-  }
+    if($this->model('User_model')->checkDeleted($_SESSION['user_id']) > 0) {
+      if($_SESSION['user_role'] == 'Owner') {
+          $_SESSION['status'] = 'ownerDeleted';
+      } else {
+          $_SESSION['status'] = 'employeeDeleted';
+        }
+      }
+    }
   
   public function index(){
     $data = [
@@ -51,6 +58,13 @@ Class Dashboard extends Controller{
     else {
       $this->view('templates/s-header', $data);
       $this->view('user/toko', $data);
+    }
+    if($this->model('User_model')->checkDeleted($_SESSION['user_id']) > 0) {
+      if($_SESSION['user_role'] == 'Owner') {
+        $data['status'] = 'ownerDeleted';
+      } else{
+        $data['status'] = 'employeeDeleted';
+      }
     }
     // $data['users'] = $this->model('Item_model')->getUserById($id);
 

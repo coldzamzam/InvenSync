@@ -8,6 +8,9 @@ class Inventory extends Controller {
 		if ($_SESSION['user_role'] != 'Owner' && $_SESSION['user_role'] != 'Admin Gudang') {
 			header('Location: ' . BASEURL . '/dashboard');
 		}
+		if($this->model('User_model')->checkDeleted($_SESSION['user_id']) > 0) {
+			header('Location: ' . BASEURL . '/dashboard');
+		}
     }
 
 	public function index($page = 1)

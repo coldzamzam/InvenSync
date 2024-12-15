@@ -7,6 +7,9 @@ class Transaction extends Controller
         if ( !isset($_SESSION['is_login']) ) {
             header('Location: ' . BASEURL . '/user/login');
         }
+        if($this->model('User_model')->checkDeleted($_SESSION['user_id']) > 0) {
+            header('Location: ' . BASEURL . '/dashboard');
+        }
     }
     public function index() {
         $data['judul'] = 'Riwayat Transaksi';

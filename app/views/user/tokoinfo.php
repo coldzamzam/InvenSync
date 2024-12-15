@@ -137,27 +137,29 @@
 					
 					<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'Owner') { 
 						echo"
-											<div class='flex gap-4'>
+					<div class='flex gap-4'>
 						<button
 							id='openModalButton'
-							type='submit'
-							name='simpan'
+							type='button'
 							class='btnEditToko bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200'
 							onclick='berhasil()'
 						>
 							Edit Informasi
 						</button>
-						<form action='" . BASEURL . "/User/deleteToko' method='post'>
-							<input type='hidden' name='id' value='" . $_SESSION['user_id'] . "'>
-							<input type='hidden' name='email' value='" . $_SESSION['user_email']. "'>
-							<button
-								type='submit'
-								name='simpan'
-								class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200'
-							>
-								Delete Toko
-							</button>
+
+						<form id='deleteStoreForm' action='" . BASEURL . "/User/deleteToko' method='post'>
+							<input type='hidden' name='id' value='" . htmlspecialchars($_SESSION['user_id'], ENT_QUOTES, 'UTF-8') . "'>
+							<input type='hidden' name='email' value='" . htmlspecialchars($_SESSION['user_email'], ENT_QUOTES, 'UTF-8') . "'>
+							<input type='hidden' name='storeID' value='" . htmlspecialchars($_SESSION['store_id'], ENT_QUOTES, 'UTF-8') . "'>
 						</form>
+
+						<button
+							type='button'
+							class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200'
+							onclick='confirmDelete()'
+						>
+							Delete Toko
+						</button>
 					</div>
 						";
 					}
@@ -237,6 +239,31 @@
 
 		});
 
+	function confirmDelete() {
+		Swal.fire({
+			title: 'Apakah Anda yakin?',
+			text: "Anda akan diminta untuk verifikasi di gmail anda!",
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonColor: '#d33',
+			cancelButtonColor: '#3085d6',
+			confirmButtonText: 'Ya, Hapus Toko!',
+			cancelButtonText: 'Batal'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					title: 'Satu langkah lagi!',
+					text: 'Tolong verifikasi di gmail anda.',
+					icon: 'warning',
+					timer: 3000,
+					timerProgressBar: true,
+					showConfirmButton: false
+				}).then(() => {
+					document.getElementById('deleteStoreForm').submit();
+				});
+			}
+		});
+	}
 </script>
 
 </body>
