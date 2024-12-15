@@ -1,20 +1,27 @@
 <main class="flex-1 ml-24 mt-20 p-8">
-      <div class="flex items-center mb-4 space-x-4">
-        <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Tambahkan Karyawan</button>
-        <form id="searchForm" class="flex items-center">
-        <input type="text" id="searchInput" placeholder="Quick Search" 
+<div class="flex items-center mb-4 space-x-4 justify-between">
+  <!-- Filter dan Pencarian -->
+  <div class="flex items-center gap-4">
+    <form id="searchForm" class="flex items-center">
+      <input type="text" id="searchInput" placeholder="Quick Search" 
         name="search" 
         class="border rounded px-4 py-2 w-full"
         onkeyup="filterTable()">
-        </form>
-          <select id="roleFilter" class="border rounded px-4 py-2" onchange="filterByRole()">
-          <option value="" disabled selected>Role</option>
-          <option>All</option>
-          <option>Admin Kasir</option>
-          <option>Admin Gudang</option>
-        </select>
-      </div>
-      <h2 class="text-xl font-semibold pb-2">Karyawan</h2>
+    </form>
+    <select id="roleFilter" class="border rounded px-4 py-2" onchange="filterByRole()">
+      <option value="" disabled selected>Role</option>
+      <option>All</option>
+      <option>Admin Kasir</option>
+      <option>Admin Gudang</option>
+    </select>
+  </div>
+  
+  <!-- Tombol Tambah Karyawan -->
+  <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto">+ Add Employee</button>
+</div>
+
+
+      <h2 class="text-xl font-semibold pb-2">Employee</h2>
       <div class="bg-white rounded shadow">
       
       <table class="w-full text-left border-collapse">
