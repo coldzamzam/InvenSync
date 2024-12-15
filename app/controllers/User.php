@@ -58,12 +58,12 @@ class User extends Controller {
 		}
   }
 	
-	function sanitizeInput($input) {
-		return strtolower(trim($input));
-	}
-
+	
   public function createAcc() {
-
+		
+		function sanitizeInputSignIn($input) {
+			return strtolower(trim($input));
+		}
 
 		$mail = new PHPMailer(true);
 
@@ -72,7 +72,7 @@ class User extends Controller {
 			'role' => $_POST['role'] ?? '',
 			'address' => $_POST['address'] ?? '',
 			'phonenumber' => $_POST['phonenumber'] ?? '',
-			'email' => sanitizeInput($_POST['email']) ?? '',
+			'email' => sanitizeInputSignIn($_POST['email']) ?? '',
 			'password' => $_POST['password'] ?? '',
 			'nameError' => '',
 			'roleError' => '',
@@ -161,14 +161,89 @@ class User extends Controller {
 			
 				//Content
 				$mail->isHTML(true);                                  //Set email format to HTML
-				$mail->Subject = 'Verifikasi Akun';
+				$mail->Subject = 'Verifikasi Pendaftaran Akun InvenSync';
 				$mail->Body = "
-									<h1>Halo, {$data['name']}!</h1>
-									<p>Klik tautan di bawah ini untuk memverifikasi akun Anda:</p>
-									<a href='" . BASEURL . "/user/verify/{$data['verificationCode']}'>
-									Verifikasi Akun Anda
-									</a>
-									<p>Terima kasih!</p>
+									<!DOCTYPE html>
+									<html lang='en'>
+									<head>
+											<meta charset='UTF-8'>
+											<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+											<style>
+													body {
+															font-family: Arial, sans-serif;
+															line-height: 1.6;
+															background-color: #f9f9f9;
+															color: #333;
+															margin: 0;
+															padding: 0;
+													}
+													.container {
+															max-width: 600px;
+															margin: 20px auto;
+															background: #ffffff;
+															border-radius: 8px;
+															box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+															overflow: hidden;
+													}
+													.header {
+															background-color: #4CAF50;
+															color: #ffffff;
+															padding: 20px;
+															text-align: center;
+													}
+													.content {
+															padding: 20px;
+													}
+													.content h1 {
+															font-size: 24px;
+															margin: 0 0 10px;
+													}
+													.content p {
+															font-size: 16px;
+															margin: 10px 0;
+													}
+													.btn {
+															display: inline-block;
+															background-color: #4CAF50;
+															color: #ffffff;
+															text-decoration: none;
+															padding: 10px 20px;
+															border-radius: 5px;
+															font-size: 16px;
+															margin: 10px 0;
+													}
+													.btn:hover {
+															background-color: #45a049;
+													}
+													.footer {
+															text-align: center;
+															padding: 10px;
+															background-color: #f1f1f1;
+															font-size: 14px;
+															color: #666;
+													}
+													.footer a {
+															color: #4CAF50;
+															text-decoration: none;
+													}
+											</style>
+									</head>
+									<body>
+											<div class='container'>
+													<div class='header'>
+															<h2>Verifikasi Akun InvenSync</h2>
+													</div>
+													<div class='content'>
+															<h1>Halo, {$data['name']}!</h1>
+															<p>Terima kasih telah mendaftar di InvenSync. Klik tombol di bawah ini untuk memverifikasi akun Anda:</p>
+															<a href='" . BASEURL . "/user/verify/{$data['verificationCode']}' class='btn'>Verifikasi Akun</a>
+															<p>Jika tombol di atas tidak berfungsi, salin dan tempel tautan berikut di browser Anda:</p>
+															<p><a href='" . BASEURL . "/user/verify/{$data['verificationCode']}'>" . BASEURL . "/user/verify/{$data['verificationCode']}</a></p>
+															<p>Terima kasih telah bergabung dengan kami!</p>
+													</div>
+											</div>
+									</body>
+									</html>
 							";		
 				if ($mail->send()) {
 									$_SESSION['status'] = 'success';
@@ -291,13 +366,13 @@ class User extends Controller {
 
   public function loginAcc() {
 
-	// function sanitizeInput($input) {
-	// 	return strtolower(trim($input));
-	// }
+		function sanitizeInputLogin($input) {
+			return strtolower(trim($input));
+		}
 
 		$data = [
 			'judul' => 'Login',
-			'email' => sanitizeInput($_POST['email']) ?? '',
+			'email' => sanitizeInputLogin($_POST['email']) ?? '',
 			'password' => $_POST['password'] ?? '',
 			'captcha' => $_POST['g-recaptcha-response'] ?? '',
 			'loginEmailError' => '',
@@ -459,14 +534,93 @@ class User extends Controller {
 		
 			//Content
 			$mail->isHTML(true);                                  //Set email format to HTML
-			$mail->Subject = 'Verifikasi Akun';
+			$mail->Subject = 'Verifikasi Penghapusan Akun dan Toko';
 			$mail->Body = "
-                <h1>Halo, {$data['name']}!</h1>
-                <p>Hapus akun anda dengan klik link berikut:</p>
-                <a href='" . BASEURL . "/user/deletewholeaccount/{$data['deleteVerificationCode']}'>
-                Hapus Akun dan Toko Anda
-                </a>
-                <p>Terima kasih!</p>
+                <!DOCTYPE html>
+								<html lang='en'>
+								<head>
+										<meta charset='UTF-8'>
+										<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+										<style>
+												body {
+														font-family: Arial, sans-serif;
+														line-height: 1.6;
+														background-color: #f9f9f9;
+														color: #333;
+														margin: 0;
+														padding: 0;
+												}
+												.container {
+														max-width: 600px;
+														margin: 20px auto;
+														background: #ffffff;
+														border-radius: 8px;
+														box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+														overflow: hidden;
+												}
+												.header {
+														background-color: #e74c3c;
+														color: #ffffff;
+														padding: 20px;
+														text-align: center;
+												}
+												.content {
+														padding: 20px;
+												}
+												.content h1 {
+														font-size: 24px;
+														margin: 0 0 10px;
+												}
+												.content p {
+														font-size: 16px;
+														margin: 10px 0;
+												}
+												.btn {
+														display: inline-block;
+														background-color: #e74c3c;
+														color: #ffffff;
+														text-decoration: none;
+														padding: 10px 20px;
+														border-radius: 5px;
+														font-size: 16px;
+														margin: 10px 0;
+												}
+												.btn:hover {
+														background-color: #c0392b;
+												}
+												.footer {
+														text-align: center;
+														padding: 10px;
+														background-color: #f1f1f1;
+														font-size: 14px;
+														color: #666;
+												}
+												.footer a {
+														color: #e74c3c;
+														text-decoration: none;
+												}
+										</style>
+								</head>
+								<body>
+										<div class='container'>
+												<div class='header'>
+														<h2>Konfirmasi Penghapusan Akun</h2>
+												</div>
+												<div class='content'>
+														<h1>Halo, {$data['name']}!</h1>
+														<p>Kami menerima permintaan untuk menghapus akun dan toko Anda. Jika Anda yakin ingin melanjutkan, klik tombol di bawah ini:</p>
+														<a href='" . BASEURL . "/user/deletewholeaccount/{$data['deleteVerificationCode']}' class='btn'>Hapus Akun dan Toko Anda</a>
+														<p>Jika Anda tidak melakukan permintaan ini, abaikan email ini. Akun Anda akan tetap aman.</p>
+														<p>Jika tombol di atas tidak berfungsi, salin dan tempel tautan berikut di browser Anda:</p>
+														<p><a href='" . BASEURL . "/user/deletewholeaccount/{$data['deleteVerificationCode']}'>" . BASEURL . "/user/deletewholeaccount/{$data['deleteVerificationCode']}</a></p>
+												</div>
+												<div class='footer'>
+														<p>Jika Anda memiliki pertanyaan, hubungi kami di <a href='mailto:support@invencsync.com'>support@invencsync.com</a></p>
+														<p>&copy; " . date('Y') . " InvenSync. All rights reserved.</p>
+												</div>
+										</div>
+								</body>
+								</html>
             ";		
 			if ($mail->send()) {
                 $_SESSION['status'] = 'deleteRequest';

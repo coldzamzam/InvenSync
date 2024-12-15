@@ -1,5 +1,5 @@
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-  <div class="bg-white w-full max-w-[600px] p-6 rounded-lg shadow-lg">
+  <div class="bg-white w-full max-w-[600px] p-6 rounded-lg shadow-lg mt-20">
     <!-- Header -->
     <div class="flex justify-between items-center mb-4">
       <h3 class="text-2xl font-semibold text-center w-full">Selamat Datang!</h3>
