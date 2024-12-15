@@ -118,7 +118,7 @@ Class Item_model {
   }
 
   public function getItemByID($kodebarang) {
-    $query = ('SELECT * FROM i_inventory WHERE item_id = :kodebarang');
+    $query = ('SELECT * FROM i_inventory WHERE item_id = :kodebarang AND is_deleted = 0');
 
     // var_dump($kodebarang);
 
@@ -130,7 +130,7 @@ Class Item_model {
   }
 
   public function cekBrand($brand_name) {
-    $this->db->query('SELECT * FROM i_master_brand WHERE brand_name = :brand_name');
+    $this->db->query('SELECT * FROM i_master_brand WHERE brand_name = :brand_name and is_deleted = 0');
     $this->db->bind('brand_name', $brand_name);
     return $this->db->single();
   }
@@ -145,7 +145,7 @@ Class Item_model {
   }
 
   public function getAllBrand() {
-    $query = "SELECT * FROM i_master_brand WHERE store_id = :store_id";
+    $query = "SELECT * FROM i_master_brand WHERE store_id = :store_id and is_deleted = 0";
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
@@ -162,7 +162,7 @@ Class Item_model {
   }
 
   public function getAllCategory() {
-    $query = "SELECT * FROM i_master_category WHERE store_id = :store_id";
+    $query = "SELECT * FROM i_master_category WHERE store_id = :store_id and is_deleted = 0";
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
@@ -187,7 +187,7 @@ Class Item_model {
     $query = "SELECT i.inventory_id, i.item_id, i.quantity, i.date_added, i.harga_beli, i.user_id, mi.item_name AS item_name
               FROM i_inventory i 
               JOIN i_master_item mi ON i.item_id = mi.item_id
-              AND i.store_id = :store_id";
+              AND i.store_id = :store_id AND i.is_deleted = 0";
 
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);

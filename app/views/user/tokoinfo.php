@@ -137,7 +137,7 @@
 					
 					<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'Owner') { 
 						echo"
-											<div class='flex'>
+											<div class='flex gap-4'>
 						<button
 							id='openModalButton'
 							type='submit'
@@ -147,6 +147,17 @@
 						>
 							Edit Informasi
 						</button>
+						<form action='" . BASEURL . "/User/deleteToko' method='post'>
+							<input type='hidden' name='id' value='" . $_SESSION['user_id'] . "'>
+							<input type='hidden' name='email' value='" . $_SESSION['user_email']. "'>
+							<button
+								type='submit'
+								name='simpan'
+								class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200'
+							>
+								Delete Toko
+							</button>
+						</form>
 					</div>
 						";
 					}

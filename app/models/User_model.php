@@ -25,7 +25,7 @@ class User_model {
   }
 
   public function checkRowToko() {
-    $query = "SELECT COUNT(*) FROM i_store_info WHERE owner_id = :owner_id";
+    $query = "SELECT COUNT(*) FROM i_store_info WHERE owner_id = :owner_id and is_deleted = 0";
     $this->db->query($query);
     $this->db->bind(':owner_id', $_SESSION['owner_id']);
     $this->db->execute();
@@ -38,7 +38,7 @@ class User_model {
 
 
 public function getStoreInfo() {
-  $this->db->query('SELECT * FROM i_store_info WHERE owner_id = :owner_id');
+  $this->db->query('SELECT * FROM i_store_info WHERE owner_id = :owner_id and is_deleted = 0');
   $this->db->bind(':owner_id', $_SESSION['user_id']);
   return $this->db->single(); // Ambil 1 baris data saja
 }
@@ -62,7 +62,7 @@ public function daftar($data) {
 }
 
 public function getUserByToken($token) {
-  $query = "SELECT * FROM i_users WHERE verification_token = :token";
+  $query = "SELECT * FROM i_users WHERE verification_token = :token and is_deleted = 0";
   $this->db->query($query);
   $this->db->bind('token', $token);
   return $this->db->single();
@@ -70,47 +70,45 @@ public function getUserByToken($token) {
 
 
 public function verifyUserEmail($user_id) {
-  $query = "UPDATE i_users SET is_email_verified = 1 WHERE user_id = :user_id";
+  $query = "UPDATE i_users SET is_email_verified = 1 WHERE user_id = :user_id and is_deleted = 0";
   $this->db->query($query);
   $this->db->bind('user_id', $user_id);
   $this->db->execute();
 }
 
 public function removeVerificationToken($user_id) {
-  $query = "UPDATE i_users SET verification_token = NULL WHERE user_id = :user_id";
+  $query = "UPDATE i_users SET verification_token = NULL WHERE user_id = :user_id and is_deleted = 0";
   $this->db->query($query);
   $this->db->bind('user_id', $user_id);
   $this->db->execute();
 }
 
-
-
   public function cekEmail($email) {
-    $this->db->query('SELECT * FROM i_users WHERE email = :email');
+    $this->db->query('SELECT * FROM i_users WHERE email = :email and is_deleted = 0');
     $this->db->bind('email', $email);
     return $this->db->single();
   }
 
   public function cekEmailToko($email) {
-    $this->db->query('SELECT * FROM i_store_info WHERE email = :email');
+    $this->db->query('SELECT * FROM i_store_info WHERE email = :email and is_deleted = 0');
     $this->db->bind('email', $email);
     return $this->db->single();
   }
 
   public function cekPassword($password) {
-    $this->db->query('SELECT * FROM i_users WHERE password = :password');
+    $this->db->query('SELECT * FROM i_users WHERE password = :password and is_deleted = 0');
     $this->db->bind('password', hash('sha256', $password));
     return $this->db->single();        
   }
 
   public function cekNomorTelepon($nomor_telepon) {
-    $this->db->query('SELECT * FROM i_users WHERE phone_number = :nomor_telepon');
+    $this->db->query('SELECT * FROM i_users WHERE phone_number = :nomor_telepon and is_deleted = 0');
     $this->db->bind('nomor_telepon', $nomor_telepon);
     return $this->db->single();
   }
   
   public function cekNomorTeleponToko($nomor_telepon) {
-    $this->db->query('SELECT * FROM i_store_info WHERE phone_number = :nomor_telepon');
+    $this->db->query('SELECT * FROM i_store_info WHERE phone_number = :nomor_telepon and is_deleted = 0');
     $this->db->bind('nomor_telepon', $nomor_telepon);
     return $this->db->single();
   }
@@ -156,7 +154,7 @@ public function removeVerificationToken($user_id) {
   }
 
   public function setOwnerStoreID(){
-    $query = "UPDATE i_users SET store_id = :store_id WHERE user_id = :user_id";
+    $query = "UPDATE i_users SET store_id = :store_id WHERE user_id = :user_id AND is_deleted = 0";
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->bind('user_id', $_SESSION['user_id']);
@@ -165,7 +163,7 @@ public function removeVerificationToken($user_id) {
   }
 
   public function masuk($data) {
-    $query = "SELECT * FROM i_users WHERE email = :email AND password = :password AND is_email_verified = 1 AND verification_token IS NULL";
+    $query = "SELECT * FROM i_users WHERE email = :email AND password = :password AND is_email_verified = 1 AND verification_token IS NULL AND is_deleted = 0";
     $this->db->query($query);
     $this->db->bind('email', $data['email']);
     $this->db->bind('password', hash('sha256', $data['password']));
@@ -197,9 +195,22 @@ public function removeVerificationToken($user_id) {
     }
   }
 
+  public function checkDeleted($email){
+    $query = "SELECT * FROM i_users WHERE email = :email AND is_deleted = 1";
+    $this->db->query($query);
+    $this->db->bind('email', $email);
+    $this->db->execute();
+    $user = $this->db->single();
+    if($user){
+      return $user;
+    } else {
+      return false;
+    }
+  }
+
   public function activateStoreID() {
     // Query to fetch store information for the current owner
-    $query = "SELECT STORE_ID FROM i_store_info WHERE owner_id = :owner_id";
+    $query = "SELECT STORE_ID FROM i_store_info WHERE owner_id = :owner_id and is_deleted = 0";
     $this->db->query($query);
     $this->db->bind('owner_id', $_SESSION['owner_id']);
     
@@ -218,7 +229,7 @@ public function removeVerificationToken($user_id) {
 }
 
   public function activateStoreName(){
-    $query = "SELECT store_name FROM i_store_info WHERE owner_id = :owner_id";
+    $query = "SELECT store_name FROM i_store_info WHERE owner_id = :owner_id and is_deleted = 0";
     $this->db->query($query);
     $this->db->bind('owner_id', $_SESSION['owner_id']);
     $this->db->execute();
@@ -228,7 +239,7 @@ public function removeVerificationToken($user_id) {
 
 
   public function getEditToko($id) {
-    $query = "SELECT * FROM i_store_info WHERE owner_id = :owner_id";
+    $query = "SELECT * FROM i_store_info WHERE owner_id = :owner_id and is_deleted = 0";
     $this->db->query($query);
     $this->db->bind('owner_id', $id);
     $this->db->execute();
@@ -245,7 +256,7 @@ public function removeVerificationToken($user_id) {
                 phone_number = :telepontoko, 
                 email = :emailtoko, 
                 year_founded = :yearfounded 
-              WHERE owner_id = :owner_id";
+              WHERE owner_id = :owner_id AND is_deleted = 0";
     $this->db->query($query);
     $this->db->bind('namatoko', $data['namatoko']);
     $this->db->bind('tipetoko', $data['tipetoko']);
@@ -281,7 +292,7 @@ public function removeVerificationToken($user_id) {
         $query .= ", password = :password";
     }
 
-    $query .= " WHERE user_id = :user_id and owner_id = :owner_id";
+    $query .= " WHERE user_id = :user_id and owner_id = :owner_id AND is_deleted = 0";
 
     $this->db->query($query);
     $this->db->bind('name', $data['name']);
@@ -396,13 +407,94 @@ public function getInventoryUser(){
 }
 
 public function getCashierUser(){
-  $this->db->query("SELECT * FROM i_users WHERE role = 'Admin Kasir' AND is_deleted = 0");
+  $this->db->query("SELECT * FROM i_users WHERE role = 'Admin Kasir' AND is_deleted = 0 ");
   $this->db->execute();
   // var_dump($this->db->resultSet());
   return $this->db->resultSet();
 }
 
-
+public function checkDeletion(){
+  $this->db->query("SELECT verification_token FROM i_users WHERE user_id = :user_id and is_verified = 1");
+  $this->db->bind('user_id', $_SESSION['user_id']);
+  $this->db->execute();
+  return $this->db->single();
 }
 
+public function checkDeletionEmployees(){
+  $this->db->query("SELECT verification_token FROM i_users WHERE owner_id = :owner_id and is_verified = 1");
+  $this->db->bind('owner_id', $_SESSION['owner_id']);
+  $this->db->execute();
+  return $this->db->single();
+}
+
+
+public function setDeleteToken($deleteToken,$email){
+  $this->db->query("UPDATE i_users SET verification_token = :token WHERE email = :email and is_deleted = 0");
+  $this->db->bind('token', $deleteToken);
+  $this->db->bind('email', $email);
+  $this->db->execute();
+}
+
+public function getStoreByToken($code){
+  $this->db->query("SELECT store_id FROM i_users WHERE verification_token = :token and is_deleted = 0");
+  $this->db->bind('token', $code);
+  $this->db->execute();
+  return $this->db->single();
+}
+
+public function deleteAccounts($code){
+  $this->db->query("UPDATE i_users SET is_deleted = 1 WHERE store_id = :store_id and is_deleted = 0");
+  $this->db->bind('store_id', $code);
+  $this->db->execute();
+} 
+
+public function deleteSingleUser($code){
+  $this->db->query("UPDATE i_users SET is_deleted = 1 WHERE user_id = :user_id and is_deleted = 0");
+  $this->db->bind('user_id', $_SESSION['user_id']);
+  $this->db->execute();
+}
+
+public function deleteReceipts($code){
+  $this->db->query("UPDATE i_receipt SET is_deleted = 1 WHERE store_id = :store_id and is_deleted = 0");
+  $this->db->bind('store_id', $code);
+  $this->db->execute();
+}
+
+public function deleteStore($code){
+  $this->db->query("UPDATE i_store_info SET is_deleted = 1 WHERE store_id = :store_id and is_deleted = 0");
+  $this->db->bind('store_id', $code);
+  $this->db->execute();
+}
+
+public function deleteInventory($code){
+  $this->db->query("UPDATE i_inventory SET is_deleted = 1 WHERE store_id = :store_id and is_deleted = 0");
+  $this->db->bind('store_id', $code);
+  $this->db->execute();
+}
+
+public function deleteItems($code){
+  $this->db->query("UPDATE i_master_item SET is_deleted = 1 WHERE store_id = :store_id and is_deleted = 0");
+  $this->db->bind('store_id', $code);
+  $this->db->execute();
+}
+
+public function deleteBrand($code){
+  $this->db->query("UPDATE i_master_brand SET is_deleted = 1 WHERE store_id = :store_id and is_deleted = 0");
+  $this->db->bind('store_id', $code);
+  $this->db->execute();
+}
+
+public function deleteCategory($code){
+  $this->db->query("UPDATE i_master_category SET is_deleted = 1 WHERE store_id = :store_id and is_deleted = 0");
+  $this->db->bind('store_id', $code);
+  $this->db->execute();
+}
+
+public function removeDeleteToken($code){
+  $this->db->query("UPDATE i_users SET verification_token = NULL WHERE store_id = :store_id");
+  $this->db->bind('store_id', $code);
+  $this->db->execute();
+
+}
+}
 ?>

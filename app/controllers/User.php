@@ -338,6 +338,10 @@ public function verify($code = null) {
 		}
 
 		// If no errors, proceed with login
+		// if ($this->model('User_model')->checkDeleted($data['email']) > 0) {
+		// 	$_SESSION['status'] = 'deleted';
+		// 	header('Location: ' . BASEURL . '/user/login');
+		// } else 
 		if ($this->model('User_model')->masuk($_POST)) {
 			// if ($this->model('User_model')->checkRowToko() == 0) {
 			$this->model('User_model')->activateStoreID();
@@ -424,6 +428,82 @@ public function verify($code = null) {
 		}
 	}
 
+	public function deleteToko() {
+		$data = [
+			'id' => $_POST['id'] ?? '',
+			'email' => $_POST['email'] ?? '',
+			'name' => $_POST['name'] ?? '',
+			'deleteVerificationCode' => bin2hex(random_bytes(16)),
+		];
+		$mail = new PHPMailer(true);
+
+		$this->model('User_model')->setDeleteToken($data['deleteVerificationCode'],$data['email']);
+
+		try {
+			//Server settings
+			$mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
+			$mail->isSMTP();                                            //Send using SMTP
+			$mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+			$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+			$mail->Username   = 'rifatok123@gmail.com';                     //SMTP username
+			$mail->Password   = 'xpbn gjvc kkve rvcq';                               //SMTP password
+			$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+			$mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+		
+			//Recipients
+			$mail->setFrom('from@InvenSync.com', 'Verification');
+			$mail->addAddress($data['email'], $data['name']);     //Add a recipient
+		
+			//Content
+			$mail->isHTML(true);                                  //Set email format to HTML
+			$mail->Subject = 'Verifikasi Akun';
+			$mail->Body = "
+                <h1>Halo, {$data['name']}!</h1>
+                <p>Hapus akun anda dengan klik link berikut:</p>
+                <a href='" . BASEURL . "/user/deletewholeaccount/{$data['deleteVerificationCode']}'>
+                Hapus Akun dan Toko Anda
+                </a>
+                <p>Terima kasih!</p>
+            ";		
+			if ($mail->send()) {
+                $_SESSION['status'] = 'success';
+            } else {
+                Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
+            }
+
+        } catch (Exception $e) {
+            Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
+        }
+	}
+
+	public function deletewholeaccount($code = null) {
+		if (!$code) {
+			Flasher::setFlash('Gagal', 'Token tidak valid.', 'Tutup', 'danger');
+			header('Location: ' . BASEURL . '/fesbuk'); 
+			exit;
+		}
+		$store = $this->model('User_model')->getStoreByToken($code);
+
+		if (!$store) {
+			Flasher::setFlash('Gagal', 'Token tidak valid atau sudah kadaluarsa.', 'Tutup', 'danger');
+			header('Location: ' . BASEURL . '/fesbuk');
+			exit;
+		}
+
+		$this->model('User_model')->deleteAccounts($store['STORE_ID']);
+		$this->model('User_model')->deleteReceipts($store['STORE_ID']);
+		$this->model('User_model')->deleteStore($store['STORE_ID']);
+		$this->model('User_model')->deleteInventory($store['STORE_ID']);
+		$this->model('User_model')->deleteItems($store['STORE_ID']);
+		$this->model('User_model')->deleteBrand($store['STORE_ID']);
+		$this->model('User_model')->deleteCategory($store['STORE_ID']);
+		$this->model('User_model')->removeDeleteToken($store['STORE_ID']);
+
+		$_SESSION['status'] = 'terhapus';
+
+		header('Location: ' . BASEURL . '/home');
+		exit;
+	}
 
 }
 

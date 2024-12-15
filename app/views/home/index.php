@@ -29,3 +29,26 @@
         </div>
     </div>
 </main>
+<?php
+if (isset($_SESSION['status'])):
+    $status = $_SESSION['status']; // Get status from session
+    unset($_SESSION['status']); // Remove status from session after using it
+?>
+    <script>
+        // Handle SweetAlert based on session status
+        let status = '<?= $status ?>';
+        if (status === 'terhapus') {
+            Swal.fire({
+                title: 'Berhasil',
+                text: 'Akun dan Toko anda telah dihapus!',
+                icon: 'success'
+            });
+        } else if (status === 'gagaldihapus') {
+            Swal.fire({
+                title: 'Error',
+                text: 'Email tidak tersedia!',
+                icon: 'error'
+            });
+        }
+    </script>
+<?php endif; ?>

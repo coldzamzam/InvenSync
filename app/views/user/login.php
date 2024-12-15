@@ -66,10 +66,10 @@ if (isset($_SESSION['status'])):
                 text: 'Akun telah diverifikasi!',
                 icon: 'success'
             });
-        } else if (status === 'errorEmail') {
+        } else if (status === 'deleted') {
             Swal.fire({
-                title: 'Error',
-                text: 'Email tidak tersedia!',
+                title: 'Akun Tidak Tersedia',
+                text: 'Akun dan Toko anda telah dihapus!',
                 icon: 'error'
             });
         }

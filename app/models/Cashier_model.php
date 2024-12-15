@@ -18,7 +18,8 @@ class Cashier_model {
   public function setReceipt(){
     $this->db->query("SELECT receipt_id 
                       FROM i_receipt 
-                      WHERE user_id = :user_id AND store_id = :store_id
+                      WHERE user_id = :user_id AND store_id = :store_id 
+                      AND is_deleted = 0
                       ORDER BY time_added DESC 
                       FETCH FIRST 1 ROWS ONLY
                     ");
@@ -35,7 +36,7 @@ class Cashier_model {
   }
 
   public function getItemByID($kodebarang) {
-    $query = ('SELECT * FROM I_MASTER_ITEM I JOIN I_MASTER_CATEGORY C ON (I.CATEGORY_ID=C.CATEGORY_ID) JOIN I_MASTER_BRAND B USING (BRAND_ID) WHERE item_id = :kodebarang');
+    $query = ('SELECT * FROM I_MASTER_ITEM I JOIN I_MASTER_CATEGORY C ON (I.CATEGORY_ID=C.CATEGORY_ID) JOIN I_MASTER_BRAND B USING (BRAND_ID) WHERE item_id = :kodebarang AND I.IS_DELETED = 0 AND I.STORE_ID = :store_id');
 
     // var_dump($kodebarang);
 
@@ -55,7 +56,7 @@ class Cashier_model {
   }
 
   public function checkItemRow(){
-    $this->db->query("SELECT * FROM i_receipt_item WHERE receipt_id = :receipt_id");
+    $this->db->query("SELECT * FROM i_receipt_item WHERE receipt_id = :receipt_id AND is_deleted = 0");
     $this->db->bind('receipt_id', $_SESSION['receipt_id']);
     $this->db->execute();
     return $this->db->fetchColumn();
@@ -106,7 +107,7 @@ class Cashier_model {
   }
 
   public function getReceiptItems() {
-    $this->db->query("SELECT * FROM i_receipt_item WHERE receipt_id = :receipt_id ");
+    $this->db->query("SELECT * FROM i_receipt_item WHERE receipt_id = :receipt_id and is_deleted = 0");
     $this->db->bind('receipt_id', $_SESSION['receipt_id']);
     $this->db->execute();
     return $this->db->resultSet();
@@ -139,13 +140,13 @@ class Cashier_model {
   }
 
   public function getReceiptID(){
-    $this->db->query('SELECT receipt_id FROM i_receipt');
+    $this->db->query('SELECT receipt_id FROM i_receipt ');
     $this->db->execute();
     return $this->db->single();
   }
 
   public function getAllReceipts() {
-    $query = "SELECT * FROM i_receipt WHERE store_id = :store_id";
+    $query = "SELECT * FROM i_receipt WHERE store_id = :store_id AND is_deleted = 0";
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
@@ -187,14 +188,6 @@ class Cashier_model {
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
     return $this->db->single();
-  }
-  
-
-  public function confirmReceipt(){
-    //INI BELOM SA
-    //INI BELOM SA
-    //INI BELOM SA
-    //INI BELOM SA
   }
 
 }
