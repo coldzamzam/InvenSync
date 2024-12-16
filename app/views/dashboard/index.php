@@ -17,9 +17,8 @@
       <div class="flex justify-between gap-2">
         <div class="bg-[#2B87FF] border border-zinc-100 rounded-lg p-6 w-1/3">
           <div class="text-white">
-            <p>Total Profit/Margin</p>
-            <h2 class="text-2xl font-semibold"><b>Rp<?= number_format($data['revenue']['PROFIT'], 2, ',', '.'); ?></b><span class="text-sm">/<?= number_format(($data['revenue']['PROFIT']/$data['revenue']['TOTAL_PENGELUARAN'] * 100), 2, ',', '.'); ?>%
-              </span>
+            <p>Total Profit</p>
+            <h2 class="text-2xl font-semibold"><b>Rp<?= number_format($data['revenue']['PROFIT'], 2, ',', '.'); ?></b>
             </h2>
           </div>
         </div>
@@ -45,29 +44,45 @@
       <div class="mb-6">
         <h2 class="text-2xl font-semibold">Pemasukan dan Pengeluaran</h2>
       </div>
-      <div id="chart_div""></div>
+      <div id="chart_div" class="<?= $data['penghasilanKosong'] ? 'hidden' : ''; ?>"></div>
+      <div class="<?= $data['penghasilanKosong'] ? '' : 'hidden'; ?>">
+        <p class="text-gray-500">Belum ada data pemasukan dan pengeluaran</p>
+      </div>
     </div>
     <div class="flex flex-col w-2/5 gap-4 justify-between">
       <div class="bg-white shadow-md border border-zinc-100 p-6 rounded-lg">
         <div class="mb-6">
           <h2 class="text-2xl font-semibold">Admin Toko</h2>
         </div>
-        <div id="piechart"></div>
+        <div id="piechart" class="<?= $data['adminKosong'] ? 'hidden' : ''; ?>"></div>
+        <div class="<?= $data['adminKosong'] ? '' : 'hidden'; ?>">
+          <p class="text-gray-500">Belum ada data admin</p>
+        </div>
       </div>
     </div>
   </div>
   <div class="flex justify-between gap-4">
     <div class="bg-white shadow-md border border-zinc-100 w-1/2 p-6 rounded-lg">
-      <h2 class="text-md font-semibold">Produk Terlaris</h2>
-      <h2 class="text-3xl font-semibold"><b><?= $data['produkTerlaris']['ITEM_NAME'] ?></b></h2>
-      <h2 class="text-md font-semibold"><?= $data['produkTerlaris']['BRAND_NAME'] ?></h2>
-      <h2 class="text-2xl font-semibold text-[#2B87FF]"><b><?= $data['produkTerlaris']['TOTAL_QUANTITY'] ?><span class="text-sm">pcs</span></b></h2>
+      <h2 class="text-md font-semibold mb-4">Produk Terlaris</h2>
+      <div class="<?= $data['produkTerlarisKosong'] ? 'hidden' : ''; ?>">
+        <h2 class="text-3xl font-semibold"><b><?= $data['produkTerlaris']['ITEM_NAME'] ?></b></h2>
+        <h2 class="text-md font-semibold"><?= $data['produkTerlaris']['BRAND_NAME'] ?></h2>
+        <h2 class="text-2xl font-semibold text-[#2B87FF]"><b><?= $data['produkTerlaris']['TOTAL_QUANTITY'] ?><span class="text-sm">pcs</span></b></h2>
+      </div>
+      <div class="<?= $data['produkTerlarisKosong'] ? '' : 'hidden'; ?>">
+          <p class="text-gray-500">Belum ada data produk terlaris</p>
+        </div>
     </div>
     <div class="bg-white shadow-md border border-zinc-100 w-1/2 p-6 rounded-lg">
-      <h2 class="text-md font-semibold">Produk Kurang Laris</h2>
-      <h2 class="text-3xl font-semibold"><b><?= $data['produkKurangLaris']['ITEM_NAME'] ?></b></h2>
-      <h2 class="text-md font-semibold"><?= $data['produkKurangLaris']['BRAND_NAME'] ?></h2>
-      <h2 class="text-2xl font-semibold text-[#00D0C2]"><b><?= $data['produkKurangLaris']['TOTAL_QUANTITY'] ?><span class="text-sm">pcs</span></b></h2>
+      <h2 class="text-md font-semibold mb-4">Produk Kurang Laris</h2>
+      <div class="<?= $data['produkKurangLarisKosong'] ? 'hidden' : ''; ?>">
+        <h2 class="text-3xl font-semibold"><b><?= $data['produkKurangLaris']['ITEM_NAME'] ?></b></h2>
+        <h2 class="text-md font-semibold"><?= $data['produkKurangLaris']['BRAND_NAME'] ?></h2>
+        <h2 class="text-2xl font-semibold text-[#00D0C2]"><b><?= $data['produkKurangLaris']['TOTAL_QUANTITY'] ?><span class="text-sm">pcs</span></b></h2>
+      </div>
+      <div class="<?= $data['produkKurangLarisKosong'] ? '' : 'hidden'; ?>">
+          <p class="text-gray-500">Belum ada data produk kurang laris</p>
+        </div>
     </div>
     
   </div>

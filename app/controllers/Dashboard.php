@@ -42,13 +42,37 @@ Class Dashboard extends Controller{
     ];
     
     $data['adminChartData'] = $adminChartData;
+    if ($userInventory == 0 && $userCashier == 0) {
+      $data['adminKosong'] = true ;
+    } else {
+      $data['adminKosong'] = false ;
+    }
+
     $data['chartPenghasilan'] = $this->model('Dashboard_model')->getPengeluaranPendapatan(); 
+    if ($data['chartPenghasilan'] == null) {
+      $data['penghasilanKosong'] = true ;
+    } else {
+      $data['penghasilanKosong'] = false ;
+    }
+
     $data['totalSoldItem'] = $this->model('Dashboard_model')->getTotalSoldItemThisMonth();
     $data['revenue'] = $this->model('Dashboard_model')->getRevenueThisMonth();
     $data['today'] = $this->model('Dashboard_model')->dateToday();
     $data['availInventory'] = $this->model('Dashboard_model')->getTotalInventory();
     $data['produkTerlaris'] = $this->model('Dashboard_model')->getProdukTerlaris();
     $data['produkKurangLaris'] = $this->model('Dashboard_model')->getProdukKurangLaris();
+
+    if ($data['produkTerlaris'] == null) {
+      $data['produkTerlarisKosong'] = true ;
+    } else {
+      $data['produkTerlarisKosong'] = false ;
+    }
+
+    if ($data['produkKurangLaris'] == null) {
+      $data['produkKurangLarisKosong'] = true ;
+    } else {
+      $data['produkKurangLarisKosong'] = false ;
+    }
 
 
     if($this->model('User_model')->checkRowToko() > 0) {

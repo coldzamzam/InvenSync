@@ -64,22 +64,29 @@ class Dashboard_model {
 		$this->db->query($query);
 		$this->db->bind('store_id', $_SESSION['store_id']);
 		$this->db->execute();
+		$result = $this->db->resultSet();
 
-		return $this->db->resultSet();
+		if (!$result) {
+			return [];
+		}
+
+		return $result;
   }
 
   public function getInventoryUserCount(){
 		$this->db->query("SELECT COUNT(*) as total FROM i_users WHERE role = 'Admin Gudang' AND is_deleted = 0 AND store_id = :store_id");
 		$this->db->bind('store_id', $_SESSION['store_id']);
 		$this->db->execute();
-		return $this->db->single()['TOTAL'];
+		$result = $this->db->single();
+		return $result['TOTAL'];
   }
   
   public function getCashierUserCount(){
 		$this->db->query("SELECT COUNT(*) as total FROM i_users WHERE role = 'Admin Kasir' AND is_deleted = 0 AND store_id = :store_id");
 		$this->db->bind('store_id', $_SESSION['store_id']);
 		$this->db->execute();
-		return $this->db->single()['TOTAL'];
+		$result = $this->db->single();
+		return $result['TOTAL'];
   }
 
   public function getTotalSoldItemThisMonth() {
@@ -92,7 +99,13 @@ class Dashboard_model {
 		$this->db->bind('store_id', $_SESSION['store_id']);
 		$this->db->execute();
 
-		return $this->db->single();
+		$result = $this->db->resultSet();
+
+		if (!$result || !isset($result['TOTAL_SOLD'])) {
+			return ['TOTAL_SOLD' => 0];
+		}
+
+		return $result;
   }
 
 	public function getRevenueThisMonth() {
@@ -139,8 +152,13 @@ class Dashboard_model {
 		$this->db->query($query);
 		$this->db->bind('store_id', $_SESSION['store_id']);
 		$this->db->execute();
+		$result = $this->db->resultSet();
 
-		return $this->db->single();
+		if (!$result || !isset($result['PROFIT'])) {
+			return ['PROFIT' => 0];
+		}
+
+		return $result;
 	}
 
 	public function getTotalInventory() {
@@ -153,7 +171,13 @@ class Dashboard_model {
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
 
-    return $this->db->single();
+		$result = $this->db->single();
+
+		if (!$result || !isset($result['TOTAL_INVENTORY'])) {
+			return ['TOTAL_INVENTORY' => 0];
+		}
+
+    return $result;
   }
 
 	public function getProdukTerlaris() {
