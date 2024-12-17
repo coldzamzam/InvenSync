@@ -508,5 +508,32 @@ public function removeDeleteToken($code){
     $this->db->bind('store_id', $store_id);
     $this->db->execute();
   }
+
+  public function setCodeToAccountWithEmail($code,$email){
+    $this->db->query("UPDATE i_users SET code = :code WHERE email = :email and is_deleted = 0");
+    $this->db->bind('code', $code);
+    $this->db->bind('email', $email);
+    $this->db->execute();
+  }
+
+  public function getUserByCode($code){
+    $this->db->query("SELECT * FROM i_users WHERE code = :code and is_deleted = 0");
+    $this->db->bind('code', $code);
+    $this->db->execute();
+    return $this->db->single();
+  }
+
+  public function updatePassword($password, $code){
+    $this->db->query("UPDATE i_users SET password = :password WHERE code = :code and is_deleted = 0");
+    $this->db->bind('password', hash('sha256', $password));
+    $this->db->bind('code', $code);
+    $this->db->execute();
+  }
+
+  public function removeCode($code){
+    $this->db->query("UPDATE i_users SET code = null WHERE code = :code and is_deleted = 0");
+    $this->db->bind('code', $code);
+    $this->db->execute();
+  }
 }
 ?>

@@ -19,6 +19,7 @@
                    value="<?= htmlspecialchars($data['password'] ?? '', ENT_QUOTES); ?>" 
                    class="w-full p-2 bg-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black">
             <span class="text-red-500 text-sm"><?= $data['loginPasswordError']; ?></span>
+            <div><h2>Lupa kata sandi? <a href="<?= BASEURL; ?>/user/forgotPassword">ganti passwordmu</a></h2></div>
           </div>
           
           <!-- CAPTCHA -->
@@ -71,6 +72,12 @@ if (isset($_SESSION['status'])):
                 title: 'Akun Tidak Tersedia',
                 text: 'Akun dan Toko anda telah dihapus!',
                 icon: 'error'
+            });
+        } else if (status === 'resetSuccess') {
+            Swal.fire({
+                title: 'Berhasil',
+                text: 'Password telah direset!',
+                icon: 'success'
             });
         }
     </script>

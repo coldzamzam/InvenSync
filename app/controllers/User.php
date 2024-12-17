@@ -670,6 +670,161 @@ class User extends Controller {
 		header('Location: ' . BASEURL . '/dashboard');
 		exit;
 	}
+
+	public function forgotPassword(){
+		$this->view('templates/i-header');
+		$this->view('user/forgotPassword');
+		$this->view('templates/footer');
+	}
+
+	public function sendResetPasswordRequest(){
+		$mail = new PHPMailer(true);
+		$data = [
+			'email' => $_POST['email'],
+			'code' => bin2hex(random_bytes(16)),
+		];
+		$user = $this->model('User_model')->setCodeToAccountWithEmail($data['code'],$data['email'],);
+		try {
+			//Server settings
+			$mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
+			$mail->isSMTP();                                            //Send using SMTP
+			$mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+			$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+			$mail->Username   = 'rifatok123@gmail.com';                     //SMTP username
+			$mail->Password   = 'xpbn gjvc kkve rvcq';                               //SMTP password
+			$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+			$mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+		
+			//Recipients
+			$mail->setFrom('from@InvenSync.com', 'Verification');
+			$mail->addAddress($data['email'], $data['name']);     //Add a recipient
+		
+			//Content
+			$mail->isHTML(true);                                  //Set email format to HTML
+			$mail->Subject = 'Verifikasi Penghapusan Akun dan Toko';
+			$mail->Body = "
+					<!DOCTYPE html>
+					<html lang='en'>
+					<head>
+						<meta charset='UTF-8'>
+						<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+						<style>
+							body {
+								font-family: Arial, sans-serif;
+								line-height: 1.6;
+								background-color: #f9f9f9;
+								color: #333;
+								margin: 0;
+								padding: 0;
+							}
+							.container {
+								max-width: 600px;
+								margin: 20px auto;
+								background: #ffffff;
+								border-radius: 8px;
+								box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+								overflow: hidden;
+							}
+							.header {
+								background-color: #3498db;
+								color: #ffffff;
+								padding: 20px;
+								text-align: center;
+							}
+							.content {
+								padding: 20px;
+							}
+							.content h1 {
+								font-size: 24px;
+								margin: 0 0 10px;
+							}
+							.content p {
+								font-size: 16px;
+								margin: 10px 0;
+							}
+							.btn {
+								display: inline-block;
+								background-color: #3498db;
+								color: #ffffff;
+								text-decoration: none;
+								padding: 10px 20px;
+								border-radius: 5px;
+								font-size: 16px;
+								margin: 10px 0;
+							}
+							.btn:hover {
+								background-color: #2980b9;
+							}
+							.footer {
+								text-align: center;
+								padding: 10px;
+								background-color: #f1f1f1;
+								font-size: 14px;
+								color: #666;
+							}
+							.footer a {
+								color: #3498db;
+								text-decoration: none;
+							}
+						</style>
+					</head>
+					<body>
+						<div class='container'>
+							<div class='header'>
+								<h2>Reset Password Request</h2>
+							</div>
+							<div class='content'>
+								<h1>Hello,</h1>
+								<p>We received a request to reset your password. If you made this request, click the button below to reset your password:</p>
+								<a href='" . BASEURL . "/user/resetpassword/{$data['code']}' class='btn'>Reset Your Password</a>
+								<p>If you did not request a password reset, you can ignore this email. Your account will remain secure.</p>
+								<p>If the button above does not work, copy and paste the following link into your browser:</p>
+								<p><a href='" . BASEURL . "/user/resetpassword/{$data['code']}'>" . BASEURL . "/user/resetpassword/{$data['code']}</a></p>
+							</div>
+							<div class='footer'>
+								<p>If you have any questions, contact us at <a href='mailto:support@invencsync.com'>support@invencsync.com</a></p>
+								<p>&copy; " . date('Y') . " InvenSync. All rights reserved.</p>
+							</div>
+						</div>
+					</body>
+					</html>
+            ";		
+			if ($mail->send()) {
+                $_SESSION['status'] = 'resetRequest';
+				header('Location: ' . BASEURL . '/home');
+            } else {
+                Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
+            }
+        } catch (Exception $e) {
+            Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
+        }
+	}
+
+	public function resetpassword($code = null) {
+		if (!$code) {
+			Flasher::setFlash('Gagal', 'Token tidak valid.', 'Tutup', 'danger');
+			header('Location: ' . BASEURL . '/fesbuk'); 
+			exit;
+		}
+
+		$data['code'] = $code;
+
+		$this->view('templates/i-header');
+		$this->view('user/newPassword', $data);
+
+		exit;
+	}
+
+	public function updatepassword(){
+		$data = [
+			'code' => $_POST['code'],
+			'new_password' => $_POST['new_password'],
+		];
+		$this->model('User_model')->updatePassword($data['new_password'], $data['code']);
+		$this->model('User_model')->removeCode($data['code']);
+		$_SESSION['status'] = 'resetSuccess';
+		header('Location: ' . BASEURL . '/user/login');
+	}
 }
 
 ?>
