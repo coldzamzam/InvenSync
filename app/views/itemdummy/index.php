@@ -16,7 +16,7 @@
           <!-- Tombol Dropdown -->
         <div class="relative inline-block text-left">
           <div>
-            <button type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
+            <button type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-blue px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
               Options
               <svg class="-mr-1 size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                 <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
@@ -42,7 +42,6 @@
             </div>
           </div>
         </div>
-  
         <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ New Item</button>
       </div>
     </div>
@@ -51,12 +50,12 @@
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="bg-gray-200 text-gray-600">
-            <th class="py-3 px-4 border">Item ID</th>
-            <th class="py-3 px-4 border">Item Name</th>
-            <th class="py-3 px-4 border">Category Item</th>
-            <th class="py-3 px-4 border">Brand Item</th>
-            <th class="py-3 px-4 border">Selling Price</th>
-            <th class="py-3 px-4 border">Date Added</th>
+            <th class="py-3 px-4 border text-center">Item ID</th>
+            <th class="py-3 px-4 border text-center">Item Name</th>
+            <th class="py-3 px-4 border text-center">Category Item</th>
+            <th class="py-3 px-4 border text-center">Brand Item</th>
+            <th class="py-3 px-4 border text-center">Selling Price</th>
+            <th class="py-3 px-4 border text-center">Date Added</th>
             <th class="py-3 px-4 border text-center">Actions</th>
           </tr>
         </thead>
@@ -64,12 +63,12 @@
           <!-- Looping data item menggunakan PHP -->
           <?php foreach($data['item'] as $item): ?>
             <tr class="group hover:bg-gray-100 relative">
-              <td class="py-3 px-4 border"><?= $item['ITEM_ID']; ?></td>
+              <td class="py-3 px-4 border text-center"><?= $item['ITEM_ID']; ?></td>
               <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
               <td class="py-3 px-4 border"><?= $item['CATEGORY_NAME']; ?></td>
               <td class="py-3 px-4 border"><?= $item['BRAND_NAME']; ?></td>
               <td class="py-3 px-4 border">Rp<?= number_format($item['COST_PRICE'], 2, '.', ','); ?></td>
-              <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
+              <td class="py-3 px-4 border text-center"><?= $item['DATE_ADDED']; ?></td>
               <td class="py-3 px-4 border flex justify-center items-center">
               <button onclick="editModalOpen('<?= $item['ITEM_ID']; ?>')" 
         data-item-id="<?= $item['ITEM_ID']; ?>" 
@@ -80,8 +79,6 @@
         class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
     <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
 </button>
-
-
               </td>
             </tr>
           <?php endforeach; ?>
@@ -259,7 +256,6 @@
     </div>
   </div>
 
-
   <!-- JavaScript -->
   <script>
     // Mendapatkan elemen modal dan tombol
@@ -402,6 +398,19 @@ function editModalOpen(itemId) {
   // Tampilkan modal
   document.getElementById('formModal').classList.remove('hidden');
 }
+
+<?php
+$limit = 10; // Jumlah data per halaman
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+// Hitung total data
+$totalData = count($data['item']);
+$totalPages = ceil($totalData / $limit);
+
+// Query untuk ambil data sesuai halaman
+$data['item'] = array_slice($data['item'], $offset, $limit);
+?>
 
   </script>
 </body>
