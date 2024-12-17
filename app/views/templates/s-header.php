@@ -68,54 +68,54 @@
       <a href="<?= BASEURL; ?>/dashboard" 
         class="py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-tachometer-alt"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Dashboard</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Halaman Utama</span>
       </a>
       <a href="<?= BASEURL; ?>/employees" 
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-users"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Employees</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Karyawan</span>
       </a>
       <a href="<?= BASEURL; ?>/item" 
         class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fa-solid fa-box"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Items</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Barang</span>
       </a>
       <a href="<?= BASEURL; ?>/inventory" 
         class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-boxes"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Inventory</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Inventaris</span>
       </a>
       <a href="<?= BASEURL; ?>/transaction" 
         class="py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-money-bill"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Transactions</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Transaksi</span>
       </a>
       <a href="<?= BASEURL; ?>/dailyreport" 
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-calendar-day"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Daily Report</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Laporan Harian</span>
       </a>
       <a href="<?= BASEURL; ?>/monthlyreport" 
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-calendar-alt"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Monthly Report</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Laporan Bulanan</span>
       </a>
       <a href="<?= BASEURL; ?>/cashier"
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-cash-register"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Cashier</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Kasir</span>
       </a>
       <a href="<?= BASEURL; ?>/dashboard/toko" 
         class="py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-info-circle"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Profile Toko</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Profil Toko</span>
       </a>
     </nav>
     <form action="<?= BASEURL; ?>/dashboard/logout" id="LogoutForm" method="post" class="mt-12">
       <input type="hidden" name="logout" value="1">
       <button type="button" onclick="logoutConfirmation()" class="bg-[#FFD369] text-black py-1.5 px-6 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center space-x-2">
     <i class="fa-solid fa-right-from-bracket"></i>
-    <span class="sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Logout</span>
+    <span class="sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Keluar</span>
 </button>
     </form>
   </div>

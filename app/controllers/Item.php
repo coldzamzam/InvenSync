@@ -15,7 +15,7 @@ Class Item extends Controller {
   }
   public function index(){
     $data = [
-      'judul' => 'List Items',
+      'judul' => 'List Barang',
       'brandError'=>'',
       'categoryError'=>''
     ];

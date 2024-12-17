@@ -3,7 +3,7 @@
 		<div class="flex gap-4 mb-4">
 			<div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-2/5 p-6 rounded-lg ">
 				<div class="mb-6">
-					<h1 class="text-2xl font-bold text-gray-800">Account Information</h1>
+					<h1 class="text-2xl font-bold text-gray-800">Informasi Akun</h1>
 				</div>
 				<div class="mb-2">
 					<label for="userid">UID</label>
@@ -99,7 +99,7 @@
 			<div id="infoToko" class="bg-white shadow-md p-6 border border-zinc-100 rounded-lg w-full">
 				<!-- Header -->
 				<div class="mb-6">
-					<h1 class="text-2xl font-bold text-gray-800">Store Information</h1>
+					<h1 class="text-2xl font-bold text-gray-800">Informasi Toko</h1>
 				</div>
 
 				<!-- Content -->
@@ -158,7 +158,7 @@
 							class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200'
 							onclick='confirmDelete()'
 						>
-							Delete Toko
+							Hapus Toko
 						</button>
 					</div>
 						";

@@ -1,6 +1,6 @@
 <div class="flex-1 ml-24 mt-20 p-8">
     <!-- Input Quick Search -->
-    <input type="text" id="quickSearchInput" placeholder="Quick search"
+    <input type="text" id="quickSearchInput" placeholder="Cari"
         class="border rounded-lg px-4 py-2 shadow-md focus:outline-none focus:ring focus:border-blue-400">
 <br>
 <br>
@@ -21,7 +21,7 @@
                     </h2>
                     <button onclick="event.stopPropagation(); printInvoice(this)"
                         class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
-                        <i class="fa fa-print mr-2"></i>Print Invoice
+                        <i class="fa fa-print mr-2"></i>Cetak Invoice
                     </button>
                 </div>
 
@@ -30,11 +30,11 @@
                     class="w-full text-left border-collapse hidden mt-6 rounded-lg overflow-hidden shadow-md">
                     <thead>
                         <tr class="bg-gray-800 text-white">
-                            <th class="py-2 px-4">Item ID</th>
-                            <th class="py-2 px-4">Item Name</th>
-                            <th class="py-2 px-4">Quantity</th>
-                            <th class="py-2 px-4">Price</th>
-                            <th class="py-2 px-4">Total Price</th>
+                            <th class="py-2 px-4">ID Barang</th>
+                            <th class="py-2 px-4">Nama Barang</th>
+                            <th class="py-2 px-4">Kuantitas</th>
+                            <th class="py-2 px-4">Harga</th>
+                            <th class="py-2 px-4">Total Harga</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,7 +56,7 @@
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-        <p class="text-center text-gray-600 mt-6">No transactions found.</p>
+        <p class="text-center text-gray-600 mt-6">Tidak ada transaksi.</p>
     <?php endif; ?>
 </div>
 

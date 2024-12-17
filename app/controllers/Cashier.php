@@ -13,7 +13,7 @@ class Cashier extends Controller {
       }
 
     public function index(){
-        $data['judul'] = 'Cashier';
+        $data['judul'] = 'Kasir';
         $data['item'] = $this->model('Item_model')->getAllItem();
         // $data['stok'] = $this->model('Cashier_model')->getAllTotalQuantity();
         if (isset($_SESSION['receipt_id'])) {

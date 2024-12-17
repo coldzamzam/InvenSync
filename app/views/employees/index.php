@@ -3,51 +3,51 @@
   <!-- Filter dan Pencarian -->
   <div class="flex items-center gap-4">
     <form id="searchForm" class="flex items-center">
-      <input type="text" id="searchInput" placeholder="Quick Search" 
+      <input type="text" id="searchInput" placeholder="Cari" 
         name="search" 
         class="border rounded px-4 py-2 w-full"
         onkeyup="filterTable()">
     </form>
     <select id="roleFilter" class="border rounded px-4 py-2" onchange="filterByRole()">
       <option value="" disabled selected>Role</option>
-      <option>All</option>
+      <option>Semua</option>
       <option>Admin Kasir</option>
       <option>Admin Gudang</option>
     </select>
   </div>
   
   <!-- Tombol Tambah Karyawan -->
-  <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto">+ Add Employee</button>
+  <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto">+ Tambah Karyawan</button>
 </div>
 
 
-      <h2 class="text-xl font-semibold pb-2">Employee</h2>
+      <h2 class="text-xl font-semibold pb-2">Daftar Karyawan</h2>
       <div class="bg-white rounded shadow">
       
       <table class="w-full text-left border-collapse">
       <thead>
       <tr class="bg-[#FFD369] text-gray-600">
-              <th class="py-3 px-4 border">No.</th>
-              <th class="py-3 px-4 border">User ID</th>
-              <th class="py-3 px-4 border">Email</th>
-              <th class="py-3 px-4 border">Name</th>
-              <th class="py-3 px-4 border">Role</th>
-              <th class="py-3 px-4 border">Address</th>
-              <th class="py-3 px-4 border">Phone Number</th>
-              <th class="py-3 px-4 border">Status</th>
-              <th class="py-3 px-4 border text-center">Actions</th>
+              <th class="py-3 px-4 border text-center">No.</th>
+              <th class="py-3 px-4 border text-center">User ID</th>
+              <th class="py-3 px-4 border text-center">Email</th>
+              <th class="py-3 px-4 border text-center">Nama</th>
+              <th class="py-3 px-4 border text-center">Role</th>
+              <th class="py-3 px-4 border text-center">Alamat</th>
+              <th class="py-3 px-4 border text-center">Nomor Telepon</th>
+              <th class="py-3 px-4 border text-center">Status</th>
+              <th class="py-3 px-4 border text-center">Aksi</th>
             </tr>
       </thead>
         <tbody>
           <?php $no = 1; foreach( $data['users'] as $users ) : ?>
             <tr class="hover:bg-gray-100">
-              <td  scope="row" class="py-3 px-4 border"><?= $no++; ?></td>
-              <td class="py-3 px-4 border"><?= $users['USER_ID']; ?></td>
+              <td  scope="row" class="py-3 px-4 border text-center"><?= $no++; ?>.</td>
+              <td class="py-3 px-4 border text-center"><?= $users['USER_ID']; ?></td>
               <td class="py-3 px-4 border"><?= $users['EMAIL']; ?></td>
-              <td class="py-3 px-4 border"><?= $users['NAME']; ?></td>
-              <td class="py-3 px-4 border"><?= $users['ROLE']; ?></td>
+              <td class="py-3 px-4 border text-center"><?= $users['NAME']; ?></td>
+              <td class="py-3 px-4 border text-center"><?= $users['ROLE']; ?></td>
               <td class="py-3 px-4 border"><?= $users['ADDRESS']; ?></td>
-              <td class="py-3 px-4 border"><?= $users['PHONE_NUMBER']; ?></td>
+              <td class="py-3 px-4 border text-center"><?= $users['PHONE_NUMBER']; ?></td>
               <td class="py-3 px-4 border text-center<?php if ($users['IS_EMAIL_VERIFIED'] == 1) { echo " bg-green-300 hover:bg-green-200"; } else { echo " bg-red-300 hover:bg-red-200"; } ?>"><?php if ($users['IS_EMAIL_VERIFIED'] == 1) { echo "Akun Aktif"; } else { echo "Perlu Verifikasi"; } ?></td>
               <td class="py-3 px-4 border flex justify-center items-center">
                 <button onclick="editModalOpen('<?= $users['USER_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600"><img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit"></button>
@@ -60,7 +60,7 @@
         <ul class="flex justify-center space-x-2">
           <?php if ($data['currentPage'] > 1): ?>
             <li>
-              <a href="<?= BASEURL; ?>/employees/index/<?= $data['currentPage'] - 1; ?>" class="px-3 py-1 border rounded">Previous</a>
+              <a href="<?= BASEURL; ?>/employees/index/<?= $data['currentPage'] - 1; ?>" class="px-3 py-1 border rounded">Sebelumnya</a>
             </li>
           <?php endif; ?>
 
@@ -72,7 +72,7 @@
 
           <?php if ($data['currentPage'] < $data['totalPages']): ?>
             <li>
-              <a href="<?= BASEURL; ?>/employees/index/<?= $data['currentPage'] + 1; ?>" class="px-3 py-1 border rounded">Next</a>
+              <a href="<?= BASEURL; ?>/employees/index/<?= $data['currentPage'] + 1; ?>" class="px-3 py-1 border rounded">Selanjutnya</a>
             </li>
           <?php endif; ?>
         </ul>
@@ -99,7 +99,7 @@ if (isset($_SESSION['formErrors'])) {
   <div class="bg-white w-full max-w-[600px] max-h-[1000px] p-6 rounded-lg shadow-lg">
     <!-- Header Modal -->
     <div class="flex justify-between items-center">
-      <h3 class="text-2xl font-semibold w-full text-center">Create Employee</h3>
+      <h3 class="text-2xl font-semibold w-full text-center">Buat Akun Karyawan</h3>
       <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2">&times;</button>
     </div>
     <h3 class="text-l text-center">Buatkan Akun untuk Karyawanmu!</h3>
@@ -108,7 +108,7 @@ if (isset($_SESSION['formErrors'])) {
       <div class="flex mt-6 gap-4 mb-6">
         <!-- Input Nama -->
         <div class="w-1/2">
-          <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+          <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
           <input type="text" id="name" name="name"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           <!-- <span class="text-red-500"><?= $data['nameError']; ?></span> -->
@@ -120,7 +120,7 @@ if (isset($_SESSION['formErrors'])) {
           <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
           <select id="role" name="role"
                   class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="" disabled selected>-- Select Role --</option>
+            <option value="" disabled selected>-- Pilih Role --</option>
             <option value="Admin Gudang">Admin Gudang</option>
             <option value="Admin Kasir">Admin Kasir</option>
           </select>
@@ -131,7 +131,7 @@ if (isset($_SESSION['formErrors'])) {
       <div class="flex gap-4 mb-6">
         <!-- Input Alamat -->
         <div class="w-1/2">
-          <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+          <label for="address" class="block text-sm font-medium text-gray-700">Alamat</label>
           <input id="address" name="address"
                     class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
           <!-- <span class="text-red-500"><?= $data['addressError']; ?></span> -->
@@ -140,7 +140,7 @@ if (isset($_SESSION['formErrors'])) {
 
         <!-- Input Nomor Telepon -->
         <div class="w-1/2">
-          <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+          <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
           <input type="tel" id="phone" name="phonenumber"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           <!-- <span class="text-red-500"><?= $data['phonenumberError']; ?></span> -->
@@ -169,7 +169,7 @@ if (isset($_SESSION['formErrors'])) {
       <!-- Tombol Simpan -->
       <button type="submit"
               class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-        Save Employee
+        Simpan Akun
       </button>
     </form>
   </div>
@@ -178,16 +178,16 @@ if (isset($_SESSION['formErrors'])) {
 <div id="modalEdit" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
   <div class="bg-white w-full max-w-[600px] max-h-[1000px] p-6 rounded-lg shadow-lg">
     <div class="flex justify-between items-center">
-      <h3 class="text-2xl font-semibold w-full text-center">Update Employee</h3>
+      <h3 class="text-2xl font-semibold w-full text-center">Edit Akun Karyawan</h3>
       <button onclick="editModalClose()" class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2">&times;</button>
     </div>
-    <h3 class="text-l text-center">Update Akun untuk Karyawanmu!</h3>
+    <h3 class="text-l text-center">Edit Akun untuk Karyawanmu!</h3>
     <form action="<?= BASEURL; ?>/employees/updateEmployee" method="post" id="editEmployeeForm" class="bg-white w-full max-w-[600px] max-h-[1000px] p-6 rounded-lg" enctype="multipart/form-data">
       <div class="flex gap-4 mb-6">
         <input type="hidden" id="editId" name="id">
         <!-- Input Nama -->
         <div class="w-1/2">
-          <label for="name" class="block text-sm font-medium text-gray-700">Name<label class="text-red-500">*</label></label>
+          <label for="name" class="block text-sm font-medium text-gray-700">Nama<label class="text-red-500">*</label></label>
           <input type="text" id="editName" name="name"
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           <span id="nameErrorEdit" class="text-red-500 error"></span>
@@ -197,7 +197,7 @@ if (isset($_SESSION['formErrors'])) {
         <div class="w-1/2">
           <label for="role" class="block text-sm font-medium text-gray-700">Role<label class="text-red-500">*</label></label>
           <select name="role" id="editRole" class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="" disabled selected>-- Select Role --</option>
+            <option value="" disabled selected>-- Pilih Role --</option>
             <option value="Admin Gudang">Admin Gudang</option>
             <option value="Admin Kasir">Admin Kasir</option>
           </select>
@@ -209,7 +209,7 @@ if (isset($_SESSION['formErrors'])) {
       <div class="flex gap-4 mb-6">
         <!-- Input Alamat -->
         <div class="w-1/2"> 
-          <label for="address" class="block text-sm font-medium text-gray-700">Address<label class="text-red-500">*</label></label>
+          <label for="address" class="block text-sm font-medium text-gray-700">Alamat<label class="text-red-500">*</label></label>
           <input type="text" id="editAddress" name="address" 
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           <span id="addressErrorEdit" class="text-red-500 error"></span>
@@ -217,7 +217,7 @@ if (isset($_SESSION['formErrors'])) {
 
         <!-- Input Nomor Telepon -->
         <div class="w-1/2">
-          <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number<label class="text-red-500">*</label></label>
+          <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon<label class="text-red-500">*</label></label>
           <input type="text" id="editPhonenumber" name="phone" 
                 class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           <span id="phoneErrorEdit" class="text-red-500 error"></span>
@@ -244,7 +244,7 @@ if (isset($_SESSION['formErrors'])) {
       <div class="flex gap-2">
         <button type="submit"
                 class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-          Update Employee
+          Edit Akun
         </button>
       </div>
     </form>

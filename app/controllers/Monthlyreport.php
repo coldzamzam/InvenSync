@@ -8,7 +8,7 @@ class Monthlyreport extends Controller {
     }
 
     public function index() {
-        $data['judul'] = 'Monthly Report';
+        $data['judul'] = 'Laporan Bulanan';
         if($this->model('User_model')->checkRowToko() > 0) {
             $this->view('templates/s-header', $data);
             $this->view('monthlyreport/index', $data);

@@ -34,7 +34,7 @@
     </div>
   </header>
   <h1 class="text-2xl font-bold mb-4">Barang Yang Tersedia</h1>
-  <input type="text" id="quickSearchInput" placeholder="Quick search" class="border rounded px-6 py-2">
+  <input type="text" id="quickSearchInput" placeholder="Cari" class="border rounded px-6 py-2">
   <div class="flex w-3/5">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
     <?php foreach($data['item'] as $item): ?>

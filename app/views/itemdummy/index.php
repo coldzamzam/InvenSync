@@ -3,7 +3,7 @@
 
     <div class="flex items-center mb-4 space-x-4 justify-between">
       <div class="wrap-filter flex items-center gap-4">
-      <input type="text" id="quickSearchInput" placeholder="Quick search" class="border rounded px-4 py-2">
+      <input type="text" id="quickSearchInput" placeholder="Cari" class="border rounded px-4 py-2">
         <!-- <input type="date" class="border rounded px-4 py-2">
         <select class="border rounded px-4 py-2">
           <option>Status</option>
@@ -17,7 +17,7 @@
         <div class="relative inline-block text-left">
           <div>
             <button type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-blue px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
-              Options
+              Tambah
               <svg class="-mr-1 size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                 <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
               </svg>
@@ -42,7 +42,7 @@
             </div>
           </div>
         </div>
-        <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ New Item</button>
+        <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Tambah Barang</button>
       </div>
     </div>
 
@@ -50,13 +50,13 @@
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="bg-gray-200 text-gray-600">
-            <th class="py-3 px-4 border text-center">Item ID</th>
-            <th class="py-3 px-4 border text-center">Item Name</th>
-            <th class="py-3 px-4 border text-center">Category Item</th>
-            <th class="py-3 px-4 border text-center">Brand Item</th>
-            <th class="py-3 px-4 border text-center">Selling Price</th>
-            <th class="py-3 px-4 border text-center">Date Added</th>
-            <th class="py-3 px-4 border text-center">Actions</th>
+            <th class="py-3 px-4 border text-center">ID Barang</th>
+            <th class="py-3 px-4 border text-center">Nama Barang</th>
+            <th class="py-3 px-4 border text-center">Kategori Barang</th>
+            <th class="py-3 px-4 border text-center">Nama Brand</th>
+            <th class="py-3 px-4 border text-center">Harga Jual</th>
+            <th class="py-3 px-4 border text-center">Tanggal Ditambahkan</th>
+            <th class="py-3 px-4 border text-center">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -65,9 +65,9 @@
             <tr class="group hover:bg-gray-100 relative">
               <td class="py-3 px-4 border text-center"><?= $item['ITEM_ID']; ?></td>
               <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
-              <td class="py-3 px-4 border"><?= $item['CATEGORY_NAME']; ?></td>
-              <td class="py-3 px-4 border"><?= $item['BRAND_NAME']; ?></td>
-              <td class="py-3 px-4 border">Rp<?= number_format($item['COST_PRICE'], 2, '.', ','); ?></td>
+              <td class="py-3 px-4 border text-center"><?= $item['CATEGORY_NAME']; ?></td>
+              <td class="py-3 px-4 border text-center"><?= $item['BRAND_NAME']; ?></td>
+              <td class="py-3 px-4 border text-center">Rp<?= number_format($item['COST_PRICE'], 2, '.', ','); ?></td>
               <td class="py-3 px-4 border text-center"><?= $item['DATE_ADDED']; ?></td>
               <td class="py-3 px-4 border flex justify-center items-center">
               <button onclick="editModalOpen('<?= $item['ITEM_ID']; ?>')" 
@@ -91,7 +91,7 @@
  <div id="formModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-1/2 p-6">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold text-blue-600">Tambah/Update Barang</h2>
+        <h2 class="text-xl font-semibold text-blue-600">Tambah/Edit Barang</h2>
         <button id="closeModalButton" class="text-gray-500 hover:text-gray-700">
           <span class="text-2xl">&times;</span>
         </button>
@@ -107,9 +107,9 @@
         
         <!-- Category -->
         <div class="mb-3">
-          <label for="category_id" class="text-sm text-gray-700">Category</label>
+          <label for="category_id" class="text-sm text-gray-700">Kategori</label>
           <select id="category_id" name="category_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
-            <option value="" disabled selected>-- Pilih Category --</option>
+            <option value="" disabled selected>-- Pilih Kategori --</option>
             <?php foreach($data['category'] as $category): ?>
               <option value="<?= $category['CATEGORY_ID']; ?>"><?= $category['CATEGORY_NAME']; ?></option>
             <?php endforeach; ?>
@@ -174,7 +174,7 @@
   <div id="modalCategory" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-96 p-6">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold text-blue-600">Tambah Category</h2>
+        <h2 class="text-xl font-semibold text-blue-600">Tambah Kategori</h2>
         <button id="closeModalCategory" class="text-gray-500 hover:text-gray-700">
           <span class="text-2xl">&times;</span>
         </button>
@@ -201,7 +201,7 @@
 <div id="modalEdit" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-1/2 p-6">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold text-blue-600">Update List Barang</h2>
+        <h2 class="text-xl font-semibold text-blue-600">Edit List Barang</h2>
         <button id="closeModalEditButton" class="text-gray-500 hover:text-gray-700">
   <span class="text-2xl">&times;</span>
 </button>
@@ -217,9 +217,9 @@
         
         <!-- Category -->
         <div class="mb-3">
-          <label for="category_id" class="text-sm text-gray-700">Category</label>
+          <label for="category_id" class="text-sm text-gray-700">Kategori</label>
           <select id="category_id" name="category_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
-            <option value="" disabled selected>-- Pilih Category --</option>
+            <option value="" disabled selected>-- Pilih Kategori --</option>
             <?php foreach($data['category'] as $category): ?>
               <option value="<?= $category['CATEGORY_ID']; ?>"><?= $category['CATEGORY_NAME']; ?></option>
             <?php endforeach; ?>

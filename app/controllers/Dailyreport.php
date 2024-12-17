@@ -11,7 +11,7 @@
           }
 
         public function index(){
-            $data['judul'] = 'Daily Report';
+            $data['judul'] = 'Laporan Harian';
             if($this->model('User_model')->checkRowToko() > 0) {
               $this->view('templates/s-header', $data);
               $this->view('dailyreport/index', $data);

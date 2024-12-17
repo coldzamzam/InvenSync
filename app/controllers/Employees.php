@@ -20,7 +20,7 @@ class Employees extends Controller{
 
     public function index($page=1){
 
-        $data['judul'] = 'Employees';
+        $data['judul'] = 'Karyawan';
         $data['users'] = $this->model('User_model')->getUserStore();
         // $data['invusers'] = $this->model('User_model')->getInventoryUser();
         // $data['cashusers'] = $this->model('User_model')->getCashierUser();

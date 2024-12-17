@@ -7,7 +7,7 @@ Class Dashboard extends Controller{
       header('Location: ' . BASEURL . '/user/login');
     }
     if($this->model('User_model')->checkDeleted($_SESSION['user_id']) > 0) {
-      if($_SESSION['user_role'] == 'Owner') {
+      if($_SESSION['user_role'] == 'Pemilik') {
           $_SESSION['status'] = 'ownerDeleted';
       } else {
           $_SESSION['status'] = 'employeeDeleted';
@@ -30,7 +30,7 @@ Class Dashboard extends Controller{
       'telepontoko'=> $_POST['telepontoko'] ?? '',
       'emailtoko'=> $_POST['emailtoko'] ?? '',
       'yearfounded'=> $_POST['yearfounded'] ?? '',
-      'judul' => 'Dashboard'
+      'judul' => 'Halaman Utama'
     ];
 
     $userInventory = (int)$this->model('Dashboard_Model')->getInventoryUserCount();

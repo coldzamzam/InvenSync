@@ -52,7 +52,7 @@
 
     <div class="flex items-center mb-4 space-x-4 justify-between">
       <div class="wrap-filter flex items-center gap-4">
-      <input type="text" id="quickSearch" placeholder="Quick search" class="border rounded px-4 py-2">
+      <input type="text" id="quickSearch" placeholder="Cari" class="border rounded px-4 py-2">
       </div>
 
       <div>
@@ -60,27 +60,27 @@
           
         </div>
   
-        <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ New Stock</button>
+        <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Tambah Stok</button>
       </div>
     </div>
 
     <div class="flex gap-4 mb-4">
 
     <div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-3/12 px-6 py-4 rounded-lg">
-  <p class="text-lg font-bold pb-2">Total Stock</p>
+  <p class="text-lg font-bold pb-2">Total Stok</p>
   <div class="bg-white rounded shadow">
     <table class="w-full text-left border-collapse">
       <thead>
         <tr class="bg-gray-200 text-gray-600">
-          <th class="py-3 px-4 border">Item Name</th>
-          <th class="py-3 px-4 border">Total Quantity</th>
+          <th class="py-3 px-4 border text-center">Nama Barang</th>
+          <th class="py-3 px-4 border text-center">Total Kuantitas</th>
         </tr>
       </thead>
       <tbody>
         <?php foreach($data['totalQty'] as $total): ?>
           <tr class="group hover:bg-gray-100 relative">
             <td class="py-3 px-4 border"><?= $total['ITEM_NAME']; ?></td>
-            <td class="py-3 px-4 border"><?= $total['STOCK_AVAILABLE']; ?></td>
+            <td class="py-3 px-4 border text-center"><?= $total['STOCK_AVAILABLE']; ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>
@@ -89,29 +89,29 @@
 </div>
 
 <div class="bg-white shadow-md px-6 py-4 border border-zinc-100 rounded-lg w-9/12">
-  <p class="text-lg font-bold pb-2">Track Inventory</p>
+  <p class="text-lg font-bold pb-2">Inventaris</p>
   <div class="bg-white rounded shadow">
     <table class="w-full text-left border-collapse">
       <thead>
         <tr class="bg-gray-200 text-gray-600">
-          <th class="py-3 px-4 border">Inventory ID</th>
-          <th class="py-3 px-4 border">Item Name</th>
-          <th class="py-3 px-4 border">Quantity</th>
-          <th class="py-3 px-4 border">Date Added</th>
-          <th class="py-3 px-4 border">Cost Price</th>
-          <th class="py-3 px-4 border">User ID</th>
-          <th class="py-3 px-4 border text-center">Actions</th>
+          <th class="py-3 px-4 border text-center">Inventory ID</th>
+          <th class="py-3 px-4 border text-center">Nama Barang</th>
+          <th class="py-3 px-4 border text-center">Kuantitas</th>
+          <th class="py-3 px-4 border text-center">Tanggal Ditambahkan</th>
+          <th class="py-3 px-4 border text-center">Harga Beli</th>
+          <th class="py-3 px-4 border text-center">ID User</th>
+          <th class="py-3 px-4 border text-center">Aksi</th>
         </tr>
       </thead>
       <tbody>
         <?php foreach($data['inventory'] as $item): ?>
           <tr class="group hover:bg-gray-100 relative">
-            <td class="py-3 px-4 border"><?= $item['INVENTORY_ID']; ?></td>
+            <td class="py-3 px-4 border text-center"><?= $item['INVENTORY_ID']; ?></td>
             <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
-            <td class="py-3 px-4 border"><?= $item['QUANTITY']; ?></td>
-            <td class="py-3 px-4 border"><?= $item['DATE_ADDED']; ?></td>
-            <td class="py-3 px-4 border"><?= $item['HARGA_BELI']; ?></td>
-            <td class="py-3 px-4 border"><?= $item['USER_ID']; ?></td>
+            <td class="py-3 px-4 border text-center"><?= $item['QUANTITY']; ?></td>
+            <td class="py-3 px-4 border text-center"><?= $item['DATE_ADDED']; ?></td>
+            <td class="py-3 px-4 border text-center"><?= $item['HARGA_BELI']; ?></td>
+            <td class="py-3 px-4 border text-center"><?= $item['USER_ID']; ?></td>
             <td class="py-3 px-4 border flex justify-center items-center">
               <button onclick="editItem('<?= $users['INVENTORY_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
                 <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">

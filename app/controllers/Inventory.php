@@ -15,7 +15,7 @@ class Inventory extends Controller {
 
 	public function index($page = 1)
 	{
-		$data['judul'] = 'Inventory';
+		$data['judul'] = 'Inventaris';
 		$data['items'] = $this->model('Item_model')->getAllItem();
 		$data['brand'] = $this->model('Item_model')->getAllBrand();
 		$data['category'] = $this->model('Item_model')->getAllCategory();

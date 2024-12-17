@@ -1,6 +1,6 @@
 <main class="flex-1 ml-64 p-8">
   <header class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-semibold text-blue-500">Profile Toko</h2>
+    <h2 class="text-2xl font-semibold text-blue-500">Profil Toko</h2>
     <!-- <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" data-bs-toggle="modal" data-bs-target="#formModal">+ New Stock</button> -->
   </header>
 
