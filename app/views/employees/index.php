@@ -196,8 +196,13 @@ if (isset($_SESSION['formErrors'])) {
         <!-- Input Role -->
         <div class="w-1/2">
           <label for="role" class="block text-sm font-medium text-gray-700">Role<label class="text-red-500">*</label></label>
-          <input type="text" id="editRole" name="role"
-                class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select name="role" id="editRole" class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="" disabled selected>-- Select Role --</option>
+            <option value="Admin Gudang">Admin Gudang</option>
+            <option value="Admin Kasir">Admin Kasir</option>
+          </select>
+          <!-- <input type="text" id="editRole" name="role"
+                class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> -->
           <span id="roleErrorEdit" class="text-red-500 error"></span>
         </div>
       </div>

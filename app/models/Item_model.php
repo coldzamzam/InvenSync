@@ -228,7 +228,76 @@ Class Item_model {
 
   }
 
-  
+  public function getItemTersedia() {
+    $query = "SELECT COUNT(*) AS total_rows
+              FROM (
+                  SELECT m.item_name, COUNT(m.item_id) AS totalbarang, SUM(i.quantity) AS quantity
+                  FROM i_master_item m
+                  join i_inventory i on m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 AND m.store_id = :store_id AND i.store_id = :store_id
+                  GROUP BY m.item_id, m.item_name
+                  HAVING SUM(i.quantity) >= 5
+              )";
+
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+
+    $result = $this->db->single();
+
+    if (!$result || !isset($result['TOTAL_ROWS'])) {
+      return ['TOTAL_ROWS' => 0];
+    }
+
+    return $result;
+  }
+
+  public function getItemHampirHabis() {
+    $query = "SELECT COUNT(*) AS total_rows
+              FROM (
+                  SELECT m.item_name, COUNT(m.item_id) AS totalbarang, SUM(i.quantity) AS quantity
+                  FROM i_master_item m
+                  join i_inventory i on m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 AND m.store_id = :store_id AND i.store_id = :store_id
+                  GROUP BY m.item_id, m.item_name
+                  HAVING SUM(i.quantity) <= 5
+              )";
+
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+
+    $result = $this->db->single();
+
+    if (!$result || !isset($result['TOTAL_ROWS'])) {
+      return ['TOTAL_ROWS' => 0];
+    }
+
+    return $result;
+  }
+
+  public function getItemTidakTersedia() {
+    $query = "SELECT COUNT(*) AS total_rows
+              FROM (
+                  SELECT m.item_name, COUNT(m.item_id) AS totalbarang, SUM(i.quantity) AS quantity
+                  FROM i_master_item m
+                  join i_inventory i on m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 AND m.store_id = 'STR112' AND i.store_id = 'STR112'
+                  GROUP BY m.item_id, m.item_name
+                  HAVING SUM(i.quantity) = 0
+              )";
+
+    $this->db->query($query);
+    $this->db->execute(); 
+
+    $result = $this->db->single();
+
+    if (!$result || !isset($result['TOTAL_ROWS'])) {
+      return ['TOTAL_ROWS' => 0];
+    }
+
+    return $result;
+  }
 }
 
 ?>

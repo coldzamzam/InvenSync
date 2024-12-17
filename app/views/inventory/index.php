@@ -13,7 +13,7 @@
             <hr class="border-green-400">
             <div class="card-body py-2 px-4 flex-grow flex items-center justify-center">
               <p class="text-md">
-                <span class="text-lg font-bold">0</span> Produk
+                <span class="text-lg font-bold"><?= $data['totalStok']['TOTAL_ROWS']; ?></span> Produk
               </p>
             </div>
           </div>
@@ -27,7 +27,7 @@
             <hr class="border-yellow-400">
             <div class="card-body py-2 px-4 flex-grow flex items-center justify-center">
               <p class="text-md">
-                <span class="text-lg font-bold">0</span> Produk
+                <span class="text-lg font-bold"><?= $data['hampirHabis']['TOTAL_ROWS']; ?></span> Produk
               </p>
             </div>
           </div>
@@ -41,7 +41,7 @@
             <hr class="border-red-400">
             <div class="card-body py-2 px-4 flex-grow flex items-center justify-center">
               <p class="text-md">
-                <span class="text-lg font-bold">0</span> Produk
+                <span class="text-lg font-bold"><?= $data['tidakTersedia']['TOTAL_ROWS']; ?></span> Produk
               </p>
             </div>
           </div>

@@ -99,13 +99,14 @@ class Dashboard_model {
 		$this->db->bind('store_id', $_SESSION['store_id']);
 		$this->db->execute();
 
-		$result = $this->db->resultSet();
+		$result = $this->db->single();
 
 		if (!$result || !isset($result['TOTAL_SOLD'])) {
 			return ['TOTAL_SOLD' => 0];
+		} else {
+			return $result;
 		}
 
-		return $result;
   }
 
 	public function getRevenueThisMonth() {
@@ -152,7 +153,7 @@ class Dashboard_model {
 		$this->db->query($query);
 		$this->db->bind('store_id', $_SESSION['store_id']);
 		$this->db->execute();
-		$result = $this->db->resultSet();
+		$result = $this->db->single();
 
 		if (!$result || !isset($result['PROFIT'])) {
 			return ['PROFIT' => 0];

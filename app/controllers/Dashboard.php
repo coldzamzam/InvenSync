@@ -55,8 +55,15 @@ Class Dashboard extends Controller{
       $data['penghasilanKosong'] = false ;
     }
 
-    $data['totalSoldItem'] = $this->model('Dashboard_model')->getTotalSoldItemThisMonth();
     $data['revenue'] = $this->model('Dashboard_model')->getRevenueThisMonth();
+
+    if ($data['revenue'] == null) {
+      $data['revenueKosong'] = true ;
+    } else {
+      $data['revenueKosong'] = false ;
+    }
+
+    $data['totalSoldItem'] = $this->model('Dashboard_model')->getTotalSoldItemThisMonth();
     $data['today'] = $this->model('Dashboard_model')->dateToday();
     $data['availInventory'] = $this->model('Dashboard_model')->getTotalInventory();
     $data['produkTerlaris'] = $this->model('Dashboard_model')->getProdukTerlaris();
