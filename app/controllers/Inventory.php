@@ -20,8 +20,24 @@ class Inventory extends Controller {
 		$data['brand'] = $this->model('Item_model')->getAllBrand();
 		$data['category'] = $this->model('Item_model')->getAllCategory();
 		$data['inventory'] = $this->model('Item_model')->getAllInventory();
+		if (isset($data['inventory']['STATUS']) == 'Pending') {
+			$data['warnaStatus'] = true;
+		} else {
+			$data['warnaStatus'] = false;
+		}
+
 		$data['totalQty'] = $this->model('Item_model')->getAllTotalQuantity();
+		// $stock = (int)$data['totalQty']['STOCK_AVAILABLE'];
+		// if ($stock > 5) {
+		// 	$data['warnaQty'] = 'tersedia';
+		// } elseif ($stock <= 5) {
+		// 	$data['warnaQty'] = 'hampirHabis';
+		// } else {
+		// 	$data['warnaQty'] = 'habis';
+		// }
+			
 		
+
 		$data['totalStok'] = $this->model('Item_model')->getItemTersedia();
 		$data['hampirHabis'] = $this->model('Item_model')->getItemHampirHabis();
 		$data['tidakTersedia'] = $this->model('Item_model')->getItemTidakTersedia();
@@ -88,6 +104,18 @@ class Inventory extends Controller {
 		} else {
 			// Flasher::setFlash('gagal', 'ditambahkan', 'danger');
 			header('Location: ' . BASEURL . '/Item');
+			exit;
+		}
+	}
+
+	public function updateStatus() {
+		if ($this->model('Item_model')->updateStatusInventory($_POST) > 0) {
+			// Flasher::setFlash('berhasil', 'ditambahkan', 'success');
+			header('Location: ' . BASEURL . '/Inventory');
+			exit;
+		} else {
+			// Flasher::setFlash('gagal', 'ditambahkan', 'danger');
+			header('Location: ' . BASEURL . '/Inventory');
 			exit;
 		}
 	}

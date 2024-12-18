@@ -184,10 +184,11 @@ Class Item_model {
   }
 
   public function getAllInventory() {
-    $query = "SELECT i.inventory_id, i.item_id, i.quantity, i.date_added, i.harga_beli, i.user_id, mi.item_name AS item_name
+    $query = "SELECT i.inventory_id, i.item_id, i.quantity, i.date_added, i.harga_beli, i.user_id, i.status, mi.item_name AS item_name
               FROM i_inventory i 
               JOIN i_master_item mi ON i.item_id = mi.item_id
-              AND i.store_id = :store_id AND i.is_deleted = 0";
+              AND i.store_id = :store_id AND i.is_deleted = 0
+              ORDER BY i.date_added DESC";
 
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
@@ -208,7 +209,7 @@ Class Item_model {
               LEFT JOIN (
                   SELECT ITEM_ID, SUM(QUANTITY) AS TOTAL_IN
                   FROM I_INVENTORY
-                  WHERE IS_DELETED = 0 AND STORE_ID = :store_id
+                  WHERE IS_DELETED = 0 AND STATUS = 'Diterima' AND STORE_ID = :store_id 
                   GROUP BY ITEM_ID
                   ) i ON m.ITEM_ID = i.ITEM_ID
               LEFT JOIN (
@@ -219,6 +220,7 @@ Class Item_model {
                   ) r ON m.ITEM_ID = r.ITEM_ID
               WHERE 
                   m.IS_DELETED = 0 AND m.STORE_ID = :store_id";
+              
 
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
@@ -229,14 +231,30 @@ Class Item_model {
   }
 
   public function getItemTersedia() {
-    $query = "SELECT COUNT(*) AS total_rows
+    $query = "SELECT COUNT(*) AS TOTAL_ROWS
               FROM (
-                  SELECT m.item_name, COUNT(m.item_id) AS totalbarang, SUM(i.quantity) AS quantity
-                  FROM i_master_item m
-                  join i_inventory i on m.item_id = i.item_id
-                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 AND m.store_id = :store_id AND i.store_id = :store_id
-                  GROUP BY m.item_id, m.item_name
-                  HAVING SUM(i.quantity) >= 5
+                  SELECT inventory.item_name, 
+                         NVL(inventory.TOTAL_IN, 0) AS TOTAL_IN, 
+                         NVL(receipt.TOTAL_OUT, 0) AS TOTAL_OUT
+                  FROM (
+                      SELECT m.item_name, SUM(i.quantity) AS TOTAL_IN
+                      FROM i_master_item m
+                      JOIN i_inventory i ON m.item_id = i.item_id
+                      WHERE m.is_deleted = 0 AND i.is_deleted = 0 
+                            AND m.store_id = :store_id 
+                            AND i.store_id = :store_id
+                      GROUP BY m.item_name
+                  ) inventory
+                  LEFT JOIN (
+                      SELECT m.item_name, SUM(i.quantity) AS TOTAL_OUT
+                      FROM i_master_item m
+                      JOIN i_receipt_item i ON m.item_id = i.item_id
+                      WHERE m.is_deleted = 0 AND i.is_deleted = 0 
+                            AND m.store_id = :store_id 
+                            AND i.store_id = :store_id
+                      GROUP BY m.item_name
+                  ) receipt ON inventory.item_name = receipt.item_name
+                  WHERE NVL(inventory.TOTAL_IN, 0) - NVL(receipt.TOTAL_OUT, 0) > 5
               )";
 
     $this->db->query($query);
@@ -253,14 +271,31 @@ Class Item_model {
   }
 
   public function getItemHampirHabis() {
-    $query = "SELECT COUNT(*) AS total_rows
+    $query = "SELECT COUNT(*) AS TOTAL_ROWS
               FROM (
-                  SELECT m.item_name, COUNT(m.item_id) AS totalbarang, SUM(i.quantity) AS quantity
+                SELECT inventory.item_name, 
+                        NVL(inventory.TOTAL_IN, 0) AS TOTAL_IN, 
+                        NVL(receipt.TOTAL_OUT, 0) AS TOTAL_OUT
+                FROM (
+                  SELECT m.item_name, SUM(i.quantity) AS TOTAL_IN
                   FROM i_master_item m
-                  join i_inventory i on m.item_id = i.item_id
-                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 AND m.store_id = :store_id AND i.store_id = :store_id
-                  GROUP BY m.item_id, m.item_name
-                  HAVING SUM(i.quantity) <= 5
+                  JOIN i_inventory i ON m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 
+                        AND m.store_id = :store_id 
+                        AND i.store_id = :store_id
+                  GROUP BY m.item_name
+                ) inventory
+                LEFT JOIN (
+                  SELECT m.item_name, SUM(i.quantity) AS TOTAL_OUT
+                  FROM i_master_item m
+                  JOIN i_receipt_item i ON m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 
+                        AND m.store_id = :store_id 
+                        AND i.store_id = :store_id
+                  GROUP BY m.item_name
+                ) receipt ON inventory.item_name = receipt.item_name
+              WHERE NVL(inventory.TOTAL_IN, 0) - NVL(receipt.TOTAL_OUT, 0) <= 5
+              AND NVL(inventory.TOTAL_IN, 0) - NVL(receipt.TOTAL_OUT, 0) != 0
               )";
 
     $this->db->query($query);
@@ -277,17 +312,34 @@ Class Item_model {
   }
 
   public function getItemTidakTersedia() {
-    $query = "SELECT COUNT(*) AS total_rows
+    $query = "SELECT COUNT(*) AS TOTAL_ROWS
               FROM (
-                  SELECT m.item_name, COUNT(m.item_id) AS totalbarang, SUM(i.quantity) AS quantity
+                SELECT inventory.item_name, 
+                        NVL(inventory.TOTAL_IN, 0) AS TOTAL_IN, 
+                        NVL(receipt.TOTAL_OUT, 0) AS TOTAL_OUT
+                FROM (
+                  SELECT m.item_name, SUM(i.quantity) AS TOTAL_IN
                   FROM i_master_item m
-                  join i_inventory i on m.item_id = i.item_id
-                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 AND m.store_id = 'STR112' AND i.store_id = 'STR112'
-                  GROUP BY m.item_id, m.item_name
-                  HAVING SUM(i.quantity) = 0
+                  JOIN i_inventory i ON m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 
+                        AND m.store_id = :store_id 
+                        AND i.store_id = :store_id
+                  GROUP BY m.item_name
+                ) inventory
+                LEFT JOIN (
+                  SELECT m.item_name, SUM(i.quantity) AS TOTAL_OUT
+                  FROM i_master_item m
+                  JOIN i_receipt_item i ON m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 
+                        AND m.store_id = :store_id 
+                        AND i.store_id = :store_id
+                  GROUP BY m.item_name
+                ) receipt ON inventory.item_name = receipt.item_name
+              WHERE NVL(inventory.TOTAL_IN, 0) - NVL(receipt.TOTAL_OUT, 0) = 0
               )";
 
     $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute(); 
 
     $result = $this->db->single();
@@ -297,6 +349,16 @@ Class Item_model {
     }
 
     return $result;
+  }
+
+  public function updateStatusInventory($data){
+    $query = "UPDATE i_inventory SET status = 'Diterima' WHERE inventory_id = :inventory_id AND store_id = :store_id AND is_deleted = 0";
+    $this->db->query($query);
+    $this->db->bind('inventory_id', $data['inventory_id']);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+
+    return $this->db->rowCount();
   }
 }
 

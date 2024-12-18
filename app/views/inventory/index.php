@@ -67,66 +67,82 @@
     <div class="flex gap-4 mb-4">
 
     <div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-3/12 px-6 py-4 rounded-lg">
-  <p class="text-lg font-bold pb-2">Total Stok</p>
-  <div class="bg-white rounded shadow">
-    <table class="w-full text-left border-collapse">
-      <thead>
-        <tr class="bg-gray-200 text-gray-600">
-          <th class="py-3 px-4 border text-center">Nama Barang</th>
-          <th class="py-3 px-4 border text-center">Total Kuantitas</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach($data['totalQty'] as $total): ?>
-          <tr class="group hover:bg-gray-100 relative">
-            <td class="py-3 px-4 border"><?= $total['ITEM_NAME']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $total['STOCK_AVAILABLE']; ?></td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-  </div>
-</div>
+      <p class="text-lg font-bold pb-2">Total Stok</p>
+      <div class="bg-white rounded shadow">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-gray-200 text-gray-600">
+              <th class="py-3 px-4 border text-center">Nama Barang</th>
+              <th class="py-3 px-4 border text-center">Total Kuantitas</th>
+            </tr>
+          </thead>
+          <!-- <?= $data['warnaQty'] == 'tersedia' ? '' : ($data['warnaQty'] == 'hampirHabis' ? 'bg-yellow-100' : 'bg-red-100'); ?> -->
+          <tbody>
+            <?php foreach($data['totalQty'] as $total): ?>
+              <tr class="group relative hover:bg-gray-100">
+                <td class="py-3 px-4 border"><?= $total['ITEM_NAME']; ?></td>
+                <td class="py-3 px-4 border text-center"><?= ($total['STOCK_AVAILABLE']); ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-<div class="bg-white shadow-md px-6 py-4 border border-zinc-100 rounded-lg w-9/12">
-  <p class="text-lg font-bold pb-2">Inventaris</p>
-  <div class="bg-white rounded shadow">
-    <table class="w-full text-left border-collapse">
-      <thead>
-        <tr class="bg-gray-200 text-gray-600">
-          <th class="py-3 px-4 border text-center">Inventory ID</th>
-          <th class="py-3 px-4 border text-center">Nama Barang</th>
-          <th class="py-3 px-4 border text-center">Kuantitas</th>
-          <th class="py-3 px-4 border text-center">Tanggal Ditambahkan</th>
-          <th class="py-3 px-4 border text-center">Harga Beli</th>
-          <th class="py-3 px-4 border text-center">ID User</th>
-          <th class="py-3 px-4 border text-center">Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach($data['inventory'] as $item): ?>
-          <tr class="group hover:bg-gray-100 relative">
-            <td class="py-3 px-4 border text-center"><?= $item['INVENTORY_ID']; ?></td>
-            <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $item['QUANTITY']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $item['DATE_ADDED']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $item['HARGA_BELI']; ?></td>
-            <td class="py-3 px-4 border text-center"><?= $item['USER_ID']; ?></td>
-            <td class="py-3 px-4 border flex justify-center items-center">
-              <button onclick="editItem('<?= $users['INVENTORY_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
-                <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
-              </button>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-  </div>
-</div>
+    <div class="bg-white shadow-md px-6 py-4 border border-zinc-100 rounded-lg w-9/12">
+      <p class="text-lg font-bold pb-2">Inventaris</p>
+      <div class="bg-white rounded shadow">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-gray-200 text-gray-600">
+              <th class="py-3 px-4 border text-center">Inventory ID</th>
+              <th class="py-3 px-4 border text-center">Nama Barang</th>
+              <th class="py-3 px-4 border text-center">Kuantitas</th>
+              <th class="py-3 px-4 border text-center">Tanggal Ditambahkan</th>
+              <th class="py-3 px-4 border text-center">Harga Beli</th>
+              <th class="py-3 px-4 border text-center">ID User</th>
+              <th class="py-3 px-4 border text-center">Status</th>
+              <th class="py-3 px-4 border text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach($data['inventory'] as $item): ?>
+              <tr class="group hover:bg-gray-100 relative">
+                <td class="py-3 px-4 border text-center"><?= $item['INVENTORY_ID']; ?></td>
+                <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
+                <td class="py-3 px-4 border text-center"><?= $item['QUANTITY']; ?></td>
+                <td class="py-3 px-4 border text-center"><?= $item['DATE_ADDED']; ?></td>
+                <td class="py-3 px-4 border text-center">Rp<?= number_format($item['HARGA_BELI'], 2, ',', '.'); ?></td>
+                <td class="py-3 px-4 border text-center"><?= $item['USER_ID']; ?></td>
+                <td class="py-3 px-4 border text-center <?= $item['STATUS'] == 'Pending' ? '' : 'bg-green-100'; ?>">
+                  <div class="<?= $item['STATUS'] == 'Pending' ? 'hidden' : ''; ?>">
+                    <?= $item['STATUS']; ?>
+                  </div>
+                  <div class="<?= $item['STATUS'] == 'Pending' ? '' : 'hidden'; ?>">
+                    <form id="inventoryStatusForm" action="<?= BASEURL; ?>/Inventory/updateStatus" method="post">
+                      <input type="hidden" name="inventory_id" value="<?= $item['INVENTORY_ID']; ?>">
+                      <input type="hidden" name="item_name" value="<?= $_SESSION['store_id']; ?>">
+                    </form>
+                    <button id="statusButton" onclick="confirmStatus()" class="bg-<?= $item['STATUS'] == 'Pending' ? 'yellow-100' : 'green-100'; ?> py-1 px-4 rounded  hover:bg-<?= $item['STATUS'] == 'Pending' ? 'yellow-600' : 'green-600'; ?>">
+                      <?= $item['STATUS']; ?>
+                    </button>
+                  </div>
+                </td>
+                <td class="py-3 px-4 border flex justify-center items-center">
+                  <button onclick="editItem('<?= $users['INVENTORY_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
+                    <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
+                  </button>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </main>
 
- <!-- Modal for Adding or Editing Stock -->
- <div id="formModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+  <!-- Modal for Adding or Editing Stock -->
+  <div id="formModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-96 p-6">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold text-blue-600">Tambah Stok Barang</h2>
@@ -234,31 +250,58 @@
       });
     });
 
-  document.addEventListener("DOMContentLoaded", () => {
-  const quickSearchInput = document.getElementById("quickSearch");
-  const tableRows = document.querySelectorAll("tbody tr");
+    document.addEventListener("DOMContentLoaded", () => {
+      const quickSearchInput = document.getElementById("quickSearch");
+      const tableRows = document.querySelectorAll("tbody tr");
 
-  quickSearchInput.addEventListener("input", (event) => {
-    const searchValue = event.target.value.toLowerCase();
+      quickSearchInput.addEventListener("input", (event) => {
+        const searchValue = event.target.value.toLowerCase();
 
-    // Filter rows based on input
-    tableRows.forEach((row) => {
-      const inventoryId = row.cells[0].textContent.toLowerCase();
-      const itemName = row.cells[1].textContent.toLowerCase();
-      const quantity = row.cells[2].textContent.toLowerCase();
+        // Filter rows based on input
+        tableRows.forEach((row) => {
+          const inventoryId = row.cells[0].textContent.toLowerCase();
+          const itemName = row.cells[1].textContent.toLowerCase();
+          const quantity = row.cells[2].textContent.toLowerCase();
 
-      if (
-        inventoryId.includes(searchValue) ||
-        itemName.includes(searchValue) ||
-        quantity.includes(searchValue)
-      ) {
-        row.style.display = ""; // Show row
-      } else {
-        row.style.display = "none"; // Hide row
-      }
+          if (
+            inventoryId.includes(searchValue) ||
+            itemName.includes(searchValue) ||
+            quantity.includes(searchValue)
+          ) {
+            row.style.display = ""; // Show row
+          } else {
+            row.style.display = "none"; // Hide row
+          }
+        });
+      });
     });
-  });
-});
+
+    function confirmStatus() {
+      swal.fire({
+        title: "Apakah Anda Yakin Sudah Menerima Stok?",
+        text: "Stok barang akan masuk ke inventory!",
+        icon: "warning",
+        confirmButtonColor: '#d33',
+			  cancelButtonColor: '#3085d6',
+        showCancelButton: true,
+        confirmButtonText: "Ya, terima!",
+        cancelButtonText: "Tidak",
+        allowOutsideClick: false,
+        allowEscapeKey: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          swal.fire({
+            title: "Berhasil",
+            text: "Stok barang berhasil ditambahkan!",
+            icon: 'success',
+            timer: 1000,
+            showConfirmButton: false
+          }).then(() => {
+            document.getElementById("inventoryStatusForm").submit();
+          });
+        }
+      }) 
+    }
 
   </script>
 </body>
