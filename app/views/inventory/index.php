@@ -123,7 +123,7 @@
                       <input type="hidden" name="inventory_id" value="<?= $item['INVENTORY_ID']; ?>">
                       <input type="hidden" name="item_name" value="<?= $_SESSION['store_id']; ?>">
                     </form>
-                    <button id="statusButton" onclick="confirmStatus()" class="bg-<?= $item['STATUS'] == 'Pending' ? 'yellow-100' : 'green-100'; ?> py-1 px-4 rounded  hover:bg-<?= $item['STATUS'] == 'Pending' ? 'yellow-600' : 'green-600'; ?>">
+                    <button id="statusButton" onclick="confirmStatus()" class="bg-yellow-100 hover:bg-yellow-200 text-black py-1 px-4 rounded">
                       <?= $item['STATUS']; ?>
                     </button>
                   </div>

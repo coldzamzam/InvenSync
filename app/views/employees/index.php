@@ -48,7 +48,7 @@
               <td class="py-3 px-4 border text-center"><?= $users['ROLE']; ?></td>
               <td class="py-3 px-4 border"><?= $users['ADDRESS']; ?></td>
               <td class="py-3 px-4 border text-center"><?= $users['PHONE_NUMBER']; ?></td>
-              <td class="py-3 px-4 border text-center<?php if ($users['IS_EMAIL_VERIFIED'] == 1) { echo " bg-green-300 hover:bg-green-200"; } else { echo " bg-red-300 hover:bg-red-200"; } ?>"><?php if ($users['IS_EMAIL_VERIFIED'] == 1) { echo "Akun Aktif"; } else { echo "Perlu Verifikasi"; } ?></td>
+              <td class="py-3 px-4 border text-center<?php if ($users['IS_EMAIL_VERIFIED'] == 1) { echo " bg-green-100"; } else { echo " bg-red-100"; } ?>"><?php if ($users['IS_EMAIL_VERIFIED'] == 1) { echo "Akun Aktif"; } else { echo "Perlu Verifikasi"; } ?></td>
               <td class="py-3 px-4 border flex justify-center items-center">
                 <button onclick="editModalOpen('<?= $users['USER_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600"><img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit"></button>
               </td>

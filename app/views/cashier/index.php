@@ -44,7 +44,7 @@
               class="group bg-white rounded-lg shadow-lg w-full">
         <div class="flex flex-col items-center px-20 py-5">
           <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" class="group-hover:hidden w-full h-full object-cover">
-          <img src="<?= BASEURL; ?>/img/add-cart (1).png" class="w-full h-full  hidden group-hover:block" alt="">
+          <img src="<?= BASEURL; ?>/img/add-to-cart.png" class="w-full h-full  hidden group-hover:block" alt="">
         </div>
         <div class="bg-[#FFD369] rounded-lg flex flex-col">
         <span class="mb-2 font-semibold text-lg"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></span>
