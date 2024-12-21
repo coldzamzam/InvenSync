@@ -20,6 +20,8 @@ class Inventory extends Controller {
 		$data['brand'] = $this->model('Item_model')->getAllBrand();
 		$data['category'] = $this->model('Item_model')->getAllCategory();
 		$data['inventory'] = $this->model('Item_model')->getAllInventory();
+		$data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
+        $data['notifications'] = $this->model('Item_model')->getTotalStockItem();
 		if (isset($data['inventory']['STATUS']) == 'Pending') {
 			$data['warnaStatus'] = true;
 		} else {

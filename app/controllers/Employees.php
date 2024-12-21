@@ -22,6 +22,8 @@ class Employees extends Controller{
 
         $data['judul'] = 'Karyawan';
         $data['users'] = $this->model('User_model')->getUserStore();
+        $data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
+        $data['notifications'] = $this->model('Item_model')->getTotalStockItem();
         // $data['invusers'] = $this->model('User_model')->getInventoryUser();
         // $data['cashusers'] = $this->model('User_model')->getCashierUser();
         $usersperpage = 10;

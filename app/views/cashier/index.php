@@ -48,7 +48,7 @@
         </div>
         <div class="bg-[#FFD369] rounded-lg flex flex-col">
         <span class="mb-2 font-semibold text-lg"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></span>
-          <span class="text-gray-600">Rp.<?= number_format($item['COST_PRICE'], 2); ?></span>
+          <span class="text-gray-600">Rp.<?= number_format($item['COST_PRICE'], 2);?> - Stock Tersedia : <?= $item['STOCK_AVAILABLE'];?></span>
         </div>
       </button>
     <?php endforeach; ?>

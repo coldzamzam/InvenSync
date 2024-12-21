@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,13 +36,103 @@
       opacity: 1; /* Fade-in effect */
     }
     #sidebar button {
-  font-size: 0.875rem; /* Smaller font size */
-  padding: 0.75rem 1rem; /* Adjust padding to make the button less large */
-}
+      font-size: 0.875rem; /* Smaller font size */
+      padding: 0.75rem 1rem; /* Adjust padding to make the button less large */
+    }
 
-#sidebar button i {
-  font-size: 1.25rem; /* Adjust icon size to match button */
-}
+    #sidebar button i {
+      font-size: 1.25rem; /* Adjust icon size to match button */
+    }
+
+    #notificationBtn {
+      position: relative;
+      font-size: 1.25rem;
+    }
+
+    #notificationBadge {
+      font-size: 0.75rem;
+      font-weight: bold;
+      line-height: 1;
+      min-width: 1rem;
+      text-align: center;
+    }
+    #sidebarModal {
+      transition: transform 0.3s ease-in-out;
+    }
+
+    #sidebarModal.active {
+      transform: translate-x-0;
+    }
+
+    #sidebarModal {
+      transition: transform 0.3s ease-in-out;
+    }
+
+    #sidebarModal.active {
+      transform: translateX(0);
+    }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent black background */
+      z-index: 10;
+    }
+
+    #overlay.hidden {
+      display: none;
+    }
+
+    #sidebarModal {
+      transition: transform 0.3s ease-in-out;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    #sidebarModal.active {
+      transform: translateX(0); /* Modal slides in from the right */
+    }
+
+    #sidebarModal .p-4 {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent black background */
+      z-index: 10;
+    }
+
+    #overlay.hidden {
+      display: none;
+    }
+
+    /* Arrow pointing to the bell icon */
+    #arrow {
+      position: absolute;
+      right: -10px; /* Place the arrow right outside the modal */
+      top: 50%; /* Vertically center the arrow */
+      transform: translateY(-50%); /* Center arrow */
+      width: 0;
+      height: 0;
+      border-left: 10px solid #FFD369; /* Arrow shape */
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+    }
+
+    /* Modal content adjustments */
+    #sidebarModal {
+      max-height: 60%; /* Limit the height to 60% of the screen */
+    }
 
 
   </style>
@@ -122,8 +210,40 @@
 </aside>
 
 
-  <nav class="left-0 p-6 bg-[#fdfdfd] fixed min-w-screen top-0 right-0 shadow-md z-[5]"><p class="text-2xl font-bold text-center"><?=$data['judul']?></p></nav>
+  <nav class="left-0 p-6 bg-[#fdfdfd] fixed min-w-screen top-0 right-0 shadow-md z-[5] flex items-center justify-between">
+    <p class="text-2xl font-bold text-center flex-1"><?= $data['judul'] ?></p>
+    <button id="notificationBtn" class="relative bg-[#FFD369] text-black py-1 px-3 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center">
+      <i class="fa-solid fa-bell"></i>
+      <span id="notificationBadge">
+        <?=$data['totalnotifications'];?>
+      </span>
+    </button>
+  </nav>  
+
+  <div id="sidebarModal" class="z-10 fixed top-0 right-0 h-[60%] w-80 bg-white shadow-lg hidden transition-transform transform translate-x-full">
+    <div class="relative">
+      <div class="p-4 border-b flex justify-between items-center">
+        <h2 class="text-xl font-semibold">Notifikasi</h2>
+        <button onclick="closeSidebarModal()" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="p-4 overflow-y-auto">
+        <ul class="space-y-2">
+          <?php foreach ($data['notifications'] as $notification) : ?>
+            <li class="bg-gray-100 p-2 rounded">
+              <p><?= $notification['ITEM_ID']; ?></p>
+              <p><?= $notification['TOTAL']; ?></p>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+    </div>
+    <div id="arrow" class="absolute right-[-10px] top-[50%] transform -translate-y-[50%] w-0 h-0 border-l-[10px] border-t-[10px] border-transparent border-l-[#FFD369]"></div>
+  </div>
+
   <body class="bg-[#fafafa]">
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="<?= BASEURL; ?>/js/script.js"></script>
@@ -152,21 +272,41 @@
     }
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
-    const content = document.querySelector('.flex-1');
 
     sidebar.addEventListener('mouseenter', () => {
-      overlay.classList.remove('hidden'); // Show overlay
-      content.classList.add('ml-64'); // Push content when sidebar expands
+      sidebar.classList.add('w-64'); // Sidebar melebar
     });
 
     sidebar.addEventListener('mouseleave', () => {
-      overlay.classList.add('hidden'); // Hide overlay
-      content.classList.remove('ml-64'); // Reset content margin
+      sidebar.classList.remove('w-64'); // Sidebar kembali kecil
     });
+
 
     overlay.addEventListener('click', () => {
       overlay.classList.add('hidden'); // Hide overlay if clicked
     });
+
+// Open the notification modal
+// Open the notification modal
+function openSidebarModal() {
+  document.getElementById('sidebarModal').classList.remove('hidden');
+  document.getElementById('sidebarModal').classList.add('active');  // Adds active class to trigger the slide-in animation
+  document.getElementById('overlay').classList.remove('hidden');  // Shows the overlay
+}
+
+// Close the notification modal
+function closeSidebarModal() {
+  document.getElementById('sidebarModal').classList.remove('active');  // Removes active class to hide the modal
+  document.getElementById('sidebarModal').classList.add('hidden');  // Hides the modal
+  document.getElementById('overlay').classList.add('hidden');  // Hides the overlay
+}
+
+// Event listener for the notification button to open the modal
+document.getElementById('notificationBtn').addEventListener('click', openSidebarModal);
+
+// Event listener for overlay to close the modal when clicked
+document.getElementById('overlay').addEventListener('click', closeSidebarModal);
+
   </script>
 
 <?php if(isset($_SESSION['receipt_id'])): ?>

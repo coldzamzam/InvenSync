@@ -33,11 +33,36 @@ Class Item_model {
   }
   
   public function getAllItem(){
-    $this->db->query('SELECT i.*, c.category_name, b.brand_name 
-                      FROM i_master_item i 
-                      JOIN i_master_category c ON i.category_id = c.category_id
-                      JOIN i_master_brand b ON i.brand_id = b.brand_id
-                      WHERE i.is_deleted = 0 AND i.store_id=:store_id');
+    $this->db->query("SELECT 
+                          i.ITEM_ID, 
+                          i.ITEM_NAME, 
+                          i.cost_price,
+                          c.category_name,
+                          b.brand_name,
+                          i.date_added,
+                          b.brand_id,
+                          c.category_id,
+                          NVL(inv.TOTAL_IN, 0) - NVL(rec.TOTAL_OUT, 0) AS STOCK_AVAILABLE
+                      FROM 
+                          i_master_item i
+                      JOIN 
+                          i_master_category c ON i.category_id = c.category_id
+                      JOIN 
+                          i_master_brand b ON i.brand_id = b.brand_id
+                      LEFT JOIN (
+                          SELECT ITEM_ID, SUM(QUANTITY) AS TOTAL_IN
+                          FROM i_inventory
+                          WHERE IS_DELETED = 0 AND STATUS = 'Diterima' AND STORE_ID = :store_id
+                          GROUP BY ITEM_ID
+                      ) inv ON i.ITEM_ID = inv.ITEM_ID
+                      LEFT JOIN (
+                          SELECT ITEM_ID, SUM(QUANTITY) AS TOTAL_OUT
+                          FROM i_receipt_item
+                          WHERE IS_DELETED = 0 AND STORE_ID = :store_id
+                          GROUP BY ITEM_ID
+                      ) rec ON i.ITEM_ID = rec.ITEM_ID
+                      WHERE 
+                          i.IS_DELETED = 0 AND i.STORE_ID = :store_id");
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
     // var_dump($this->db->resultSet());
@@ -349,6 +374,72 @@ Class Item_model {
     }
 
     return $result;
+  }
+
+  public function getTotalStockItem(){
+    $query = "SELECT ITEM_ID, NVL(TOTAL_IN,0)-NVL(TOTAL_OUT,0) AS TOTAL
+              FROM (
+                SELECT inventory.item_id AS ITEM_ID, 
+                      NVL(inventory.TOTAL_IN, 0) AS TOTAL_IN, 
+                      NVL(receipt.TOTAL_OUT, 0) AS TOTAL_OUT
+                FROM (
+                  SELECT m.item_id, SUM(i.quantity) AS TOTAL_IN
+                  FROM i_master_item m
+                  JOIN i_inventory i ON m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 
+                        AND m.store_id = :store_id 
+                        AND i.store_id = :store_id
+                  GROUP BY m.item_id
+                ) inventory
+                LEFT JOIN (
+                  SELECT m.item_id, SUM(i.quantity) AS TOTAL_OUT
+                  FROM i_master_item m
+                  JOIN i_receipt_item i ON m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 
+                        AND m.store_id = :store_id 
+                        AND i.store_id = :store_id
+                  GROUP BY m.item_id
+                ) receipt ON inventory.item_id = receipt.item_id
+              )
+              WHERE NVL(TOTAL_IN, 0) - NVL(TOTAL_OUT, 0) <= 5";
+
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+    return $this->db->resultSet();
+  }
+
+  public function getStockNotification(){
+    $query = "SELECT COUNT(*) AS TOTAL_NOTIFICATIONS
+              FROM (
+                SELECT inventory.item_name, 
+                      NVL(inventory.TOTAL_IN, 0) AS TOTAL_IN, 
+                      NVL(receipt.TOTAL_OUT, 0) AS TOTAL_OUT
+                FROM (
+                  SELECT m.item_name, SUM(i.quantity) AS TOTAL_IN
+                  FROM i_master_item m
+                  JOIN i_inventory i ON m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 
+                        AND m.store_id = :store_id   
+                        AND i.store_id = :store_id  
+                  GROUP BY m.item_name
+                ) inventory
+                LEFT JOIN (
+                  SELECT m.item_name, SUM(i.quantity) AS TOTAL_OUT
+                  FROM i_master_item m
+                  JOIN i_receipt_item i ON m.item_id = i.item_id
+                  WHERE m.is_deleted = 0 AND i.is_deleted = 0 
+                        AND m.store_id = :store_id   
+                        AND i.store_id = :store_id  
+                  GROUP BY m.item_name
+                ) receipt ON inventory.item_name = receipt.item_name
+                WHERE NVL(inventory.TOTAL_IN, 0) - NVL(receipt.TOTAL_OUT, 0) <= 5
+              )";
+
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+    return $this->db->single();
   }
 
   public function updateStatusInventory($data){

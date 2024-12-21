@@ -30,7 +30,9 @@ Class Dashboard extends Controller{
       'telepontoko'=> $_POST['telepontoko'] ?? '',
       'emailtoko'=> $_POST['emailtoko'] ?? '',
       'yearfounded'=> $_POST['yearfounded'] ?? '',
-      'judul' => 'Halaman Utama'
+      'judul' => 'Halaman Utama',
+      'totalnotifications' => $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'],
+      'notifications' => $this->model('Item_model')->getTotalStockItem()
     ];
 
     $userInventory = (int)$this->model('Dashboard_Model')->getInventoryUserCount();
@@ -122,6 +124,8 @@ Class Dashboard extends Controller{
         'telepontoko'=> $_POST['telepontoko'] ?? '',
         'emailtoko'=> $_POST['emailtoko'] ?? '',
         'yearfounded'=> $_POST['yearfounded'] ?? '',
+        'totalnotifications' => $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'],
+        'notifications' => $this->model('Item_model')->getTotalStockItem()
     ];
 
     $storeInfo = $this->model('User_model')->getStoreInfo();
@@ -143,9 +147,6 @@ Class Dashboard extends Controller{
     $this->view('user/toko', $data);
 }
 
-
-
-
   public function employees(){
     $data['judul'] = 'Dashboard';
     $data['users'] = $this->model('Item_model')->getAllUser();
@@ -160,12 +161,6 @@ Class Dashboard extends Controller{
     $this->view('dashboard/inventory', $data);
   }
 
-  public function troublesome(){
-    $data['judul'] = 'Troublesome Items';
-    $this->view('templates/s-header', $data);
-    $this->view('dashboard/troublesome');
-  }
-
   public function dailyreport(){  
     $data['judul'] = 'Daily Report';
     $this->view('templates/s-header', $data);
@@ -177,14 +172,6 @@ Class Dashboard extends Controller{
     $this->view('templates/s-header', $data);
     $this->view('dashboard/monthlyreport');
   }
-
-  public function cashier(){  
-    $data['judul'] = 'Cashier';
-    $this->view('templates/s-header', $data);
-    $this->view('dashboard/cashier');
-  }
-
-
 
   public function logout(){
     if(isset($_POST['logout'])){

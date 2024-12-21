@@ -17,6 +17,8 @@ class User extends Controller {
 		$data['emailError'] = '';
 		$data['passwordError'] = '';
 		$data['confirmPasswordError'] = '';
+		$data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
+        $data['notifications'] = $this->model('Item_model')->getTotalStockItem();
 		// if ( $this->model('User_model')->checkRowAcc() > 0 ) {
 		//   header('Location: ' . BASEURL . '/user/login');
 		// } else {
@@ -314,6 +316,8 @@ class User extends Controller {
 		'telepontokoError' => '',
 		'emailtokoError' => '',
 		'yearfoundedError' => '',
+		'totalnotifications' => $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'],
+		'notifications' => $this->model('Item_model')->getTotalStockItem(),
 		'judul' => 'Profile Toko'
 	];
 	$cekemail=$this->model('User_model')->cekEmailToko($data['emailtoko']);

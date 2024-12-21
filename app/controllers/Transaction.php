@@ -13,6 +13,8 @@ class Transaction extends Controller
     }
     public function index() {
         $data['judul'] = 'Riwayat Transaksi';
+        $data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
+        $data['notifications'] = $this->model('Item_model')->getTotalStockItem();
 
         // Ambil daftar semua receipt
         $receipts = $this->model('Cashier_model')->getAllReceipts();

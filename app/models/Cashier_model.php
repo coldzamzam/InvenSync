@@ -48,7 +48,11 @@ class Cashier_model {
   }
 
   public function getAllReceiptItems(){
-    $this->db->query("SELECT * FROM i_receipt_item ri JOIN i_master_item mi using (item_id) join i_master_category mc on (mi.category_id = mc.category_id) join i_master_brand mb on (mi.brand_id = mb.brand_id) WHERE receipt_id = :receipt_id AND ri.is_deleted = 0 AND ri.store_id = :store_id");
+    $this->db->query("SELECT * FROM i_receipt_item ri 
+                      JOIN i_master_item mi using (item_id) 
+                      join i_master_category mc on (mi.category_id = mc.category_id) 
+                      join i_master_brand mb on (mi.brand_id = mb.brand_id) 
+                      WHERE receipt_id = :receipt_id AND ri.is_deleted = 0 AND ri.store_id = :store_id");
     $this->db->bind('receipt_id', $_SESSION['receipt_id']);
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
@@ -70,7 +74,7 @@ class Cashier_model {
       LEFT JOIN (
           SELECT ITEM_ID, SUM(QUANTITY) AS TOTAL_IN
           FROM I_INVENTORY
-          WHERE IS_DELETED = 0 AND STORE_ID = :store_id AND ITEM_ID = :item_id
+          WHERE IS_DELETED = 0 AND STORE_ID = :store_id AND ITEM_ID = :item_id AND STATUS = 'Diterima'
           GROUP BY ITEM_ID
           ) i ON m.ITEM_ID = i.ITEM_ID
       LEFT JOIN (
@@ -119,6 +123,11 @@ class Cashier_model {
     // $this->db->bind('receipt_id', $_SESSION['receipt_id']);
     // $this->db->execute();
     $this->db->query('UPDATE i_receipt_item SET is_deleted=1 WHERE receipt_id = :receipt_id AND is_deleted = 0 AND store_id = :store_id');
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->bind('receipt_id', $_SESSION['receipt_id']);
+    $this->db->execute();
+
+    $this->db->query('UPDATE i_receipt SET is_deleted=1 WHERE receipt_id = :receipt_id AND is_deleted = 0 AND store_id = :store_id');
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->bind('receipt_id', $_SESSION['receipt_id']);
     $this->db->execute();

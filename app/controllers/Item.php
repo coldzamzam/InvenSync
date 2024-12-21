@@ -22,6 +22,8 @@ Class Item extends Controller {
     $data['item'] = $this->model('Item_model')->getAllItem();
     $data['brand'] = $this->model('Item_model')->getAllBrand();
     $data['category'] = $this->model('Item_model')->getAllCategory();
+    $data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
+    $data['notifications'] = $this->model('Item_model')->getTotalStockItem();
 
     if($this->model('User_model')->checkRowToko() > 0) {
       $this->view('templates/s-header', $data);

@@ -8,9 +8,9 @@
         <?php foreach ($data['receiptDetails'] as $receipt_id => $receipt): ?>
             <!-- Tambahkan data-* attribute -->
             <div data-receipt-id="<?= $receipt_id; ?>" 
-                 data-date="<?= $receipt['date_added']; ?>" 
-                 onclick="toggleTable('table-<?= $receipt_id; ?>')"
-                 class="receipt-container cursor-pointer bg-white shadow-lg rounded-lg p-6 mb-4 transition transform hover:scale-105">
+                data-date="<?= $receipt['date_added']; ?>" 
+                onclick="toggleTable('table-<?= $receipt_id; ?>')"
+                class="receipt-container cursor-pointer bg-white shadow-lg rounded-lg p-6 mb-4 transition transform hover:scale-105">
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 text-lg font-semibold">
                         Transaksi ID: <span class="text-blue-600 font-bold"><?= $receipt_id; ?></span> - 

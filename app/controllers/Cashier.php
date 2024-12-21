@@ -15,6 +15,8 @@ class Cashier extends Controller {
     public function index(){
         $data['judul'] = 'Kasir';
         $data['item'] = $this->model('Item_model')->getAllItem();
+        $data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
+        $data['notifications'] = $this->model('Item_model')->getTotalStockItem();
         // $data['stok'] = $this->model('Cashier_model')->getAllTotalQuantity();
         if (isset($_SESSION['receipt_id'])) {
           // if ($this->model('Cashier_model')->checkRowSelectedItems() < 1) {
