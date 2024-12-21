@@ -21,42 +21,43 @@
         }
 
         .card {
-            background: linear-gradient(135deg, #ffd369, #949697);
-            color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column; /* Agar konten di dalam card tersusun ke bawah */
-        }
+    background: linear-gradient(135deg, #041A3D, #222831,#393E46); /* Gradient dari warna palet */
+    color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column; /* Agar konten di dalam card tersusun ke bawah */
+}
 
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-        }
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
 
-        .card h1 {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 16px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-            padding-bottom: 8px;
-        }
+.card h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 16px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 8px;
+}
 
-        .card label {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 4px;
-            display: block;
-        }
+.card label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 4px;
+    display: block;
+}
 
-        .card p {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: #ffffff;
-        }
+.card p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
 
         .btn {
             background-color: #ffffff;
@@ -145,7 +146,13 @@
                 </div>
                 <div style="text-align: right; margin-top: 20px;">
                     <button class="btn" id="openModalButton">Edit Informasi</button>
-                    <button class="btn" id="deleteButton" style="background-color: red; color: white;">Hapus Toko</button>
+                    <button
+							type='button'
+							class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200'
+							onclick='confirmDelete()'
+						>
+							Hapus Toko
+						</button>
                 </div>
             </div>
         </div>
@@ -211,7 +218,7 @@
 
 						<!-- Submit Button -->
 						<div class="flex justify-end mt-4">
-							<button type="submit" name="simpan" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Update Informasi</button>
+							<button type="submit" name="simpan" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Edit Informasi</button>
 						</div>
 					</form>
 			</div>
@@ -219,28 +226,12 @@
 					<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'Owner') { 
 						echo"
 					<div class='flex gap-4'>
-						<button
-							id='openModalButton'
-							type='button'
-							class='btnEditToko bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200'
-							onclick='berhasil()'
-						>
-							Edit Informasi
-						</button>
 
 						<form id='deleteStoreForm' action='" . BASEURL . "/User/deleteToko' method='post'>
 							<input type='hidden' name='id' value='" . htmlspecialchars($_SESSION['user_id'], ENT_QUOTES, 'UTF-8') . "'>
 							<input type='hidden' name='email' value='" . htmlspecialchars($_SESSION['user_email'], ENT_QUOTES, 'UTF-8') . "'>
 							<input type='hidden' name='storeID' value='" . htmlspecialchars($_SESSION['store_id'], ENT_QUOTES, 'UTF-8') . "'>
 						</form>
-
-						<button
-							type='button'
-							class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200'
-							onclick='confirmDelete()'
-						>
-							Hapus Toko
-						</button>
 					</div>
 						";
 					}
