@@ -64,6 +64,10 @@ class Employees extends Controller{
         $cekemail=$this->model('User_model')->cekEmail($data['email']);
         $cekpassword=$this->model('User_model')->cekPassword($data['password']);
         $ceknomortelepon=$this->model('User_model')->cekNomorTelepon($data['phonenumber']);
+        if (!preg_match("/^08[0-9]{9,11}$/", $data['phonenumber'])) {
+			$_SESSION['status'] = 'errorNomorTelepon';  
+            header('Location: ' . BASEURL . '/employees');
+		}
         if ($cekemail>0) {
             $_SESSION['status']='errorEmail';
             header('Location: ' . BASEURL . '/employees');

@@ -451,6 +451,27 @@ Class Item_model {
 
     return $this->db->rowCount();
   }
+
+  public function updateItems($data){
+    $query = "UPDATE i_master_item SET item_name = :item_name, cost_price = :cost_price,category_id = :category_id, brand_id = :brand_id
+              WHERE store_id = :store_id AND is_deleted = 0 and item_id = :item_id";
+    $this->db->query($query);
+    $this->db->bind('item_id', $data['item_id']);
+    $this->db->bind('item_name', $data['item_name']);
+    $this->db->bind('cost_price', $data['cost_price']);
+    $this->db->bind('category_id', $data['category_id']);
+    $this->db->bind('brand_id', $data['brand_id']);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+  }
+
+  public function deleteItem($id){
+    $query = "UPDATE i_master_item SET is_deleted = 1 WHERE store_id = :store_id AND is_deleted = 0 and item_id = :item_id";
+    $this->db->query($query);
+    $this->db->bind('item_id', $id);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+  }
 }
 
 ?>

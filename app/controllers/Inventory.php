@@ -99,15 +99,10 @@ class Inventory extends Controller {
 	}
 
 	public function tambahItem() {
-		if ($this->model('Item_model')->addItem($_POST) > 0) {
-			// Flasher::setFlash('berhasil', 'ditambahkan', 'success');
-			header('Location: ' . BASEURL . '/Item');
-			exit;
-		} else {
-			// Flasher::setFlash('gagal', 'ditambahkan', 'danger');
-			header('Location: ' . BASEURL . '/Item');
-			exit;
-		}
+		$this->model('Item_model')->addItem($_POST);
+		header('Location: ' . BASEURL . '/Item');
+		$_SESSION['status'] = 'berhasilDitambahkan';
+		exit;
 	}
 
 	public function updateStatus() {
@@ -122,5 +117,28 @@ class Inventory extends Controller {
 		}
 	}
 
+	public function updateItems() {
+		$data = [
+			'item_id' => $_POST['ITEM_ID'],
+			'item_name' => $_POST['item_name'],
+			'cost_price' => $_POST['cost_price'],
+			'category_id' => $_POST['category_id'],
+			'brand_id' => $_POST['brand_id']
+		];
+		$this->model('Item_model')->updateItems($data);
+		header('Location: ' . BASEURL . '/Item');
+		$_SESSION['status'] = 'berhasilDiupdate';
+		exit;
+	}
+
+	public function deleteItem(){
+		$data=[
+			'id' => $_POST['id']
+		];
+		$this->model('Item_model')->deleteItem($data['id']);
+		header('Location: ' . BASEURL . '/Item');
+		$_SESSION['status'] = 'berhasilDihapus';
+		exit;
+	}
 }	
 

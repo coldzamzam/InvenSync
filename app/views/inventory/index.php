@@ -156,7 +156,7 @@
         <!-- Nama Barang -->
         <div class="mb-3">
           <label for="item_id" class="text-sm text-gray-700">Nama Barang</label>
-          <select id="item_id" name="item_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+          <select id="item_id" name="item_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
             <option value="" disabled selected>-- Pilih Nama Barang --</option>
             <?php foreach($data['items'] as $item): ?>
               <option value="<?= $item['ITEM_ID']; ?>"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></option>
@@ -167,13 +167,13 @@
         <!-- Kuantitas -->
         <div class="mb-3">
           <label for="quantity" class="text-sm text-gray-700">Kuantitas</label>
-          <input id="quantity" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="quantity" placeholder="Kuantitas" required>
+          <input id="quantity" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="quantity" placeholder="Kuantitas">
         </div>
 
         <!-- Harga Beli -->
         <div class="mb-3">
           <label for="harga_beli" class="text-sm text-gray-700">Harga Beli</label>
-          <input id="harga_beli" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="harga_beli" placeholder="Harga Beli" required>
+          <input id="harga_beli" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="harga_beli" placeholder="Harga Beli">
         </div>
 
         <!-- Submit Button -->
@@ -302,6 +302,74 @@
         }
       }) 
     }
+
+    document.getElementById('inventoryForm').addEventListener('submit', function (event) {
+      const itemId = document.getElementById('item_id').value.trim();
+      const quantity = document.getElementById('quantity').value.trim();
+      const hargaBeli = document.getElementById('harga_beli').value.trim();
+
+      // Validasi Nama Barang
+      if (itemId === '') {
+        event.preventDefault();
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Silakan pilih Nama Barang!',
+        });
+        document.getElementById('item_id').focus();
+        return;
+      }
+
+      // Validasi Kuantitas
+      if (quantity === '' || parseInt(quantity) <= 0) {
+        event.preventDefault();
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Kuantitas harus lebih dari 0!',
+        });
+        document.getElementById('quantity').focus();
+        return;
+      }
+      maxhargabeli=999999999;
+      // Validasi Harga Beli
+      if (hargaBeli === '' || parseInt(hargaBeli) <= 0) {
+        event.preventDefault();
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Harga Beli harus lebih dari 0!',
+        });
+        document.getElementById('harga_beli').focus();
+        return;
+      }
+
+      if (parseInt(hargaBeli)>maxhargabeli) {
+        event.preventDefault();
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Harga Beli tidak valid',
+        });
+        document.getElementById('harga_beli').focus();
+        return;
+      }
+      
+      // Jika Semua Valid
+      Swal.fire({
+        icon: 'success',
+        title: 'Validasi Berhasil!',
+        text: 'Data siap untuk dikirim.',
+        timer: 1500,
+        showConfirmButton: false
+      });
+    });
+
+    // Tutup Modal dan Reset Form
+      document.getElementById('closeModalButton').addEventListener('click', function () {
+      document.getElementById('formModal').classList.add('hidden');
+      document.getElementById('inventoryForm').reset();
+      });
 
   </script>
 </body>

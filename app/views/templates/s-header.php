@@ -231,9 +231,9 @@
       <div class="p-4 overflow-y-auto">
         <ul class="space-y-2">
           <?php foreach ($data['notifications'] as $notification) : ?>
-            <li class="bg-gray-100 p-2 rounded">
-              <p><?= $notification['ITEM_ID']; ?></p>
-              <p><?= $notification['TOTAL']; ?></p>
+            <li class="bg-gray-100 p-2 rounded flex <?php if ($notification['TOTAL'] > 0) echo 'bg-yellow-100'; else echo 'bg-red-100';?>">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <p>Item dengan ID - <?= $notification['ITEM_ID'];?> memiliki stok tersisa = <?= $notification['TOTAL']; ?></p>
             </li>
           <?php endforeach; ?>
         </ul>

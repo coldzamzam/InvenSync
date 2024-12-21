@@ -87,8 +87,8 @@
     </div>
   </main>
 
- <!-- Modal for Adding or Editing Stock -->
- <div id="formModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+<!-- Modal for Adding or Editing Stock -->
+<div id="formModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-1/2 p-6">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold text-blue-600">Tambah/Edit Barang</h2>
@@ -102,13 +102,13 @@
         <!-- Nama Barang -->
         <div class="mb-3">
           <label for="item_name" class="text-sm text-gray-700">Nama Barang</label>
-          <input id="item_name" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="item_name" placeholder="Nama Barang" required>
+          <input id="item_name" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="item_name" placeholder="Nama Barang">
         </div>
         
         <!-- Category -->
         <div class="mb-3">
           <label for="category_id" class="text-sm text-gray-700">Kategori</label>
-          <select id="category_id" name="category_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+          <select id="category_id" name="category_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
             <option value="" disabled selected>-- Pilih Kategori --</option>
             <?php foreach($data['category'] as $category): ?>
               <option value="<?= $category['CATEGORY_ID']; ?>"><?= $category['CATEGORY_NAME']; ?></option>
@@ -119,7 +119,7 @@
         <!-- brand -->
         <div class="mb-3">
           <label for="brand_id" class="text-sm text-gray-700">Brand</label>
-          <select id="brand_id" name="brand_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+          <select id="brand_id" name="brand_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
             <option value="" disabled selected>-- Pilih Brand --</option>
             <?php foreach($data['brand'] as $brand): ?>
               <option value="<?= $brand['BRAND_ID']; ?>"><?= $brand['BRAND_NAME']; ?></option>
@@ -130,7 +130,7 @@
         <!-- Harga Jual -->
         <div class="mb-3">
   <label for="cost_price" class="text-sm text-gray-700">Harga Jual</label>
-  <input id="formatted_cost_price" name="cost_price" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" placeholder="Harga Jual" required>
+  <input id="formatted_cost_price" name="cost_price" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" placeholder="Harga Jual">
 </div>
 
         <!-- Submit Button -->
@@ -138,10 +138,10 @@
           <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButton">Tambah Barang</button>
         </div>
       </form>
-      <form action="<?= BASEURL;?>/Inventory/deleteItem" method="post" class="pl-6" id="deleteItemForm">
-          <input type="hidden" id="deleteID" name="id">
+      <form action="<?= BASEURL;?>/Inventory/deleteItem" method="post" class="pl-6 hidden" id="deleteItemForm">
+          <input type="text" id="deleteID" name="id">
           <button type="button" onclick="deleteConfirmation()" class="right-0 p-2 flex items-center justify-center bg-red-500 text-white rounded hover:bg-red-600"><img src="<?= BASEURL; ?>/img/delete.png" width="20px" height="20px" alt="delete"></button>
-    </form>
+      </form>
   </div>
     </div>
   </div>
@@ -154,7 +154,7 @@
           <span class="text-2xl">&times;</span>
         </button>
       </div>
-      <form id="inventoryForm" action="<?= BASEURL; ?>/Inventory/tambahBrand" method="post">
+      <form id="brandForm" action="<?= BASEURL; ?>/Inventory/tambahBrand" method="post">
         <input type="hidden" id="itemId" name="ITEM_ID" value="">
 
         <!-- Nama Brand -->
@@ -179,7 +179,7 @@
           <span class="text-2xl">&times;</span>
         </button>
       </div>
-      <form id="inventoryForm" action="<?= BASEURL; ?>/Inventory/tambahCategory" method="post">
+      <form id="categoryForm" action="<?= BASEURL; ?>/Inventory/tambahCategory" method="post">
         <input type="hidden" id="itemId" name="ITEM_ID" value="">
 
         <!-- Nama Category -->
@@ -212,13 +212,13 @@
         <!-- Nama Barang -->
         <div class="mb-3">
           <label for="item_name" class="text-sm text-gray-700">Nama Barang</label>
-          <input id="item_name" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="item_name" placeholder="Nama Barang" required>
+          <input id="item_name" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" name="item_name" placeholder="Nama Barang">
         </div>
         
         <!-- Category -->
         <div class="mb-3">
           <label for="category_id" class="text-sm text-gray-700">Kategori</label>
-          <select id="category_id" name="category_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+          <select id="category_id" name="category_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
             <option value="" disabled selected>-- Pilih Kategori --</option>
             <?php foreach($data['category'] as $category): ?>
               <option value="<?= $category['CATEGORY_ID']; ?>"><?= $category['CATEGORY_NAME']; ?></option>
@@ -229,7 +229,7 @@
         <!-- brand -->
         <div class="mb-3">
           <label for="brand_id" class="text-sm text-gray-700">Brand</label>
-          <select id="brand_id" name="brand_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" required>
+          <select id="brand_id" name="brand_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
             <option value="" disabled selected>-- Pilih Brand --</option>
             <?php foreach($data['brand'] as $brand): ?>
               <option value="<?= $brand['BRAND_ID']; ?>"><?= $brand['BRAND_NAME']; ?></option>
@@ -240,7 +240,7 @@
         <!-- Harga Jual -->
         <div class="mb-3">
   <label for="cost_price" class="text-sm text-gray-700">Harga Jual</label>
-  <input id="formatted_cost_price" name="cost_price" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" placeholder="Harga Jual" required>
+  <input id="formatted_cost_price" name="cost_price" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="text" placeholder="Harga Jual">
 </div>
 
         <!-- Submit Button -->
@@ -375,6 +375,64 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+// Validasi Modal Brand
+document.getElementById('brandForm').addEventListener('submit', function (event) {
+  const brandName = document.getElementById('brand_name').value.trim();
+
+  if (brandName === '') {
+    event.preventDefault(); // Mencegah form terkirim
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Nama Brand tidak boleh kosong!',
+    });
+    document.getElementById('brand_name').focus();
+  }
+});
+
+// Validasi Modal Category
+document.getElementById('categoryForm').addEventListener('submit', function (event) {
+  const categoryName = document.getElementById('ITEM_NAME').value.trim();
+
+  if (categoryName === '') {
+    event.preventDefault(); // Mencegah form terkirim
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Nama Kategori tidak boleh kosong!',
+    });
+    document.getElementById('ITEM_NAME').focus();
+  }
+});
+
+// Tutup Modal dan Reset Form
+document.getElementById('closeModalBrand').addEventListener('click', function () {
+  document.getElementById('modalBrand').classList.add('hidden');
+  document.getElementById('brandForm').reset();
+});
+
+document.getElementById('closeModalCategory').addEventListener('click', function () {
+  document.getElementById('modalCategory').classList.add('hidden');
+  document.getElementById('categoryForm').reset();
+});
+
+function deleteConfirmation(){
+  Swal.fire({
+    title: 'Apakah Anda yakin?',
+    text: "Anda akan menghapus data ini!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya, hapus!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      document.getElementById('deleteItemForm').submit();
+    }
+  })
+}
+
+
 function editModalOpen(itemId) {
   // Ambil tombol yang diklik
   const editButton = document.querySelector(`button[data-item-id='${itemId}']`);
@@ -391,11 +449,13 @@ function editModalOpen(itemId) {
   document.getElementById('category_id').value = categoryId;
   document.getElementById('brand_id').value = brandId;
   document.getElementById('formatted_cost_price').value = costPrice;
+  document.getElementById('deleteID').value = itemId;
 
   // Ubah teks tombol submit
   document.getElementById('submitButton').textContent = 'Update Barang';
 
-  // Tampilkan modal
+  document.getElementById('inventoryForm').action = '<?= BASEURL; ?>/inventory/updateItems';
+  document.getElementById('deleteItemForm').classList.remove('hidden');
   document.getElementById('formModal').classList.remove('hidden');
 }
 
@@ -411,7 +471,118 @@ $totalPages = ceil($totalData / $limit);
 // Query untuk ambil data sesuai halaman
 $data['item'] = array_slice($data['item'], $offset, $limit);
 ?>
+<?php
+if (isset($_SESSION['status'])):
+    $status = $_SESSION['status']; // Get status from session
+    unset($_SESSION['status']); // Remove status from session after using it
+?>
+        let status = '<?= $status ?>';
+        if (status === 'berhasilDiupdate') {
+            Swal.fire({
+                title: 'Berhasil',
+                text: 'Data barang berhasil diupdate!',
+                icon: 'success'
+            });
+        } else if (status === 'berhasilDihapus') {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Item berhasil dihapus!',
+                icon: 'success'
+            });
+        } else if (status === 'berhasilDitambahkan') {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Item berhasil ditambahkan!',
+                icon: 'success'
+            });
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: 'Terjadi kesalahan!',
+                icon: 'error'
+            });
+        }
+<?php endif; ?>
 
-  </script>
+// Validasi Form Tambah/Edit Barang
+document.getElementById('inventoryForm').addEventListener('submit', function (event) {
+  const itemName = document.getElementById('item_name').value.trim();
+  const categoryId = document.getElementById('category_id').value;
+  const brandId = document.getElementById('brand_id').value;
+  const costPrice = document.getElementById('formatted_cost_price').value.trim();
+  maxhargajual=999999999;
+
+  // Validasi Nama Barang
+  if (itemName === '') {
+    event.preventDefault();
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Nama Barang tidak boleh kosong!',
+    });
+    document.getElementById('item_name').focus();
+    return;
+  }
+
+  // Validasi Kategori
+  if (!categoryId) {
+    event.preventDefault();
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Silakan pilih Kategori!',
+    });
+    document.getElementById('category_id').focus();
+    return;
+  }
+
+  // Validasi Brand
+  if (!brandId) {
+    event.preventDefault();
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Silakan pilih Brand!',
+    });
+    document.getElementById('brand_id').focus();
+    return;
+  }
+
+  if (costPrice > maxhargajual) {
+    event.preventDefault();
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Harga Jual tidak valid',
+    });
+    document.getElementById('formatted_cost_price').focus();
+    return;
+  }
+
+  // Validasi Harga Jual
+  const costPriceValue = parseFloat(costPrice.replace(/[^\d.-]/g, '')); // Menghapus karakter selain angka dan titik
+  if (isNaN(costPriceValue) || costPriceValue <= 0) {
+    event.preventDefault();
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Harga Jual harus berupa angka positif!',
+    });
+    document.getElementById('formatted_cost_price').focus();
+    return;
+  }
+
+  // Jika Semua Validasi Lulus
+  Swal.fire({
+    icon: 'success',
+    title: 'Validasi Berhasil!',
+    text: 'Data siap untuk dikirim.',
+    timer: 1500,
+    showConfirmButton: false
+  });
+});
+
+
+</script>
 </body>
 </html>
