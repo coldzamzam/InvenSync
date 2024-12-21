@@ -186,7 +186,7 @@
       <a href="<?= BASEURL; ?>/monthlyreport" 
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-calendar-alt"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Laporan Bulanan</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Laporan</span>
       </a>
       <a href="<?= BASEURL; ?>/cashier"
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">

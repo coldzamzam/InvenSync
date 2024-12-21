@@ -82,13 +82,69 @@ function printInvoice(button) {
     printWindow.document.write(`
         <html>
             <head>
-                <title>Invoice</title>
+                <title>Invoice InvenSync</title>
                 <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    table { width: 100%; border-collapse: collapse; }
-                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                    th { background-color: #f4f4f4; }
-
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        margin: 20px;
+                        color: #333;
+                    }
+                    h1 {
+                        text-align: center;
+                        font-size: 24px;
+                        color: #333;
+                        margin-bottom: 30px;
+                    }
+                    .invoice-wrapper {
+                        width: 100%;
+                        max-width: 800px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        background: #fff;
+                        border: 1px solid #ccc;
+                        border-radius: 8px;
+                    }
+                    .header {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 30px;
+                    }
+                    .header-left {
+                        font-size: 18px;
+                        font-weight: bold;
+                    }
+                    .header-right {
+                        text-align: right;
+                        font-size: 18px;
+                    }
+                    .invoice-details {
+                        margin-top: 20px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 10px;
+                    }
+                    th, td {
+                        padding: 10px;
+                        text-align: left;
+                        border: 1px solid #ddd;
+                    }
+                    th {
+                        background-color: #f4f4f4;
+                    }
+                    .total-row {
+                        font-weight: bold;
+                        background-color: #f9f9f9;
+                    }
+                    .total-price {
+                        text-align: right;
+                    }
+                    .footer {
+                        margin-top: 30px;
+                        text-align: center;
+                        font-size: 14px;
+                    }
                     /* Hide print and delete buttons during print */
                     @media print {
                         .no-print {
@@ -98,8 +154,33 @@ function printInvoice(button) {
                 </style>
             </head>
             <body>
-                <h1 style="text-align: center;">Invoice</h1>
-                ${tableContent}
+                <h1>InvenSync</h1>
+                <div class="invoice-wrapper">
+                    <div class="header">
+                        <div class="header-left">
+                            <p><strong></strong> ${parentDiv.querySelector('.text-gray-700').textContent}</p>
+                        </div>
+                        <div class="header-right">
+                            <p><strong>Total:</strong> Rp. ${parentDiv.querySelector('.text-green-600').textContent.replace('Rp.', '')}</p>
+                        </div>
+                    </div>
+
+                    <div class="invoice-details">
+                        <table>
+                            <tbody>
+                                ${parentDiv.querySelector('table').innerHTML}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="total-row">
+                        <p class="total-price"><strong>Total: Rp. ${parentDiv.querySelector('.text-green-600').textContent.replace('Rp.', '')}</strong></p>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>Terima kasih atas transaksi Anda!</p>
+                    </div>
+                </div>
             </body>
         </html>
     `);

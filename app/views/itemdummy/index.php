@@ -138,7 +138,7 @@
         </div>
       </form>
       <form action="<?= BASEURL;?>/Inventory/deleteItem" method="post" class="pl-6 hidden" id="deleteItemForm">
-          <input type="text" id="deleteID" name="id">
+          <input type="hidden" id="deleteID" name="id">
           <button type="button" onclick="deleteConfirmation()" class="right-0 p-2 flex items-center justify-center bg-red-500 text-white rounded hover:bg-red-600"><img src="<?= BASEURL; ?>/img/delete.png" width="20px" height="20px" alt="delete"></button>
       </form>
   </div>
@@ -451,7 +451,7 @@ function editModalOpen(itemId) {
   document.getElementById('deleteID').value = itemId;
 
   // Ubah teks tombol submit
-  document.getElementById('submitButton').textContent = 'Update Barang';
+  document.getElementById('submitButton').textContent = 'Edit Barang';
 
   document.getElementById('inventoryForm').action = '<?= BASEURL; ?>/inventory/updateItems';
   document.getElementById('deleteItemForm').classList.remove('hidden');
