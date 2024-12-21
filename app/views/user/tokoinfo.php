@@ -21,14 +21,14 @@
         }
 
         .card {
-    background: linear-gradient(135deg, #041A3D, #222831,#393E46); /* Gradient dari warna palet */
-    color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column; /* Agar konten di dalam card tersusun ke bawah */
+            background: linear-gradient(135deg, #041A3D, #222831,#393E46); /* Gradient dari warna palet */
+            color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column; /* Agar konten di dalam card tersusun ke bawah */
 }
 
 .card:hover {
@@ -57,25 +57,6 @@
     margin-bottom: 10px;
     color: #ffffff;
 }
-
-
-        .btn {
-            background-color: #ffffff;
-            color: #2575fc;
-            padding: 10px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-            text-align: center;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: #2575fc;
-            color: #ffffff;
-        }
-
         .card-1 {
             flex: 1; /* Card Informasi Akun memiliki lebar 1/3 */
         }
@@ -145,7 +126,7 @@
                     <p><?= $data['yearfounded'] ?></p>
                 </div>
                 <div style="text-align: right; margin-top: 20px;">
-                    <button class="btn" id="openModalButton">Edit Informasi</button>
+                    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto"id="openModalButton">Edit Informasi</button>
                     <button
 							type='button'
 							class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200'
@@ -239,11 +220,8 @@
 				</div>
 			</div>
 		</div>
-		
 	</div>
-    
 </div>
-
 </main>
 
 	<script>
@@ -337,6 +315,5 @@
 		});
 	}
 </script>
-
 </body>
 </html>

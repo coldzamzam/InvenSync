@@ -24,11 +24,6 @@
                             class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition no-print">
                             <i class="fa fa-print mr-2"></i>Cetak Invoice
                         </button>
-                        <!-- Hapus Button -->
-                        <button onclick="event.stopPropagation(); deleteReceipt(this)"
-                           class="right-0 p-2 flex items-center justify-center bg-red-500 text-white rounded hover:bg-red-600 no-print">
-                            <img src="<?= BASEURL; ?>/img/delete.png" width="20px" height="20px" alt="delete">
-                        </button>
                     </div>
                 </div>
 

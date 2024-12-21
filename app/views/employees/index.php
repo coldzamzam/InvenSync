@@ -499,9 +499,9 @@ document.getElementById('createEmployeeForm').addEventListener('submit', functio
     const rows = document.querySelectorAll('tbody tr');
     rows.forEach(row => {
         if (selectedRole === 'Semua') {
-            row.style.display = ''; // Show all rows
+            row.style.display = '';
         } else {
-            const roleCell = row.querySelector('td:nth-child(5)').textContent; // Role column
+            const roleCell = row.querySelector('td:nth-child(5)').textContent;
             row.style.display = (roleCell === selectedRole) ? '' : 'none';
         }
     });

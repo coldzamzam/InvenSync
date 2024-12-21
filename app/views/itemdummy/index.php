@@ -70,14 +70,14 @@
               <td class="py-3 px-4 border text-center"><?= $item['DATE_ADDED']; ?></td>
               <td class="py-3 px-4 border flex justify-center items-center">
               <button onclick="editModalOpen('<?= $item['ITEM_ID']; ?>')" 
-        data-item-id="<?= $item['ITEM_ID']; ?>" 
-        data-item-name="<?= $item['ITEM_NAME']; ?>" 
-        data-category-id="<?= $item['CATEGORY_ID']; ?>" 
-        data-brand-id="<?= $item['BRAND_ID']; ?>" 
-        data-cost-price="<?= $item['COST_PRICE']; ?>" 
-        class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
-    <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
-</button>
+                    data-item-id="<?= $item['ITEM_ID']; ?>" 
+                    data-item-name="<?= $item['ITEM_NAME']; ?>" 
+                    data-category-id="<?= $item['CATEGORY_ID']; ?>" 
+                    data-brand-id="<?= $item['BRAND_ID']; ?>" 
+                    data-cost-price="<?= $item['COST_PRICE']; ?>" 
+                    class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
+                <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
+            </button>
               </td>
             </tr>
           <?php endforeach; ?>

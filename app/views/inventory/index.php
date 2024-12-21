@@ -47,25 +47,20 @@
           </div>
         </div>
       </div>
-      
     </header>
 
     <div class="flex items-center mb-4 space-x-4 justify-between">
       <div class="wrap-filter flex items-center gap-4">
       <input type="text" id="quickSearch" placeholder="Cari" class="border rounded px-4 py-2">
       </div>
-
       <div>
         <div class="relative inline-block text-left">
-          
         </div>
-  
         <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Tambah Stok</button>
       </div>
     </div>
 
     <div class="flex gap-4 mb-4">
-
     <div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-3/12 px-6 py-4 rounded-lg">
       <p class="text-lg font-bold pb-2">Total Stok</p>
       <div class="bg-white rounded shadow">
@@ -100,7 +95,7 @@
               <th class="py-3 px-4 border text-center">Kuantitas</th>
               <th class="py-3 px-4 border text-center">Tanggal Ditambahkan</th>
               <th class="py-3 px-4 border text-center">Harga Beli</th>
-              <th class="py-3 px-4 border text-center">ID User</th>
+              <th class="py-3 px-4 border text-center">User ID</th>
               <th class="py-3 px-4 border text-center">Status</th>
               <th class="py-3 px-4 border text-center">Aksi</th>
             </tr>
@@ -129,9 +124,9 @@
                   </div>
                 </td>
                 <td class="py-3 px-4 border flex justify-center items-center">
-                  <button onclick="editItem('<?= $users['INVENTORY_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
-                    <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
-                  </button>
+                <button onclick="editModalOpen('<?= $item['INVENTORY_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
+                <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
+                </button>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -184,14 +179,56 @@
     </div>
   </div>
 
+<!---edit--->
+<div id="modalEdit" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-blue-600">Edit Stok Barang</h2>
+        <button id="closeModalEditButton" class="text-gray-500 hover:text-gray-700">
+          <span class="text-2xl">&times;</span>
+        </button>
+      </div>
+      <form id="editInventoryForm" action="<?= BASEURL; ?>/Inventory/updateInventory" method="post">
+        <input type="hidden" id="itemId" name="ITEM_ID" value="">
+
+        <!-- Nama Barang -->
+        <div class="mb-3">
+          <label for="item_id" class="text-sm text-gray-700">Nama Barang</label>
+          <select id="item_id" name="item_id" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+            <option value="" disabled selected>-- Pilih Nama Barang --</option>
+            <?php foreach($data['items'] as $item): ?>
+              <option value="<?= $item['ITEM_ID']; ?>"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+
+        <!-- Kuantitas -->
+        <div class="mb-3">
+          <label for="quantity" class="text-sm text-gray-700">Kuantitas</label>
+          <input id="quantity" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="quantity" placeholder="Kuantitas">
+        </div>
+
+        <!-- Harga Beli -->
+        <div class="mb-3">
+          <label for="harga_beli" class="text-sm text-gray-700">Harga Beli</label>
+          <input id="harga_beli" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" type="number" name="harga_beli" placeholder="Harga Beli">
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-end mt-4">
+          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="submitButton">Edit Barang</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- JavaScript -->
   <script>
     // Mendapatkan elemen modal dan tombol
     const modal = document.getElementById('formModal');
     const openModalButton = document.getElementById('openModalButton');
     const closeModalButton = document.getElementById('closeModalButton');
-    const submitButton = document.getElementById('submitButton');
-    
+
     // Fungsi untuk membuka modal
     openModalButton.addEventListener('click', () => {
       modal.classList.remove('hidden');
@@ -205,24 +242,10 @@
       modal.classList.add('hidden');
     });
 
-    // Fungsi edit data barang
-    function editItem(itemId) {
-      // Fetch data untuk item yang ingin di-edit
-      fetch(`<?= BASEURL; ?>/inventory/getItemData/${itemId}`)
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById('itemId').value = data.ITEM_ID;
-          document.getElementById('ITEM_NAME').value = data.ITEM_NAME;
-          document.getElementById('CATEGORY_ITEM').value = data.CATEGORY_ITEM;
-          document.getElementById('QUANTITY').value = data.QUANTITY;
-          document.getElementById('HARGA_BELI').value = data.HARGA_BELI;
-          document.getElementById('HARGA_JUAL').value = data.HARGA_JUAL;
-          document.getElementById('STATUS').value = data.STATUS;
-
-          submitButton.textContent = 'Update Barang';
-          modal.classList.remove('hidden');
-        });
-    }
+    //menutup modal update
+    closeModalEditButton.addEventListener('click', () => {
+      document.getElementById('modalEdit').classList.add('hidden');
+    });
 
     // Menutup modal jika pengguna mengklik di luar modal
     window.addEventListener('click', (event) => {
@@ -365,12 +388,129 @@
       });
     });
 
+// Function to open edit modal with item data
+function editModalOpen(inventoryId) {
+  const modalEdit = document.getElementById('modalEdit');
+  const form = document.getElementById('editInventoryForm');
+  
+  // Get the row data based on inventory ID
+  const row = document.querySelector(`tr[data-inventory-id="${inventoryId}"]`);
+  if (row) {
+    // Get data from the row
+    const itemId = row.querySelector('[data-item-id]').dataset.itemId;
+    const quantity = row.querySelector('[data-quantity]').textContent;
+    const hargaBeli = row.querySelector('[data-harga-beli]').dataset.hargaBeli;
+
+    // Populate the form fields
+    form.querySelector('#item_id').value = itemId;
+    form.querySelector('#quantity').value = quantity;
+    form.querySelector('#harga_beli').value = hargaBeli;
+    
+    // Add inventory ID to form for submission
+    const inventoryIdInput = document.createElement('input');
+    inventoryIdInput.type = 'hidden';
+    inventoryIdInput.name = 'inventory_id';
+    inventoryIdInput.value = inventoryId;
+    form.appendChild(inventoryIdInput);
+  }
+
+  // Show the modal
+  modalEdit.classList.remove('hidden');
+}
+
+// Add form validation and submission handling
+document.getElementById('editInventoryForm').addEventListener('submit', function(event) {
+  const itemId = document.getElementById('item_id').value.trim();
+  const quantity = document.getElementById('quantity').value.trim();
+  const hargaBeli = document.getElementById('harga_beli').value.trim();
+  const maxHargaBeli = 999999999;
+
+  // Validate Item Name
+  if (itemId === '') {
+    event.preventDefault();
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Silakan pilih Nama Barang!',
+    });
+    document.getElementById('item_id').focus();
+    return;
+  }
+
+  // Validate Quantity
+  if (quantity === '' || parseInt(quantity) <= 0) {
+    event.preventDefault();
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Kuantitas harus lebih dari 0!',
+    });
+    document.getElementById('quantity').focus();
+    return;
+  }
+
+  // Validate Purchase Price
+  if (hargaBeli === '' || parseInt(hargaBeli) <= 0) {
+    event.preventDefault();
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Harga Beli harus lebih dari 0!',
+    });
+    document.getElementById('harga_beli').focus();
+    return;
+  }
+
+  if (parseInt(hargaBeli) > maxHargaBeli) {
+    event.preventDefault();
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Harga Beli tidak valid',
+    });
+    document.getElementById('harga_beli').focus();
+    return;
+  }
+
+  // If all validations pass, show success message
+  Swal.fire({
+    icon: 'success',
+    title: 'Validasi Berhasil!',
+    text: 'Data siap untuk diperbarui.',
+    timer: 1500,
+    showConfirmButton: false
+  });
+});
+
+// Close edit modal handler
+document.getElementById('closeModalEditButton').addEventListener('click', function() {
+  const modalEdit = document.getElementById('modalEdit');
+  const form = document.getElementById('editInventoryForm');
+  
+  modalEdit.classList.add('hidden');
+  form.reset();
+  
+  // Remove any dynamically added inventory_id input
+  const inventoryIdInput = form.querySelector('input[name="inventory_id"]');
+  if (inventoryIdInput) {
+    inventoryIdInput.remove();
+  }
+});
+
+// Close modal when clicking outside
+window.addEventListener('click', (event) => {
+  const modalEdit = document.getElementById('modalEdit');
+  if (event.target === modalEdit) {
+    modalEdit.classList.add('hidden');
+    document.getElementById('editInventoryForm').reset();
+  }
+});
+
     // Tutup Modal dan Reset Form
       document.getElementById('closeModalButton').addEventListener('click', function () {
       document.getElementById('formModal').classList.add('hidden');
       document.getElementById('inventoryForm').reset();
       });
-
   </script>
 </body>
 </html>
