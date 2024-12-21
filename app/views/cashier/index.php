@@ -246,8 +246,56 @@ document.addEventListener("DOMContentLoaded", function () {
     // Memanggil fungsi ketika halaman pertama kali dimuat
     checkItemsSelected();
 });
+// Get the search input and all item buttons
+const quickSearchInput = document.getElementById('quickSearchInput');
+const itemButtons = document.querySelectorAll('[id^="tambahBarangBtn_"]');
 
+// Add event listener for real-time search
+quickSearchInput.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    
+    // Loop through each item button
+    itemButtons.forEach(button => {
+        // Get item details from data attributes
+        const itemId = button.getAttribute('data-itemid').toLowerCase();
+        const itemName = button.getAttribute('data-itemname').toLowerCase();
+        
+        // Check if either item ID or name contains the search term
+        const matchesSearch = 
+            itemId.includes(searchTerm) || 
+            itemName.includes(searchTerm);
+        
+        // Show/hide button based on search match
+        if (matchesSearch) {
+            button.style.display = '';
+            // Optional: Add highlight effect
+            const nameElement = button.querySelector('.font-semibold');
+            if (nameElement) {
+                const text = `${button.getAttribute('data-itemid')} - ${button.getAttribute('data-itemname')}`;
+                if (searchTerm) {
+                    const highlightedText = text.replace(
+                        new RegExp(searchTerm, 'gi'),
+                        match => `<span class="bg-yellow-200">${match}</span>`
+                    );
+                    nameElement.innerHTML = highlightedText;
+                } else {
+                    nameElement.innerHTML = text;
+                }
+            }
+        } else {
+            button.style.display = 'none';
+        }
+    });
+});
 
+// Add clear search functionality
+quickSearchInput.addEventListener('keyup', function(e) {
+    if (e.key === 'Escape') {
+        this.value = '';
+        // Trigger the input event to reset the display
+        this.dispatchEvent(new Event('input'));
+    }
+});
 
   document.getElementById('printInvoiceBtn').addEventListener('click', function () {
     const printContent = document.querySelector('.bg-white').outerHTML;
@@ -314,43 +362,4 @@ document.addEventListener("DOMContentLoaded", function () {
         // Isi input Nama Barang
         document.getElementById('namabarang').value = namaBarang;
     });
-
-    document.addEventListener('DOMContentLoaded', function() {
-    const quickSearchInput = document.getElementById('quickSearchInput');
-    const itemButtons = document.querySelectorAll('[id^="tambahBarangBtn_"]');
-
-    console.log('Quick Search Setup:');
-    console.log('Search Input:', quickSearchInput);
-    console.log('Found Item Buttons:', itemButtons.length);
-
-    quickSearchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase().trim();
-        console.log('Current Search Term:', searchTerm);
-
-        itemButtons.forEach((button, index) => {
-            // Debugging: Log each button's details
-            const itemId = button.dataset.itemid;
-            const itemName = button.dataset.itemname;
-            const priceElement = button.querySelector('.text-gray-600');
-            const itemPrice = priceElement ? priceElement.textContent : 'No Price Found';
-
-            console.log(`Button ${index}:`, {
-                itemId,
-                itemName,
-                itemPrice
-            });
-
-            // Matching logic
-            const matchesSearch = 
-                itemId.toLowerCase().includes(searchTerm) || 
-                itemName.toLowerCase().includes(searchTerm) || 
-                itemPrice.toLowerCase().includes(searchTerm);
-
-            console.log(`Match for Button ${index}:`, matchesSearch);
-
-            // Toggle display
-            button.style.display = matchesSearch ? 'block' : 'none';
-        });
-    });
-});
 </script>

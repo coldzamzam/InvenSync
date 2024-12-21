@@ -2,11 +2,10 @@
     <!-- Input Quick Search -->
     <input type="text" id="quickSearchInput" placeholder="Cari"
         class="border rounded-lg px-4 py-2 shadow-md focus:outline-none focus:ring focus:border-blue-400">
-<br>
-<br>
+    <br><br>
+
     <?php if (!empty($data['receiptDetails'])): ?>
         <?php foreach ($data['receiptDetails'] as $receipt_id => $receipt): ?>
-            <!-- Tambahkan data-* attribute -->
             <div data-receipt-id="<?= $receipt_id; ?>" 
                 data-date="<?= $receipt['date_added']; ?>" 
                 onclick="toggleTable('table-<?= $receipt_id; ?>')"
@@ -19,10 +18,18 @@
                     <h2 class="text-lg font-bold text-gray-800">
                         Total: <span class="text-green-600">Rp.<?= number_format($receipt['total'], 2); ?></span>
                     </h2>
-                    <button onclick="event.stopPropagation(); printInvoice(this)"
-                        class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
-                        <i class="fa fa-print mr-2"></i>Cetak Invoice
-                    </button>
+                    <div class="flex space-x-2">
+                        <!-- Cetak Invoice Button -->
+                        <button onclick="event.stopPropagation(); printInvoice(this)"
+                            class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition no-print">
+                            <i class="fa fa-print mr-2"></i>Cetak Invoice
+                        </button>
+                        <!-- Hapus Button -->
+                        <button onclick="event.stopPropagation(); deleteReceipt(this)"
+                           class="right-0 p-2 flex items-center justify-center bg-red-500 text-white rounded hover:bg-red-600 no-print">
+                            <img src="<?= BASEURL; ?>/img/delete.png" width="20px" height="20px" alt="delete">
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Tabel Detail -->
@@ -61,10 +68,12 @@
 </div>
 
 <script>
+// Function to toggle the receipt details table
 function toggleTable(id) {
     document.getElementById(id).classList.toggle('hidden');
 }
 
+// Function to print the invoice
 function printInvoice(button) {
     const parentDiv = button.closest('.cursor-pointer');
     const tableContent = parentDiv.outerHTML;
@@ -79,69 +88,17 @@ function printInvoice(button) {
                     table { width: 100%; border-collapse: collapse; }
                     th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
                     th { background-color: #f4f4f4; }
-                </style>
-            </head>
-            <body>
-                <h1 style="text-align: center;">Invoice</h1>
-                ${tableContent}
-            </body>
-        </html>
-    `);
-    printWindow.document.close();
-    printWindow.print();
-}
 
-document.getElementById('quickSearchInput').addEventListener('input', function () {
-    const searchValue = this.value.toLowerCase().trim(); // Ambil input pencarian
-    const receiptContainers = document.querySelectorAll('.receipt-container'); // Ambil semua transaksi
-
-    receiptContainers.forEach(container => {
-        const receiptId = container.getAttribute('data-receipt-id').toLowerCase();
-        const date = container.getAttribute('data-date').toLowerCase();
-
-        // Cek apakah input cocok dengan receipt ID atau tanggal
-        if (receiptId.includes(searchValue) || date.includes(searchValue)) {
-            container.style.display = ''; // Tampilkan jika cocok
-        } else {
-            container.style.display = 'none'; // Sembunyikan jika tidak cocok
-        }
-    });
-});
-
-function printInvoice(button) {
-    const parentDiv = button.closest('.cursor-pointer'); // Ambil elemen induk dari tombol
-    const tableContent = parentDiv.outerHTML;
-
-    const printWindow = window.open('', '', 'width=800,height=600');
-    printWindow.document.write(`
-        <html>
-            <head>
-                <title>Invoice Transakasi</title>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    table { width: 100%; border-collapse: collapse; }
-                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                    th { background-color: #f4f4f4; }
-                    
-                    /* Sembunyikan tombol print saat dicetak */
+                    /* Hide print and delete buttons during print */
                     @media print {
-                        button, .no-print {
+                        .no-print {
                             display: none !important;
-                        }
-                          .header-title {
-                            position: absolute;
-                            top: 20px;
-                            right: 20px;
-                            font-size: 28px;
-                            font-weight: bold;
-                            color: #333;
                         }
                     }
                 </style>
             </head>
             <body>
                 <h1 style="text-align: center;">Invoice</h1>
-                <div class="header-title">InvenSync</div>
                 ${tableContent}
             </body>
         </html>
@@ -150,4 +107,28 @@ function printInvoice(button) {
     printWindow.print();
 }
 
+// Function to handle deleting a receipt
+function deleteReceipt(button) {
+    const parentDiv = button.closest('.receipt-container');
+    if (confirm("Apakah Anda yakin ingin menghapus transaksi ini?")) {
+        parentDiv.remove(); // Remove the entire receipt container
+    }
+}
+
+// Quick search functionality
+document.getElementById('quickSearchInput').addEventListener('input', function () {
+    const searchValue = this.value.toLowerCase().trim();
+    const receiptContainers = document.querySelectorAll('.receipt-container');
+
+    receiptContainers.forEach(container => {
+        const receiptId = container.getAttribute('data-receipt-id').toLowerCase();
+        const date = container.getAttribute('data-date').toLowerCase();
+
+        if (receiptId.includes(searchValue) || date.includes(searchValue)) {
+            container.style.display = '';
+        } else {
+            container.style.display = 'none';
+        }
+    });
+});
 </script>

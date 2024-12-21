@@ -376,8 +376,6 @@ if (isset($_SESSION['status'])):
     this.submit();
   });
 
-
-
 document.getElementById('createEmployeeForm').addEventListener('submit', function(event) {
     // Prevent form submission
     event.preventDefault();
@@ -493,27 +491,21 @@ document.getElementById('createEmployeeForm').addEventListener('submit', functio
     }
   }
 }
-
       function editModalClose(){
           document.getElementById('modalEdit').classList.add('hidden');
       }
-    </script>
-
-<script>
   function filterByRole() {
-    const selectedRole = document.getElementById('roleFilter').value.toLowerCase();
+    const selectedRole = document.getElementById('roleFilter').value;
     const rows = document.querySelectorAll('tbody tr');
-
     rows.forEach(row => {
-      const roleCell = row.querySelector('td:nth-child(5)').textContent.toLowerCase(); // Kolom Role
-      if (selectedRole === 'all' || roleCell === selectedRole) {
-        row.style.display = ''; // Tampilkan baris
-      } else {
-        row.style.display = 'none'; // Sembunyikan baris
-      }
+        if (selectedRole === 'Semua') {
+            row.style.display = ''; // Show all rows
+        } else {
+            const roleCell = row.querySelector('td:nth-child(5)').textContent; // Role column
+            row.style.display = (roleCell === selectedRole) ? '' : 'none';
+        }
     });
-  }
+}
 </script>
-
 </body>
 </html>

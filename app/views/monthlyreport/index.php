@@ -16,11 +16,12 @@
 <!-- Container Utama -->
 <main class="flex-1 ml-24 mt-20 p-8">
   <!-- Tab Navigasi -->
-  <div class="flex justify-center mb-8 space-x-4">
-    <button id="dailyTab" class="tab-active px-6 py-2 rounded-lg transition-all">Laporan Harian</button>
-    <button id="monthlyTab" class="tab-inactive px-6 py-2 rounded-lg transition-all">Laporan Bulanan</button>
-    <button id="yearlyTab" class="tab-inactive px-6 py-2 rounded-lg transition-all">Laporan Tahunan</button>
-  </div>
+<div class="flex justify-center mb-8 space-x-4">
+  <button id="dailyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Harian</button>
+  <button id="monthlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Bulanan</button>
+  <button id="yearlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Tahunan</button>
+</div>
+
 
   <!-- Laporan Harian -->
   <section id="dailyReport" class="bg-white p-6 rounded-lg shadow-lg space-y-6">
@@ -57,7 +58,7 @@
 
     <!-- Tombol View Report -->
     <div class="flex justify-end mt-6">
-      <button onclick="viewFullReport('harian')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">View Report</button>
+      <button onclick="viewFullReport('harian')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Lihat Laporan</button>
     </div>
   </section>
 
@@ -94,7 +95,7 @@
 
     <!-- Tombol View Report -->
     <div class="flex justify-end mt-6">
-      <button onclick="viewFullReport('bulanan')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">View Report</button>
+      <button onclick="viewFullReport('bulanan')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Lihat Laporan</button>
     </div>
   </section>
 
@@ -135,7 +136,7 @@
 
     <!-- Tombol View Report -->
     <div class="flex justify-end mt-6">
-      <button onclick="viewFullReport('tahunan')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">View Report</button>
+      <button onclick="viewFullReport('tahunan')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Lihat Laporan</button>
     </div>
   </section>
 </main>
@@ -156,10 +157,10 @@
     <!-- Tombol Aksi -->
     <div class="mt-8 flex justify-end gap-3">
       <button onclick="window.print()" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
-        Print
+        Cetak
       </button>
       <button onclick="closeModal()" class="bg-red-600 text-white px-4 py-2 rounded shadow hover:bg-red-700">
-        Close
+        Tutup
       </button>
     </div>
   </div>

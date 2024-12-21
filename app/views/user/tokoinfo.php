@@ -1,35 +1,162 @@
 <main class="flex-1 ml-24 mt-20 p-8"> 
-	<div>
-		<div class="flex gap-4 mb-4">
-			<div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-2/5 p-6 rounded-lg ">
-				<div class="mb-6">
-					<h1 class="text-2xl font-bold text-gray-800">Informasi Akun</h1>
-				</div>
-				<div class="mb-2">
-					<label for="userid">UID</label>
-					<p class="text-gray-900 font-medium"><?=$_SESSION['user_id']?></p>
-				</div>
-				<div class="mb-2">
-					<label for="namauser">Nama Akun</label>
-					<p class="text-gray-900 font-medium"><?=$_SESSION['user_name']?></p>
-				</div>
-				<div class="mb-2">
-					<label for="userrole">Role</label>
-					<p class="text-gray-900 font-medium"><?=$_SESSION['user_role']?></p>
-				</div>
-				<div class="mb-2">
-					<label for="useremail">Email</label>
-					<p class="text-gray-900 font-medium"><?=$_SESSION['user_email']?></p>
-				</div>
-				<div class="mb-2">
-					<label for="userphone">Nomor Telepon</label>
-					<p class="text-gray-900 font-medium">+62<?=$_SESSION['user_phonenumber']?></p>
-				</div>
-				<div class="mb-2">
-					<label for="useraddress">Alamat</label>
-					<p class="text-gray-900 font-medium"><?=$_SESSION['user_address']?></p>
-				</div>
-			</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8fafd;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            margin-left: 24px;
+            margin-top: 20px;
+            padding: 16px;
+        }
+
+        .container {
+            display: flex;
+            gap: 16px;
+            align-items: stretch; /* Pastikan card memiliki tinggi yang sama */
+        }
+
+        .card {
+    background: linear-gradient(135deg, #041A3D, #222831,#393E46); /* Gradient dari warna palet */
+    color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column; /* Agar konten di dalam card tersusun ke bawah */
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 16px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 8px;
+}
+
+.card label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.card p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+
+        .btn {
+            background-color: #ffffff;
+            color: #2575fc;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #2575fc;
+            color: #ffffff;
+        }
+
+        .card-1 {
+            flex: 1; /* Card Informasi Akun memiliki lebar 1/3 */
+        }
+
+        .card-2 {
+            flex: 2; /* Card Informasi Toko memiliki lebar 2/3 */
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <!-- Informasi Akun -->
+            <div class="card card-1">
+                <h1>Informasi Akun</h1>
+                <div>
+                    <label>UID</label>
+                    <p><?= $_SESSION['user_id'] ?></p>
+                </div>
+                <div>
+                    <label>Nama Akun</label>
+                    <p><?= $_SESSION['user_name'] ?></p>
+                </div>
+                <div>
+                    <label>Role</label>
+                    <p><?= $_SESSION['user_role'] ?></p>
+                </div>
+                <div>
+                    <label>Email</label>
+                    <p><?= $_SESSION['user_email'] ?></p>
+                </div>
+                <div>
+                    <label>Nomor Telepon</label>
+                    <p>+62<?= $_SESSION['user_phonenumber'] ?></p>
+                </div>
+                <div>
+                    <label>Alamat</label>
+                    <p><?= $_SESSION['user_address'] ?></p>
+                </div>
+            </div>
+
+            <!-- Informasi Toko -->
+            <div class="card card-2">
+                <h1>Informasi Toko</h1>
+                <div>
+                    <label>Nama Toko</label>
+                    <p><?= $data['namatoko'] ?></p>
+                </div>
+                <div>
+                    <label>Tipe Toko</label>
+                    <p><?= $data['tipetoko'] ?></p>
+                </div>
+                <div>
+                    <label>Lokasi</label>
+                    <p><?= $data['lokasi'] ?></p>
+                </div>
+                <div>
+                    <label>Nomor Telepon</label>
+                    <p>+62<?= $data['telepontoko'] ?></p>
+                </div>
+                <div>
+                    <label>Email Toko</label>
+                    <p><?= $data['emailtoko'] ?></p>
+                </div>
+                <div>
+                    <label>Tahun Didirikan</label>
+                    <p><?= $data['yearfounded'] ?></p>
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button class="btn" id="openModalButton">Edit Informasi</button>
+                    <button
+							type='button'
+							class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200'
+							onclick='confirmDelete()'
+						>
+							Hapus Toko
+						</button>
+                </div>
+            </div>
+        </div>
+    </main>
 
 			<div id="formModal" class="hidden bg-white shadow-md p-6 border border-zinc-100 rounded-lg w-full">
 					<div class="flex justify-between items-center mb-4">
@@ -91,75 +218,20 @@
 
 						<!-- Submit Button -->
 						<div class="flex justify-end mt-4">
-							<button type="submit" name="simpan" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Update Informasi</button>
+							<button type="submit" name="simpan" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Edit Informasi</button>
 						</div>
 					</form>
 			</div>
-
-			<div id="infoToko" class="bg-white shadow-md p-6 border border-zinc-100 rounded-lg w-full">
-				<!-- Header -->
-				<div class="mb-6">
-					<h1 class="text-2xl font-bold text-gray-800">Informasi Toko</h1>
-				</div>
-
-				<!-- Content -->
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-					<!-- Nama Toko -->
-					<div>
-						<label for="namatoko" class="text-sm text-gray-700 block mb-1">Nama Toko</label>
-						<p class="text-gray-900 font-medium"><?=$data['namatoko']?></p>
-					</div>
-					<!-- Tipe Toko -->
-					<div>
-						<label for="tipetoko" class="text-sm text-gray-700 block mb-1">Tipe Toko</label>
-						<p class="text-gray-900 font-medium"><?=$data['tipetoko']?></p>
-					</div>
-					<!-- Lokasi -->
-					<div>
-						<label for="lokasi" class="text-sm text-gray-700 block mb-1">Lokasi</label>
-						<p class="text-gray-900 font-medium"><?=$data['lokasi']?></p>
-					</div>
-					<!-- Nomor Telepon Toko -->
-					<div>
-						<label for="telepontoko" class="text-sm text-gray-700 block mb-1">Nomor Telepon Toko</label>
-						<p class="text-gray-900 font-medium">+62<?=$data['telepontoko']?></p>
-					</div>
-					<!-- Email Toko -->
-					<div>
-						<label for="emailtoko" class="text-sm text-gray-700 block mb-1">Email Toko</label>
-						<p class="text-gray-900 font-medium"><?=$data['emailtoko']?></p>
-					</div>
-					<!-- Tahun Didirikan -->
-					<div>
-						<label for="yearfounded" class="text-sm text-gray-700 block mb-1">Tahun Didirikan</label>
-						<p class="text-gray-900 font-medium"><?=$data['yearfounded']?></p>
-					</div>
 					
 					<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'Owner') { 
 						echo"
 					<div class='flex gap-4'>
-						<button
-							id='openModalButton'
-							type='button'
-							class='btnEditToko bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200'
-							onclick='berhasil()'
-						>
-							Edit Informasi
-						</button>
 
 						<form id='deleteStoreForm' action='" . BASEURL . "/User/deleteToko' method='post'>
 							<input type='hidden' name='id' value='" . htmlspecialchars($_SESSION['user_id'], ENT_QUOTES, 'UTF-8') . "'>
 							<input type='hidden' name='email' value='" . htmlspecialchars($_SESSION['user_email'], ENT_QUOTES, 'UTF-8') . "'>
 							<input type='hidden' name='storeID' value='" . htmlspecialchars($_SESSION['store_id'], ENT_QUOTES, 'UTF-8') . "'>
 						</form>
-
-						<button
-							type='button'
-							class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200'
-							onclick='confirmDelete()'
-						>
-							Hapus Toko
-						</button>
 					</div>
 						";
 					}
