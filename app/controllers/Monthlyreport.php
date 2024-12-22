@@ -11,6 +11,9 @@ class Monthlyreport extends Controller {
         $data['judul'] = 'Laporan';
         $data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
         $data['notifications'] = $this->model('Item_model')->getTotalStockItem();
+        $data['monthlyChartData'] = $this->model('Report_model')->getMonthlyReport();
+        // var_dump($data['monthlyChartData']);  // Debug output
+        // exit;
         if($this->model('User_model')->checkRowToko() > 0) {
             $this->view('templates/s-header', $data);
             $this->view('monthlyreport/index', $data);
@@ -18,5 +21,6 @@ class Monthlyreport extends Controller {
         else {
             header('Location: ' . BASEURL . '/dashboard/toko');
         }    
+
     }
 }
