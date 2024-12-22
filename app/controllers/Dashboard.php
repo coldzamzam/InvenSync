@@ -129,15 +129,21 @@ Class Dashboard extends Controller{
     ];
 
     $storeInfo = $this->model('User_model')->getStoreInfo();
+    
+    if ($storeInfo) {    
+        $personalInfo = $this->model('User_model')->getPersonalInfo();
 
-    if ($storeInfo) {
+        $data['nama'] = $personalInfo['NAME'];
+        $data['alamat'] = $personalInfo['ADDRESS'];
+        $data['nomortelp'] = $personalInfo['PHONE_NUMBER'];
+        $data['email'] = $personalInfo['EMAIL'];
+        $data['role'] = $personalInfo['ROLE'];
         $data['namatoko'] = $storeInfo['STORE_NAME'];
         $data['tipetoko'] = $storeInfo['STORE_TYPE'];
         $data['lokasi'] = $storeInfo['LOCATION'];
         $data['telepontoko'] = $storeInfo['PHONE_NUMBER'];
         $data['emailtoko'] = $storeInfo['EMAIL'];
         $data['yearfounded'] = $storeInfo['YEAR_FOUNDED'];
-
         $this->view('templates/s-header', $data);
         $this->view('user/tokoinfo', $data);
         return;

@@ -289,6 +289,13 @@ public function removeVerificationToken($user_id) {
     return $this->db->single(); // Ambil hanya satu hasil
   }
 
+  public function getPersonalInfo(){
+    $this->db->query('SELECT * FROM i_users WHERE is_deleted = 0 AND user_id = :user_id');
+    $this->db->bind('user_id', $_SESSION['user_id']);
+    $this->db->execute();
+    return $this->db->single();
+  }
+
   public function updateAdmin($data) {
     $query = "UPDATE i_users SET 
                 name = :name, 

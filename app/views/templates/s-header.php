@@ -252,7 +252,7 @@
 <nav class="font-poppins left-0 p-6 bg-[#fdfdfd] fixed min-w-screen top-0 right-0 shadow-md z-[5] flex items-center justify-between">
   <p class="text-2xl font-bold text-center flex-1"><?= $data['judul'] ?></p>
   <button id="notificationBtn"
-    class="relative bg-[#FFD369] text-black py-1 px-3 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center">
+    class="relative<?php if ($data['totalnotifications']!=0): echo ' bg-red-600'; else: echo ' bg-[#FFD369]'; endif ?> text-black py-1 px-3 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center">
     <i class="fa-solid fa-bell"></i>
     <span id="notificationBadge">
       <?= $data['totalnotifications']; ?>
