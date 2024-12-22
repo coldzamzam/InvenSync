@@ -45,7 +45,7 @@
               <div class="flex items-center justify-center">
                 <div class="g-recaptcha" data-sitekey="6LdmtowqAAAAANx4ZqJ34DmNJ5E9q-Gh_HlDLQzX"></div>
               </div>
-              <span class="text-red-500 text-sm"><?= $data['captchaError']; ?></span>
+              <span class="text-red-500 text-sm absolute"><?= $data['captchaError']; ?></span>
             </div>
             <button type="submit" name="login" class="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition duration-300">
               Login
@@ -53,7 +53,7 @@
           </form>
         </div>
         <div class="m-0 bg-[#FFD369] w-2/5 h-full rounded-lg text-center p-6 flex flex-col items-center justify-center">
-          <img src="<?= BASEURL; ?>/img/invensync-logo.png" width="250px" height="250px" class="rounded-circle mb-4" alt="ripat">
+          <img src="<?= BASEURL; ?>/img/invensync-black.png" width="250px" height="250px" class="rounded-circle mb-4" alt="ripat">
           <p class="text-xl md:text-2xl font-bold text-black mb-4">Belum punya akun? Daftar sekarang!</p>
           <a href="<?= BASEURL; ?>/user/index" class="text-xl font-bold text-black py-2 px-4 border-2 border-black rounded-lg hover:bg-black hover:text-white transition duration-100">
             Daftarkan!
@@ -92,6 +92,12 @@ if (isset($_SESSION['status'])):
                 title: 'Berhasil',
                 text: 'Password telah direset!',
                 icon: 'success'
+            });
+        } else if (status === 'resetRequest') {
+            Swal.fire({
+                title: 'Permintaan Reset terkirim!',
+                text: 'Tolong verifikasi di email anda.',
+                icon: 'warning'
             });
         }
 

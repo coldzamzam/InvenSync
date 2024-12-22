@@ -8,8 +8,10 @@ use PHPMailer\PHPMailer\Exception;
 require '../vendor/autoload.php';
 
 
-class User extends Controller {
-  public function index(){
+class User extends Controller
+{
+	public function index()
+	{
 		$data['nameError'] = '';
 		$data['roleError'] = '';
 		$data['addressError'] = '';
@@ -20,14 +22,15 @@ class User extends Controller {
 		// if ( $this->model('User_model')->checkRowAcc() > 0 ) {
 		//   header('Location: ' . BASEURL . '/user/login');
 		// } else {
-			$data['judul'] = 'Buat Akun';
-			$this->view('templates/i-header', $data);
-			$this->view('user/index', $data);
-			$this->view('templates/footer');
+		$data['judul'] = 'Buat Akun';
+		$this->view('templates/i-header', $data);
+		$this->view('user/index', $data);
+		$this->view('templates/footer');
 		// }
-  }
+	}
 
-  public function login() {
+	public function login()
+	{
 		$data['loginEmailError'] = '';
 		$data['loginPasswordError'] = '';
 		$data['captchaError'] = '';
@@ -36,32 +39,36 @@ class User extends Controller {
 		$this->view('templates/i-header', $data);
 		$this->view('user/login', $data);
 		$this->view('templates/footer');
-  }
+	}
 
-  public function daftar() {
+	public function daftar()
+	{
 		$data['judul'] = 'Daftar Akun';
 		$this->view('templates/i-header', $data);
 		$this->view('user/daftar', $data);
 		$this->view('templates/footer');
-		
-  }
 
-  public function regist() {
-		if ( $this->model('User_model')->daftarToko($_POST) > 0 ){
+	}
+
+	public function regist()
+	{
+		if ($this->model('User_model')->daftarToko($_POST) > 0) {
 			Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
-			header ('Location: ' . BASEURL . '/user');
+			header('Location: ' . BASEURL . '/user');
 			exit;
-		} else{
+		} else {
 			Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
-			header ('Location: ' . BASEURL . '/user');
+			header('Location: ' . BASEURL . '/user');
 			exit;
 		}
-  }
-	
-	
-public function createAcc() {
-		
-		function sanitizeInputSignIn($input) {
+	}
+
+
+	public function createAcc()
+	{
+
+		function sanitizeInputSignIn($input)
+		{
 			return strtolower(trim($input));
 		}
 
@@ -84,13 +91,16 @@ public function createAcc() {
 			'verificationCode' => bin2hex(random_bytes(16)),
 			'judul' => 'Buat Akun'
 		];
-		$cekemail=$this->model('User_model')->cekEmail($data['email']);
-		$ceknomortelepon=$this->model('User_model')->cekNomorTelepon($data['phonenumber']);
+		$cekemail = $this->model('User_model')->cekEmail($data['email']);
+		$ceknomortelepon = $this->model('User_model')->cekNomorTelepon($data['phonenumber']);
 
 		// Validate data
-		if (empty($data['name'])) $data['nameError'] = 'Nama tidak boleh kosong.';
-		if (empty($data['role'])) $data['roleError'] = 'Role tidak boleh kosong.';
-		if (empty($data['address'])) $data['addressError'] = 'Alamat tidak boleh kosong.';
+		if (empty($data['name']))
+			$data['nameError'] = 'Nama tidak boleh kosong.';
+		if (empty($data['role']))
+			$data['roleError'] = 'Role tidak boleh kosong.';
+		if (empty($data['address']))
+			$data['addressError'] = 'Alamat tidak boleh kosong.';
 		if (empty($data['phonenumber'])) {
 			$data['phonenumberError'] = 'Nomor Telepon tidak boleh kosong.';
 		} elseif (!preg_match("/^08[0-9]{9,11}$/", $data['phonenumber'])) {
@@ -107,10 +117,12 @@ public function createAcc() {
 
 		if (empty($data['password'])) {
 			$data['passwordError'] = 'Password tidak boleh kosong.';
-		} elseif (strlen($data['password']) < 8 || 
-				!preg_match("#[0-9]+#", $data['password']) || 
-				!preg_match("#[A-Z]+#", $data['password']) || 
-				!preg_match("#[a-z]+#", $data['password'])) {
+		} elseif (
+			strlen($data['password']) < 8 ||
+			!preg_match("#[0-9]+#", $data['password']) ||
+			!preg_match("#[A-Z]+#", $data['password']) ||
+			!preg_match("#[a-z]+#", $data['password'])
+		) {
 			$data['passwordError'] = 'Password harus terdiri dari minimal 8 karakter, 1 angka, 1 huruf besar, dan 1 huruf kecil.';
 		}
 		$data['confirmPassword'] = $_POST['confirmPassword'] ?? '';
@@ -121,10 +133,12 @@ public function createAcc() {
 		}
 
 
-		
+
 		// Return errors if any
-		if (!empty($data['nameError']) || !empty($data['roleError']) || !empty($data['addressError']) || 
-			!empty($data['phonenumberError']) || !empty($data['emailError']) || !empty($data['passwordError'] || !empty($data['confirmPasswordError']))) {
+		if (
+			!empty($data['nameError']) || !empty($data['roleError']) || !empty($data['addressError']) ||
+			!empty($data['phonenumberError']) || !empty($data['emailError']) || !empty($data['passwordError'] || !empty($data['confirmPasswordError']))
+		) {
 			$this->view('templates/i-header', $data);
 			$this->view('user/index', $data);
 			$this->view('templates/footer');
@@ -135,12 +149,12 @@ public function createAcc() {
 				//Server settings
 				$mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
 				$mail->isSMTP();                                            //Send using SMTP
-				$mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-				$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-				$mail->Username   = 'rifatok123@gmail.com';                     //SMTP username
-				$mail->Password   = 'xpbn gjvc kkve rvcq';                               //SMTP password
+				$mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
+				$mail->SMTPAuth = true;                                   //Enable SMTP authentication
+				$mail->Username = 'rifatok123@gmail.com';                     //SMTP username
+				$mail->Password = 'xpbn gjvc kkve rvcq';                               //SMTP password
 				$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-				$mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+				$mail->Port = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 				$mail->setFrom('from@InvenSync.com', 'Verification');
 				$mail->addAddress($data['email'], $data['name']);     //Add a recipient
 				//Content
@@ -228,28 +242,29 @@ public function createAcc() {
 											</div>
 									</body>
 									</html>
-							";		
+							";
 				if ($mail->send()) {
-									$_SESSION['status'] = 'success';
-							} else {
-									Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
-							}
+					$_SESSION['status'] = 'success';
+				} else {
+					Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
+				}
 
-					} catch (Exception $e) {
-							Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
-					}
-			} else {
-					Flasher::setFlash('Gagal', 'Registrasi akun gagal.', 'Tutup', 'danger');
+			} catch (Exception $e) {
+				Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
 			}
+		} else {
+			Flasher::setFlash('Gagal', 'Registrasi akun gagal.', 'Tutup', 'danger');
+		}
 
-			header('Location: ' . BASEURL . '/user/index');
-			exit;
+		header('Location: ' . BASEURL . '/user/index');
+		exit;
 	}
 
-	public function verify($code = null) {
+	public function verify($code = null)
+	{
 		if (!$code) {
 			Flasher::setFlash('Gagal', 'Token tidak valid.', 'Tutup', 'danger');
-			header('Location: ' . BASEURL . '/fesbuk'); 
+			header('Location: ' . BASEURL . '/fesbuk');
 			exit;
 		}
 
@@ -271,77 +286,86 @@ public function createAcc() {
 
 
 
-  public function createToko() {
-	
+	public function createToko()
+	{
 
-	$data = [
-		'namatoko' => $_POST['namatoko'] ?? '',
-		'tipetoko' => $_POST['tipetoko'] ?? '',
-		'lokasi' => $_POST['lokasi'] ?? '',
-		'telepontoko' => $_POST['telepontoko'] ?? '',
-		'emailtoko' => $_POST['emailtoko'] ?? '',
-		'yearfounded' => $_POST['yearfounded'] ?? '',
-		'namatokoError' => '',
-		'tipetokoError' => '',
-		'lokasiError' => '',
-		'telepontokoError' => '',
-		'emailtokoError' => '',
-		'yearfoundedError' => '',
-		'totalnotifications' => $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'],
-		'notifications' => $this->model('Item_model')->getTotalStockItem(),
-		'judul' => 'Profile Toko'
-	];
-	$cekemail=$this->model('User_model')->cekEmailToko($data['emailtoko']);
-	$ceknomortelepon=$this->model('User_model')->cekNomorTeleponToko($data['telepontoko']);
 
-	// Validate data
-	if (empty($data['namatoko'])) $data['namatokoError'] = 'Nama tidak boleh kosong.';
-	if (empty($data['tipetoko'])) $data['tipetokoError'] = 'Tipe toko tidak boleh kosong.';
-	if (empty($data['lokasi'])) $data['lokasiError'] = 'Alamat tidak boleh kosong.';
-	if (empty($data['telepontoko'])) {
-		$data['telepontokoError'] = 'Nomor Telepon tidak boleh kosong.';
-	} elseif ($ceknomortelepon > 0) {
-		$data['telepontokoError'] = 'Nomor Telepon sudah terdaftar.';
+		$data = [
+			'namatoko' => $_POST['namatoko'] ?? '',
+			'tipetoko' => $_POST['tipetoko'] ?? '',
+			'lokasi' => $_POST['lokasi'] ?? '',
+			'telepontoko' => $_POST['telepontoko'] ?? '',
+			'emailtoko' => $_POST['emailtoko'] ?? '',
+			'yearfounded' => $_POST['yearfounded'] ?? '',
+			'namatokoError' => '',
+			'tipetokoError' => '',
+			'lokasiError' => '',
+			'telepontokoError' => '',
+			'emailtokoError' => '',
+			'yearfoundedError' => '',
+			'totalnotifications' => $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'],
+			'notifications' => $this->model('Item_model')->getTotalStockItem(),
+			'judul' => 'Profile Toko'
+		];
+		$cekemail = $this->model('User_model')->cekEmailToko($data['emailtoko']);
+		$ceknomortelepon = $this->model('User_model')->cekNomorTeleponToko($data['telepontoko']);
+
+		// Validate data
+		if (empty($data['namatoko']))
+			$data['namatokoError'] = 'Nama tidak boleh kosong.';
+		if (empty($data['tipetoko']))
+			$data['tipetokoError'] = 'Tipe toko tidak boleh kosong.';
+		if (empty($data['lokasi']))
+			$data['lokasiError'] = 'Alamat tidak boleh kosong.';
+		if (empty($data['telepontoko'])) {
+			$data['telepontokoError'] = 'Nomor Telepon tidak boleh kosong.';
+		} elseif ($ceknomortelepon > 0) {
+			$data['telepontokoError'] = 'Nomor Telepon sudah terdaftar.';
+		}
+		if (empty($data['yearfounded']))
+			$data['yearfoundedError'] = 'Tahun didirikan tidak boleh kosong.';
+		if (empty($data['emailtoko'])) {
+			$data['emailtokoError'] = 'emailtoko tidak boleh kosong.';
+		} elseif (!filter_var($data['emailtoko'], FILTER_VALIDATE_EMAIL)) {
+			$data['emailtokoError'] = 'Format email toko tidak valid.';
+		} elseif ($cekemail > 0) {
+			$data['emailtokoError'] = 'Email sudah terdaftar.';
+		}
+
+		// Return errors if any
+		if (
+			!empty($data['namatokoError']) || !empty($data['tipetokoError']) || !empty($data['lokasiError']) ||
+			!empty($data['telepontokoError']) || !empty($data['emailtokoError']) || !empty($data['yearfoundedError'])
+		) {
+			$this->view('templates/s-header', $data);
+			$this->view('user/toko', $data);
+			return;
+		}
+
+
+		// Insert data
+		if ($this->model('User_model')->daftarToko($_POST) > 0) {
+			// Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
+			$this->model('User_model')->activateStoreID();
+			$this->model('User_model')->setOwnerStoreID();
+			header('Location: ' . BASEURL . '/dashboard');
+			$_SESSION['status'] = 'success';
+			exit;
+		} else {
+			// Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
+			// header('Location: ' . BASEURL . '/dashboard/toko');
+			echo 'Gagal memasukkan data';
+			exit;
+		}
 	}
-	if (empty($data['yearfounded'])) $data['yearfoundedError'] = 'Tahun didirikan tidak boleh kosong.';
-	if (empty($data['emailtoko'])) {
-		$data['emailtokoError'] = 'emailtoko tidak boleh kosong.';
-	} elseif (!filter_var($data['emailtoko'], FILTER_VALIDATE_EMAIL)) {
-		$data['emailtokoError'] = 'Format email toko tidak valid.';
-	} elseif ($cekemail > 0) {
-		$data['emailtokoError'] = 'Email sudah terdaftar.';
-	}
-
-	// Return errors if any
-	if (!empty($data['namatokoError']) || !empty($data['tipetokoError']) || !empty($data['lokasiError']) || 
-		!empty($data['telepontokoError']) || !empty($data['emailtokoError']) || !empty($data['yearfoundedError'])) {
-		$this->view('templates/s-header', $data);
-		$this->view('user/toko', $data);
-		return;
-	}
-
-
-	// Insert data
-	  if ($this->model('User_model')->daftarToko($_POST) > 0) {
-		  // Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
-		  $this->model('User_model')->activateStoreID();
-		  $this->model('User_model')->setOwnerStoreID();
-		  header('Location: ' . BASEURL . '/dashboard');
-		  $_SESSION['status']='success';
-		  exit;
-	  } else {
-		  // Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
-		  // header('Location: ' . BASEURL . '/dashboard/toko');
-		  echo 'Gagal memasukkan data';
-		  exit;
-	  }
-  }
 
 
 
-  public function loginAcc() {
+	public function loginAcc()
+	{
 
-		function sanitizeInputLogin($input) {
+		function sanitizeInputLogin($input)
+		{
 			return strtolower(trim($input));
 		}
 
@@ -410,13 +434,15 @@ public function createAcc() {
 		}
 	}
 
-	public function getToko() {
+	public function getToko()
+	{
 		echo json_encode(
 			$this->model('User_model')->getEditToko($_SESSION['user_id'])
 		);
 	}
 
-	public function updateToko() {
+	public function updateToko()
+	{
 		$data = [
 			'namatoko' => $_POST['namatoko'] ?? '',
 			'tipetoko' => $_POST['tipetoko'] ?? '',
@@ -434,13 +460,18 @@ public function createAcc() {
 		];
 		$cekemail = $this->model('User_model')->cekEmailToko($data['emailtoko']);
 		$ceknomortelepon = $this->model('User_model')->cekNomorTeleponToko($data['telepontoko']);
-	
+
 		// Validate data
-		if (empty($data['namatoko'])) $data['namatokoError'] = 'Nama tidak boleh kosong.';
-		if (empty($data['tipetoko'])) $data['tipetokoError'] = 'Tipe toko tidak boleh kosong.';
-		if (empty($data['lokasi'])) $data['lokasiError'] = 'Alamat tidak boleh kosong.';
-		if (empty($data['telepontoko'])) $data['telepontokoError'] = 'Nomor Telepon tidak boleh kosong.';
-		if (empty($data['yearfounded'])) $data['yearfoundedError'] = 'Tahun didirikan tidak boleh kosong.';
+		if (empty($data['namatoko']))
+			$data['namatokoError'] = 'Nama tidak boleh kosong.';
+		if (empty($data['tipetoko']))
+			$data['tipetokoError'] = 'Tipe toko tidak boleh kosong.';
+		if (empty($data['lokasi']))
+			$data['lokasiError'] = 'Alamat tidak boleh kosong.';
+		if (empty($data['telepontoko']))
+			$data['telepontokoError'] = 'Nomor Telepon tidak boleh kosong.';
+		if (empty($data['yearfounded']))
+			$data['yearfoundedError'] = 'Tahun didirikan tidak boleh kosong.';
 		if (empty($data['emailtoko'])) {
 			$data['emailtokoError'] = 'emailtoko tidak boleh kosong.';
 		} elseif (!filter_var($data['emailtoko'], FILTER_VALIDATE_EMAIL)) {
@@ -454,10 +485,12 @@ public function createAcc() {
 			$data['telepontokoError'] = 'Nomor Telepon sudah terdaftar.';
 		}
 
-	
+
 		// Return errors if any
-		if (!empty($data['namatokoError']) || !empty($data['tipetokoError']) || !empty($data['lokasiError']) || 
-			!empty($data['telepontokoError']) || !empty($data['emailtokoError']) || !empty($data['yearfoundedError'])) {
+		if (
+			!empty($data['namatokoError']) || !empty($data['tipetokoError']) || !empty($data['lokasiError']) ||
+			!empty($data['telepontokoError']) || !empty($data['emailtokoError']) || !empty($data['yearfoundedError'])
+		) {
 			$this->view('templates/s-header', $data);
 			$this->view('user/tokoinfo', $data);
 			echo "<script>
@@ -466,7 +499,7 @@ public function createAcc() {
 						</script>";
 			return;
 		}
-	
+
 		// Insert data
 		if ($this->model('User_model')->editToko($_POST) > 0) {
 			// Flasher::setFlash('Data toko', 'berhasil', 'dibuat', 'success');
@@ -480,7 +513,8 @@ public function createAcc() {
 		}
 	}
 
-	public function deleteToko() {
+	public function deleteToko()
+	{
 		$data = [
 			'id' => $_POST['id'] ?? '',
 			'store_id' => $_POST['storeID'] ?? '',
@@ -490,23 +524,23 @@ public function createAcc() {
 		];
 		$mail = new PHPMailer(true);
 
-		$this->model('User_model')->setDeleteToken($data['deleteVerificationCode'],$data['store_id']);
+		$this->model('User_model')->setDeleteToken($data['deleteVerificationCode'], $data['store_id']);
 
 		try {
 			//Server settings
 			$mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
 			$mail->isSMTP();                                            //Send using SMTP
-			$mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-			$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-			$mail->Username   = 'rifatok123@gmail.com';                     //SMTP username
-			$mail->Password   = 'xpbn gjvc kkve rvcq';                               //SMTP password
+			$mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
+			$mail->SMTPAuth = true;                                   //Enable SMTP authentication
+			$mail->Username = 'rifatok123@gmail.com';                     //SMTP username
+			$mail->Password = 'xpbn gjvc kkve rvcq';                               //SMTP password
 			$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-			$mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-		
+			$mail->Port = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
 			//Recipients
 			$mail->setFrom('from@InvenSync.com', 'Verification');
 			$mail->addAddress($data['email'], $data['name']);     //Add a recipient
-		
+
 			//Content
 			$mail->isHTML(true);                                  //Set email format to HTML
 			$mail->Subject = 'Verifikasi Penghapusan Akun dan Toko';
@@ -596,23 +630,24 @@ public function createAcc() {
 										</div>
 								</body>
 								</html>
-            ";		
+            ";
 			if ($mail->send()) {
-                $_SESSION['status'] = 'deleteRequest';
+				$_SESSION['status'] = 'deleteRequest';
 				header('Location: ' . BASEURL . '/home');
-            } else {
-                Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
-            }
-        } catch (Exception $e) {
-            Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
-        }
+			} else {
+				Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
+			}
+		} catch (Exception $e) {
+			Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
+		}
 
 	}
 
-	public function deletewholeaccount($code = null) {
+	public function deletewholeaccount($code = null)
+	{
 		if (!$code) {
 			Flasher::setFlash('Gagal', 'Token tidak valid.', 'Tutup', 'danger');
-			header('Location: ' . BASEURL . '/fesbuk'); 
+			header('Location: ' . BASEURL . '/fesbuk');
 			exit;
 		}
 		$store = $this->model('User_model')->getStoreByToken($code);
@@ -638,147 +673,165 @@ public function createAcc() {
 		exit;
 	}
 
-	public function cancelDeletion($token=null) {
+	public function cancelDeletion($token = null)
+	{
 		$this->model('User_model')->cancelDeletion($_SESSION['store_id']);
-		$data['status']='cancelled';
+		$data['status'] = 'cancelled';
 
 		header('Location: ' . BASEURL . '/dashboard');
 		exit;
 	}
 
-	public function forgotPassword(){
+	public function forgotPassword()
+	{
+		$data = [
+			'emailError' => '',
+		];
 		$this->view('templates/i-header');
-		$this->view('user/forgotPassword');
+		$this->view('user/forgotPassword', $data);
 		$this->view('templates/footer');
 	}
 
-	public function sendResetPasswordRequest(){
+	public function sendResetPasswordRequest()
+	{
 		$mail = new PHPMailer(true);
+		function sanitizeInputSignIn($input)
+		{
+			return strtolower(trim($input));
+		}
 		$data = [
-			'email' => $_POST['email'],
+			'email' => sanitizeInputSignIn($_POST['email']) ?? '',
 			'code' => bin2hex(random_bytes(16)),
 		];
-		$user = $this->model('User_model')->setCodeToAccountWithEmail($data['code'],$data['email'],);
-		try {
-			//Server settings
-			$mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
-			$mail->isSMTP();                                            //Send using SMTP
-			$mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-			$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-			$mail->Username   = 'rifatok123@gmail.com';                     //SMTP username
-			$mail->Password   = 'xpbn gjvc kkve rvcq';                               //SMTP password
-			$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-			$mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-		
-			//Recipients
-			$mail->setFrom('from@InvenSync.com', 'Verification');
-			$mail->addAddress($data['email'], $data['name']);     //Add a recipient
-		
-			//Content
-			$mail->isHTML(true);                                  //Set email format to HTML
-			$mail->Subject = 'Verifikasi Penghapusan Akun dan Toko';
-			$mail->Body = "
-					<!DOCTYPE html>
-					<html lang='en'>
-					<head>
-						<meta charset='UTF-8'>
-						<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-						<style>
-							body {
-								font-family: Arial, sans-serif;
-								line-height: 1.6;
-								background-color: #f9f9f9;
-								color: #333;
-								margin: 0;
-								padding: 0;
-							}
-							.container {
-								max-width: 600px;
-								margin: 20px auto;
-								background: #ffffff;
-								border-radius: 8px;
-								box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-								overflow: hidden;
-							}
-							.header {
-								background-color: #3498db;
-								color: #ffffff;
-								padding: 20px;
-								text-align: center;
-							}
-							.content {
-								padding: 20px;
-							}
-							.content h1 {
-								font-size: 24px;
-								margin: 0 0 10px;
-							}
-							.content p {
-								font-size: 16px;
-								margin: 10px 0;
-							}
-							.btn {
-								display: inline-block;
-								background-color: #3498db;
-								color: #ffffff;
-								text-decoration: none;
-								padding: 10px 20px;
-								border-radius: 5px;
-								font-size: 16px;
-								margin: 10px 0;
-							}
-							.btn:hover {
-								background-color: #2980b9;
-							}
-							.footer {
-								text-align: center;
-								padding: 10px;
-								background-color: #f1f1f1;
-								font-size: 14px;
-								color: #666;
-							}
-							.footer a {
-								color: #3498db;
-								text-decoration: none;
-							}
-						</style>
-					</head>
-					<body>
-						<div class='container'>
-							<div class='header'>
-								<h2>Reset Password Request</h2>
-							</div>
-							<div class='content'>
-								<h1>Hello,</h1>
-								<p>We received a request to reset your password. If you made this request, click the button below to reset your password:</p>
-								<a href='" . BASEURL . "/user/resetpassword/{$data['code']}' class='btn'>Reset Your Password</a>
-								<p>If you did not request a password reset, you can ignore this email. Your account will remain secure.</p>
-								<p>If the button above does not work, copy and paste the following link into your browser:</p>
-								<p><a href='" . BASEURL . "/user/resetpassword/{$data['code']}'>" . BASEURL . "/user/resetpassword/{$data['code']}</a></p>
-							</div>
-							<div class='footer'>
-								<p>If you have any questions, contact us at <a href='mailto:support@invencsync.com'>support@invencsync.com</a></p>
-								<p>&copy; " . date('Y') . " InvenSync. All rights reserved.</p>
-							</div>
-						</div>
-					</body>
-					</html>
-            ";		
-			if ($mail->send()) {
-                $_SESSION['status'] = 'resetRequest';
-				header('Location: ' . BASEURL . '/home');
-            } else {
-                Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
-            }
-        } catch (Exception $e) {
-            Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
-        }
+		if (isset($_POST['email']) && $_POST['email'] != '') {
+			$user = $this->model('User_model')->setCodeToAccountWithEmail($data['code'], $data['email'], );
+			try {
+				//Server settings
+				$mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
+				$mail->isSMTP();                                            //Send using SMTP
+				$mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
+				$mail->SMTPAuth = true;                                   //Enable SMTP authentication
+				$mail->Username = 'rifatok123@gmail.com';                     //SMTP username
+				$mail->Password = 'xpbn gjvc kkve rvcq';                               //SMTP password
+				$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+				$mail->Port = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+				//Recipients
+				$mail->setFrom('from@InvenSync.com', 'Verification');
+				$mail->addAddress($data['email'], $data['name']);     //Add a recipient
+
+				//Content
+				$mail->isHTML(true);                                  //Set email format to HTML
+				$mail->Subject = 'Permintaan Rest Password';
+				$mail->Body = "
+								<!DOCTYPE html>
+								<html lang='id'>
+								<head>
+									<meta charset='UTF-8'>
+									<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+									<style>
+										body {
+											font-family: Arial, sans-serif;
+											line-height: 1.6;
+											background-color: #f9f9f9;
+											color: #333;
+											margin: 0;
+											padding: 0;
+										}
+										.container {
+											max-width: 600px;
+											margin: 20px auto;
+											background: #ffffff;
+											border-radius: 8px;
+											box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+											overflow: hidden;
+										}
+										.header {
+											background-color: #3498db;
+											color: #ffffff;
+											padding: 20px;
+											text-align: center;
+										}
+										.content {
+											padding: 20px;
+										}
+										.content h1 {
+											font-size: 24px;
+											margin: 0 0 10px;
+										}
+										.content p {
+											font-size: 16px;
+											margin: 10px 0;
+										}
+										.btn {
+											display: inline-block;
+											background-color: #3498db;
+											color: #ffffff;
+											text-decoration: none;
+											padding: 10px 20px;
+											border-radius: 5px;
+											font-size: 16px;
+											margin: 10px 0;
+										}
+										.btn:hover {
+											background-color: #2980b9;
+										}
+										.footer {
+											text-align: center;
+											padding: 10px;
+											background-color: #f1f1f1;
+											font-size: 14px;
+											color: #666;
+										}
+										.footer a {
+											color: #3498db;
+											text-decoration: none;
+										}
+									</style>
+								</head>
+								<body>
+									<div class='container'>
+										<div class='header'>
+											<h2>Permintaan Reset Password</h2>
+										</div>
+										<div class='content'>
+											<h1>Halo,</h1>
+											<p>Kami menerima permintaan untuk mereset password Anda. Jika Anda yang membuat permintaan ini, klik tombol di bawah untuk mereset password Anda:</p>
+											<a href='" . BASEURL . "/user/resetpassword/{$data['code']}' class='btn'>Reset Password Anda</a>
+											<p>Jika Anda tidak meminta reset password, Anda dapat mengabaikan email ini. Akun Anda akan tetap aman.</p>
+											<p>Jika tombol di atas tidak berfungsi, salin dan tempelkan tautan berikut ke browser Anda:</p>
+											<p><a href='" . BASEURL . "/user/resetpassword/{$data['code']}'>" . BASEURL . "/user/resetpassword/{$data['code']}</a></p>
+										</div>
+										<div class='footer'>
+											<p>Jika Anda memiliki pertanyaan, hubungi kami di <a href='mailto:support@invencsync.com'>support@invencsync.com</a></p>
+											<p>&copy; " . date('Y') . " InvenSync. Semua hak dilindungi.</p>
+										</div>
+									</div>
+								</body>
+								</html>
+
+            ";
+				if ($mail->send()) {
+					$_SESSION['status'] = 'resetRequest';
+					header('Location: ' . BASEURL . '/user/login');
+				} else {
+					Flasher::setFlash('Gagal', 'Gagal mengirim email verifikasi.', 'Tutup', 'danger');
+				}
+			} catch (Exception $e) {
+				Flasher::setFlash('Gagal', 'Kesalahan server: ' . $mail->ErrorInfo, 'Tutup', 'danger');
+			}
+		} else {
+			$data['emailError'] = 'Email tidak boleh kosong.';
+			$this->view('templates/i-header', $data);
+			$this->view('user/forgotPassword', $data);
+		}
 	}
 
-	public function resetpassword($code = null) {
+	public function resetpassword($code = null)
+	{
 		if (!$code) {
 			Flasher::setFlash('Gagal', 'Token tidak valid.', 'Tutup', 'danger');
-			header('Location: ' . BASEURL . '/fesbuk'); 
+			header('Location: ' . BASEURL . '/fesbuk');
 			exit;
 		}
 
@@ -790,7 +843,8 @@ public function createAcc() {
 		exit;
 	}
 
-	public function updatepassword(){
+	public function updatepassword()
+	{
 		$data = [
 			'code' => $_POST['code'],
 			'new_password' => $_POST['new_password'],
@@ -801,21 +855,21 @@ public function createAcc() {
 		header('Location: ' . BASEURL . '/user/login');
 	}
 
-	public function gantiPassword(){
+	public function gantiPassword()
+	{
 		$data = [
 			'user_id' => $_SESSION['user_id'],
-			'password' => $_POST['password'],
-			'new_password' => $_POST['new_password'],
+			'password' => $_POST['passwordLama'],
+			'new_password' => $_POST['passwordBaru'],
 		];
-		if ($this->model('User_model')->cekPassword($data['password'])==null) {
-			$_SESSION['status'] = 'gagalReset';
+		if ($this->model('User_model')->cekPassword($data['password']) == null) {
 			header('Location: ' . BASEURL . '/dashboard/toko');
+			$_SESSION['status'] = 'gagalReset';
 		} else {
 			$this->model('User_model')->changePassword($data['new_password']);
-			$_SESSION['status'] = 'resetSuccess';
 			header('Location: ' . BASEURL . '/dashboard/toko');
+			$_SESSION['status'] = 'resetSuccess';
 		}
-		$this->model('User_model')->updatePassword($data['new_password'], $data['user_id'], $data['password']);
 	}
 }
 

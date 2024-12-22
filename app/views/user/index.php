@@ -4,7 +4,7 @@
     <!-- Register Panel -->
     <div class="flex items-center justify-center">
       <div class="m-0 bg-[#FFD369] w-2/5 h-full rounded-lg text-center p-6 flex flex-col items-center justify-center">
-        <img src="<?= BASEURL; ?>/img/invensync-logo.png" width="250px" height="250px" class="rounded-circle mb-4" alt="ripat">
+        <img src="<?= BASEURL; ?>/img/invensync-black.png" width="250px" height="250px" class="rounded-circle mb-4" alt="ripat">
         <p class="text-xl md:text-2xl font-bold text-black mb-4">Sudah Punya Akun? Login Sekarang Juga!</p>
         <a href="<?= BASEURL; ?>/user/login" class="text-xl font-bold text-black py-2 px-4 border-2 border-black rounded-lg hover:bg-black hover:text-white transition duration-100">
           Loginkan!

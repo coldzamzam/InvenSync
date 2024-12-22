@@ -25,7 +25,7 @@
 
         <!-- Right Content Section (Smaller Box) -->
         <div class="relative text-center p-6 bg-opacity-60 bg-gray-800 rounded-lg shadow-lg w-1/3 max-w-xs">
-            <img src="<?= BASEURL; ?>/img/invensync-logo.png" alt="InvenSync Logo" class="w-full h-auto mx-auto">
+            <img src="<?= BASEURL; ?>/img/invensync-logo1.png" alt="InvenSync Logo" class="w-full h-auto mx-auto">
         </div>
     </div>
 </main>

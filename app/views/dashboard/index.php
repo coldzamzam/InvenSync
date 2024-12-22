@@ -202,6 +202,18 @@ if (isset($_SESSION['status'])):
                 text: 'Selamat Datang kembali di Invensync!',
                 icon: 'success'
             });    
-        } 
+        } else if (status === 'gagalReset') {
+            Swal.fire({
+                title: 'Error',
+                text: 'Password Salah!',
+                icon: 'error',
+            });
+        } else if (status === 'resetSuccess') {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Password Telah Diubah!',
+                icon: 'success'
+            });
+        }
     </script>
 <?php endif; ?>
