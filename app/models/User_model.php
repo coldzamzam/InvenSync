@@ -346,7 +346,7 @@ public function searchEmployee($search) {
 }
 
 public function getUserStore(){
-  $this->db->query('SELECT * FROM i_users WHERE is_deleted = 0 and store_id = :store_id and owner_id = :owner_id');
+  $this->db->query('SELECT * FROM i_users WHERE is_deleted = 0 and store_id = :store_id and owner_id = :owner_id ORDER BY NAME ASC');
   $this->db->bind('store_id', $_SESSION['store_id']);
   $this->db->bind('owner_id', $_SESSION['user_id']);
   $this->db->execute();
@@ -357,12 +357,15 @@ public function getUserStore(){
 public function getPaginatedUsers($start, $limit)
 {
     $this->db->query('
-        SELECT * FROM (
-            SELECT a.*, ROWNUM rnum
-            FROM i_users a
-            WHERE is_deleted = 0 and store_id = :store_id and owner_id = :owner_id
-        ) WHERE rnum > :startIndex AND rnum <= :endIndex
-    ');
+                      SELECT * FROM (
+                          SELECT a.*, ROWNUM rnum
+                          FROM i_users a
+                          WHERE a.is_deleted = 0
+                          AND a.store_id = :store_id
+                          AND a.owner_id = :owner_id
+                          ORDER BY a.IS_EMAIL_VERIFIED DESC, a.NAME ASC
+                      )
+                      WHERE rnum > :startIndex AND rnum <= :endIndex');
     $this->db->bind('startIndex', $start, PDO::PARAM_INT);
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->bind('owner_id', $_SESSION['user_id']);

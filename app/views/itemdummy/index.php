@@ -92,15 +92,21 @@
             <?php if ($data['currentPage'] > 1): ?>
                 <li>
                     <a href="<?= BASEURL; ?>/item/index/<?= $data['currentPage'] - 1; ?>" 
-                       class="px-3 py-1 border rounded hover:bg-gray-200">Sebelumnya</a>
+                      class="px-3 py-1 border rounded hover:bg-gray-200">Sebelumnya</a>
                 </li>
             <?php endif; ?>
 
             <!-- Page Number Links -->
-            <?php for ($i = 1; $i <= $data['totalPages']; $i++): ?>
+            <?php
+            // Define the range of pages to display
+            $start = max(1, $data['currentPage'] - 2);
+            $end = min($data['totalPages'], $data['currentPage'] + 2);
+            
+            // Show pages
+            for ($i = $start; $i <= $end; $i++): ?>
                 <li>
                     <a href="<?= BASEURL; ?>/item/index/<?= $i; ?>" 
-                       class="px-3 py-1 border 
+                      class="px-3 py-1 border 
                               <?= $data['currentPage'] == $i ? 'bg-[#FFD369] text-black' : 'bg-white text-black' ?> 
                               hover:bg-gray-200 transition duration-100">
                         <?= $i; ?>
@@ -112,12 +118,13 @@
             <?php if ($data['currentPage'] < $data['totalPages']): ?>
                 <li>
                     <a href="<?= BASEURL; ?>/item/index/<?= $data['currentPage'] + 1; ?>" 
-                       class="px-3 py-1 border rounded hover:bg-gray-200">Selanjutnya</a>
+                      class="px-3 py-1 border rounded hover:bg-gray-200">Selanjutnya</a>
                 </li>
             <?php endif; ?>
         </ul>
     </div>
 <?php endif; ?>
+
 
 
 

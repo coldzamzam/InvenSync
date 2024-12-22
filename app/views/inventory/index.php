@@ -56,38 +56,36 @@
       </div>
 
       <div>
-        <div class="relative inline-block text-left">
-          
-        </div>
-  
         <button id="openModalButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">+ Tambah Stok</button>
       </div>
     </div>
 
     <div class="flex gap-4 mb-4">
 
-    <div class="bg-white min-h-[600px] shadow-md border border-zinc-100 w-3/12 px-6 py-4 rounded-lg">
+    <div class="bg-white min-h-[600px] w-1/3 shadow-md border border-zinc-100 px-6 py-4 rounded-lg">
       <p class="text-lg font-bold pb-2">Total Stok</p>
       <div class="bg-white rounded shadow">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="bg-gray-200 text-gray-600">
-              <th class="py-3 px-4 border text-center">Nama Barang</th>
-              <th class="py-3 px-4 border text-center">Total Kuantitas</th>
-            </tr>
-          </thead>
-          <!-- <?= $data['warnaQty'] == 'tersedia' ? '' : ($data['warnaQty'] == 'hampirHabis' ? 'bg-yellow-100' : 'bg-red-100'); ?> -->
-          <tbody>
-            <?php foreach($data['totalQty'] as $total): ?>
-              <tr class="group relative hover:bg-gray-100">
-                <td class="py-3 px-4 border"><?= $total['ITEM_NAME']; ?></td>
-                <td class="py-3 px-4 border text-center"><?= ($total['STOCK_AVAILABLE']); ?></td>
+        <div class="overflow-y-auto max-h-96">
+          <table class="min-w-full table-auto">
+            <thead>
+              <tr class="bg-gray-200 text-gray-600">
+                <th class="py-3 px-4 border text-center">Nama Barang</th>
+                <th class="py-3 px-4 border text-center">Total Kuantitas</th>
               </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <?php foreach($data['totalQty'] as $total): ?>
+                <tr class="group relative hover:bg-gray-100">
+                  <td class="py-3 px-4 border"><?= $total['ITEM_NAME']; ?></td>
+                  <td class="py-3 px-4 border text-center"><?= ($total['STOCK_AVAILABLE']); ?></td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+
 
     <div class="bg-white shadow-md px-6 py-4 border border-zinc-100 rounded-lg w-9/12">
       <p class="text-lg font-bold pb-2">Inventaris</p>
@@ -121,7 +119,6 @@
                   <div class="<?= $item['STATUS'] == 'Pending' ? '' : 'hidden'; ?>">
                     <form id="inventoryStatusForm" action="<?= BASEURL; ?>/Inventory/updateStatus" method="post">
                       <input type="hidden" name="inventory_id" value="<?= $item['INVENTORY_ID']; ?>">
-                      <input type="hidden" name="item_name" value="<?= $_SESSION['store_id']; ?>">
                     </form>
                     <button id="statusButton" onclick="confirmStatus()" class="bg-yellow-100 hover:bg-yellow-200 text-black py-1 px-4 rounded">
                       <?= $item['STATUS']; ?>
