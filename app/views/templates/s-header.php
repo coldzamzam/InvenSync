@@ -156,8 +156,6 @@
     }
   </style>
 </head>
-<div id="overlay" class="font-poppins fixed inset-0 bg-black bg-opacity-50 z-10 hidden transition-all duration-300">
-</div>
 <aside id="sidebar"
   class="font-poppins fixed top-0 left-0 z-10 bg-[#393E46] text-white w-24 hover:w-64 min-h-screen overflow-hidden transition-all duration-300">
   <div class="p-4">

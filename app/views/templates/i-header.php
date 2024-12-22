@@ -16,4 +16,4 @@
     <a href="<?= BASEURL; ?>" class="text-center container-fluid text-white font-black text-3xl w-full">InvenSync</a>
 </nav>
 </head>
-<body style="background-image: url(<?= BASEURL; ?>/img/bghome-new.png); background-size: cover; background-repeat: no-repeat; background-attachment: fixed">
+<body class="font-poppins" style="background-image: url(<?= BASEURL; ?>/img/bghome-new.png); background-size: cover; background-repeat: no-repeat; background-attachment: fixed">
