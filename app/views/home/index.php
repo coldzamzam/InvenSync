@@ -17,7 +17,7 @@
                 <a href="<?= BASEURL; ?>/user/login" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
                     Get Started
                 </a>
-                <a href="#" class="bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                <a href="<?= BASEURL; ?>/home/learnmore" class="bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg shadow">
                     Learn More
                 </a>
             </div>
