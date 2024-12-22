@@ -1,8 +1,8 @@
-<div class="mt-[100px] mx-auto bg-white shadow-lg rounded-lg overflow-hidden max-w-2xl" style="margin-top: 200px;">
+<div class="relative min-h-screen flex items-center justify-center bg-cover bg-center">
   <!-- Wrapper for sliding panels -->
-  <div id="auth-panels" class="flex w-[200%] h-full transition-transform transform duration-500 ease-in-out">
+  <div id="auth-panels" class="w-full max-w-2xl bg-white shadow-lg rounded-lg overflow-hidden flex mt-[90px]">
     <!-- Register Panel -->
-    <div class="w-1/2 flex items-center justify-center">
+    <div class="flex items-center justify-center">
       <div class="m-0 bg-[#FFD369] w-2/5 h-full rounded-lg text-center p-6 flex flex-col items-center justify-center">
         <img src="<?= BASEURL; ?>/img/invensync-logo.png" width="250px" height="250px" class="rounded-circle mb-4" alt="ripat">
         <p class="text-xl md:text-2xl font-bold text-black mb-4">Sudah Punya Akun? Login Sekarang Juga!</p>

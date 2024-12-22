@@ -99,12 +99,6 @@ public function removeVerificationToken($user_id) {
     return $this->db->single();
   }
 
-  public function cekPassword($password) {
-    $this->db->query('SELECT * FROM i_users WHERE password = :password and is_deleted = 0');
-    $this->db->bind('password', hash('sha256', $password));
-    return $this->db->single();        
-  }
-
   public function cekNomorTelepon($nomor_telepon) {
     $this->db->query('SELECT * FROM i_users WHERE phone_number = :nomor_telepon and is_deleted = 0');
     $this->db->bind('nomor_telepon', $nomor_telepon);
@@ -533,6 +527,21 @@ public function removeDeleteToken($code){
   public function removeCode($code){
     $this->db->query("UPDATE i_users SET code = null WHERE code = :code and is_deleted = 0");
     $this->db->bind('code', $code);
+    $this->db->execute();
+  }
+
+  public function cekPassword($password) {
+    $this->db->query('SELECT * FROM i_users WHERE password = :password and is_deleted = 0 and user_id = :user_id');
+    $this->db->bind('password', hash('sha256', $password));
+    $this->db->bind('user_id', $_SESSION['user_id']);
+
+    return $this->db->single();
+  }
+
+  public function changePassword($password) {
+    $this->db->query('UPDATE i_users SET password = :password WHERE user_id = :user_id and is_deleted = 0');
+    $this->db->bind('password', hash('sha256', $password));
+    $this->db->bind('user_id', $_SESSION['user_id']);
     $this->db->execute();
   }
 }

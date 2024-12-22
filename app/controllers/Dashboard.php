@@ -7,7 +7,7 @@ Class Dashboard extends Controller{
       header('Location: ' . BASEURL . '/user/login');
     }
     if($this->model('User_model')->checkDeleted($_SESSION['user_id']) > 0) {
-      if($_SESSION['user_role'] == 'Pemilik') {
+      if($_SESSION['user_role'] == 'Owner') {
           $_SESSION['status'] = 'ownerDeleted';
       } else {
           $_SESSION['status'] = 'employeeDeleted';

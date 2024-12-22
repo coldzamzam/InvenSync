@@ -15,7 +15,7 @@
         <h4 class="text-xl pb-2 font-semibold"><?= $data['today']['DATE']; ?></h4>
       </div>
       <div class="flex justify-between gap-2">
-        <div class="bg-[#2B87FF] border border-zinc-100 rounded-lg p-6 w-1/3">
+        <div class="border border-zinc-100 rounded-lg p-6 w-1/3<?php if ($data['revenue']['PROFIT'] < 0) { echo ' bg-red-500'; } else { echo ' bg-[#2B87FF]'; };?>">
           <div class="text-white">
             <p>Total Profit</p>
             <h2 class="text-2xl font-semibold"><b>Rp<?= number_format($data['revenue']['PROFIT'], 2, ',', '.'); ?></b>

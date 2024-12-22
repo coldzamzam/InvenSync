@@ -17,8 +17,6 @@ class User extends Controller {
 		$data['emailError'] = '';
 		$data['passwordError'] = '';
 		$data['confirmPasswordError'] = '';
-		$data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
-        $data['notifications'] = $this->model('Item_model')->getTotalStockItem();
 		// if ( $this->model('User_model')->checkRowAcc() > 0 ) {
 		//   header('Location: ' . BASEURL . '/user/login');
 		// } else {
@@ -61,7 +59,7 @@ class User extends Controller {
   }
 	
 	
-  public function createAcc() {
+public function createAcc() {
 		
 		function sanitizeInputSignIn($input) {
 			return strtolower(trim($input));
@@ -115,11 +113,6 @@ class User extends Controller {
 				!preg_match("#[a-z]+#", $data['password'])) {
 			$data['passwordError'] = 'Password harus terdiri dari minimal 8 karakter, 1 angka, 1 huruf besar, dan 1 huruf kecil.';
 		}
-		// elseif ($cekpassword > 0) {
-		// 	$data['passwordError'] = 'Password sudah terdaftar.';
-		// }
-		
-		// Validasi konfirmasi password
 		$data['confirmPassword'] = $_POST['confirmPassword'] ?? '';
 		if (empty($data['confirmPassword'])) {
 			$data['confirmPasswordError'] = 'Konfirmasi password tidak boleh kosong.';
@@ -148,19 +141,8 @@ class User extends Controller {
 				$mail->Password   = 'xpbn gjvc kkve rvcq';                               //SMTP password
 				$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
 				$mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-			
-				//Recipients
 				$mail->setFrom('from@InvenSync.com', 'Verification');
 				$mail->addAddress($data['email'], $data['name']);     //Add a recipient
-				// $mail->addAddress('ellen@example.com');               //Name is optional
-				// $mail->addReplyTo('info@example.com', 'Information');
-				// $mail->addCC('cc@example.com');
-				// $mail->addBCC('bcc@example.com');
-			
-				// //Attachments
-				// $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-				// $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-			
 				//Content
 				$mail->isHTML(true);                                  //Set email format to HTML
 				$mail->Subject = 'Verifikasi Pendaftaran Akun InvenSync';
@@ -262,17 +244,6 @@ class User extends Controller {
 
 			header('Location: ' . BASEURL . '/user/index');
 			exit;
-	// } else {
-	// 	Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
-	// 	header('Location: ' . BASEURL . '/user');
-	// 	exit;
-	// }
-
-		// } else {
-		// 	Flasher::setFlash('Data toko', 'gagal', 'dibuat', 'danger');
-		// 	header('Location: ' . BASEURL . '/user');
-		// 	exit;
-		// }
 	}
 
 	public function verify($code = null) {
@@ -828,6 +799,23 @@ class User extends Controller {
 		$this->model('User_model')->removeCode($data['code']);
 		$_SESSION['status'] = 'resetSuccess';
 		header('Location: ' . BASEURL . '/user/login');
+	}
+
+	public function gantiPassword(){
+		$data = [
+			'user_id' => $_SESSION['user_id'],
+			'password' => $_POST['password'],
+			'new_password' => $_POST['new_password'],
+		];
+		if ($this->model('User_model')->cekPassword($data['password'])==null) {
+			$_SESSION['status'] = 'gagalReset';
+			header('Location: ' . BASEURL . '/dashboard/toko');
+		} else {
+			$this->model('User_model')->changePassword($data['new_password']);
+			$_SESSION['status'] = 'resetSuccess';
+			header('Location: ' . BASEURL . '/dashboard/toko');
+		}
+		$this->model('User_model')->updatePassword($data['new_password'], $data['user_id'], $data['password']);
 	}
 }
 

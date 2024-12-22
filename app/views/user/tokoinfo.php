@@ -8,18 +8,6 @@
             padding: 0;
         }
 
-        main {
-            margin-left: 24px;
-            margin-top: 20px;
-            padding: 16px;
-        }
-
-        .container {
-            display: flex;
-            gap: 16px;
-            align-items: stretch; /* Pastikan card memiliki tinggi yang sama */
-        }
-
         .card {
             background: linear-gradient(135deg, #041A3D, #222831,#393E46); /* Gradient dari warna palet */
             color: #ffffff;
@@ -57,20 +45,13 @@
     margin-bottom: 10px;
     color: #ffffff;
 }
-        .card-1 {
-            flex: 1; /* Card Informasi Akun memiliki lebar 1/3 */
-        }
-
-        .card-2 {
-            flex: 2; /* Card Informasi Toko memiliki lebar 2/3 */
-        }
     </style>
 </head>
 <body>
-    <main>
-        <div class="container">
+    <div>
+        <div class="flex gap-4 mb-4">
             <!-- Informasi Akun -->
-            <div class="card card-1">
+            <div class="card w-1/3">
                 <h1>Informasi Akun</h1>
                 <div>
                     <label>UID</label>
@@ -99,7 +80,7 @@
             </div>
 
             <!-- Informasi Toko -->
-            <div class="card card-2">
+            <div class="card w-2/3">
                 <h1>Informasi Toko</h1>
                 <div>
                     <label>Nama Toko</label>
@@ -126,10 +107,10 @@
                     <p><?= $data['yearfounded'] ?></p>
                 </div>
                 <div style="text-align: right; margin-top: 20px;">
-                    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto"id="openModalButton">Edit Informasi</button>
-                    <button
+                <button class="btn <?php if($_SESSION['user_role'] != 'Owner') echo 'hidden'; ?>" id="openModalButton">Edit Informasi</button>
+                <button
 							type='button'
-							class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200'
+							class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200 <?php if($_SESSION['user_role'] != 'Owner') echo 'hidden'; ?>'
 							onclick='confirmDelete()'
 						>
 							Hapus Toko
@@ -137,7 +118,41 @@
                 </div>
             </div>
         </div>
-    </main>
+        <button id="openModalPasswordButton" class="gap-3 bg-gradient-to-br from-[#041A3D] via-[#222831] to-[#393E46] w-1/3 text-white rounded-lg shadow-lg p-5 flex hover:bg-gradient-to-br hover:from-[#222831] hover:via-[#393E46] hover:to-[#041A3D] cursor-pointer transition-all duration-300 ease-in-out">
+            <i class="fas fa-key"></i>
+            <h1>Ubah Password</h1>
+        </button>
+    </div>
+
+    <div id="gantiPasswordModal" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
+        <div class="flex justify-center items-center">
+            <div class="bg-white shadow-md rounded-lg p-6 w-96">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold mb-4">Ubah Password</h2>
+                    <button id="closeModalPasswordButton" class="text-gray-500 hover:text-gray-700">
+                        <span class="text-2xl">&times;</span>
+                    </button>
+                </div>
+                <form action="<?= BASEURL; ?>/User/gantiPassword" method="post">
+                    <div class="mb-4">
+                        <label for="passwordLama" class="block text-sm font-medium text-gray-700">Password Lama</label>
+                        <input type="password" id="passwordLama" name="passwordLama" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="passwordBaru" class="block text-sm font-medium text-gray-700">Password Baru</label>
+                        <input type="password" id="passwordBaru" name="passwordBaru" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="konfirmasiPasswordBaru" class="block text-sm font-medium text-gray-700">Konfirmasi Password Baru</label>
+                        <input type="password" id="konfirmasiPasswordBaru" name="konfirmasiPasswordBaru" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 			<div id="formModal" class="hidden bg-white shadow-md p-6 border border-zinc-100 rounded-lg w-full">
 					<div class="flex justify-between items-center mb-4">
@@ -225,14 +240,12 @@
 </main>
 
 	<script>
-    // Mendapatkan elemen modal dan tombol
     const modal = document.getElementById('formModal');
     const toko = document.getElementById('infoToko');
     const openModalButton = document.getElementById('openModalButton');
     const closeModalButton = document.getElementById('closeModalButton');
     const submitButton = document.getElementById('submitButton');
     
-    // Fungsi untuk membuka modal
     openModalButton.addEventListener('click', () => {
     modal.classList.remove('hidden');
     toko.classList.add('hidden');
@@ -240,27 +253,12 @@
     document.getElementById('itemId').value = '';
     submitButton.textContent = 'Tambah Barang';
     });
-    // Fungsi untuk menutup modal
     closeModalButton.addEventListener('click', () => {
     modal.classList.add('hidden');
     toko.classList.remove('hidden');
     });
-    // Menutup modal jika pengguna mengklik di luar modal
-    // window.addEventListener('click', (event) => {
-    //   if (event.target === modal) {
-    //     modal.classList.add('hidden');
-    //   }
-    // });
-
 		$(function() {
-
 			$('.btnEditToko').on('click', function() {
-
-				// $('#judulModal').html('Update Data Mahasiswa');
-				// $('.modal-footer button[type=submit]').html('Update Data');
-
-				// $('.modal-body form').attr('action', 'http://localhost/phpmvc/public/mahasiswa/edit');
-
 				const id = $(this).data('toko');
 				
 				$.ajax({
@@ -314,6 +312,97 @@
 			}
 		});
 	}
+    function openModalPassword() {
+    const modalPassword = document.getElementById('gantiPasswordModal');
+    modalPassword.classList.remove('hidden');
+    modalPassword.classList.add('flex');
+}
+
+// Fungsi untuk menutup modal
+function closeModalPassword() {
+    const modalPassword = document.getElementById('gantiPasswordModal');
+    modalPassword.classList.remove('flex');
+    modalPassword.classList.add('hidden');
+}
+
+// Event listener untuk membuka modal
+const openModalPasswordButton = document.getElementById('openModalPasswordButton');
+openModalPasswordButton.addEventListener('click', openModalPassword);
+
+// Event listener untuk menutup modal ketika tombol close di klik
+const closeModalPasswordButton = document.getElementById('closeModalPasswordButton');
+closeModalPasswordButton.addEventListener('click', closeModalPassword);
+
+// Menutup modal jika klik di luar modal
+window.addEventListener('click', function(event) {
+    const modalPassword = document.getElementById('gantiPasswordModal');
+    if (event.target === modalPassword) {
+        closeModalPassword();
+    }
+});
+document.querySelector('form[action="<?= BASEURL; ?>/User/gantiPassword"]').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const oldPassword = document.getElementById('passwordLama').value;
+    const newPassword = document.getElementById('passwordBaru').value;
+    const confirmPassword = document.getElementById('konfirmasiPasswordBaru').value;
+
+    if (newPassword !== confirmPassword) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Password baru dan konfirmasi password tidak cocok!',
+        });
+        return;
+    } else if (newPassword === oldPassword) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Password baru tidak boleh sama dengan password lama!',
+        });
+        return;
+    } else if (newPassword.length < 8) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Password baru minimal 8 karakter!',
+        });
+        return;
+    } else if (oldPassword === '' || newPassword === '' || confirmPassword === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Semua field harus diisi!',
+        });
+        return;
+    } else {
+        this.submit();
+    }
+});
+
+<?php
+if (isset($_SESSION['status'])):
+    $status = $_SESSION['status']; // Get status from session
+    unset($_SESSION['status']); // Remove status from session after using it
+?>
+    <script>
+        let status = '<?= $status ?>';
+        if (status === 'success') {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Password Telah Diubah!',
+                icon: 'success'
+            }); 
+        } else if (status === 'gagalReset') {
+            Swal.fire({
+                title: 'Error',
+                text: 'Password Salah!',
+                icon: 'error'
+                footer: '<a href="<?= BASEURL; ?>/user/forgotPassword">Lupa Kata Sandi? Tekan Sini!</a>'
+            });
+        }
+    </script>
+<?php endif; ?>
 </script>
 </body>
 </html>
