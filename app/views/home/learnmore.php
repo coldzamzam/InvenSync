@@ -1,14 +1,55 @@
-<body class="bg-gray-800 min-h-screen p-8 flex items-center justify-center">
-    <div class="max-w-7xl w-full">
-        <!-- Header -->
-        <header class="text-center text-white text-3xl font-bold mb-8">
-            InvenSync
-        </header>
-        
-        <!-- Grid Container -->
-        <div class="grid md:grid-cols-2 gap-8">
-            <!-- Left Card -->
-            <div class="bg-white rounded-lg p-8 shadow-lg">
+<main class="flex-1 ml-24 mt-20 p-8">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8fafd;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #9AA6B2, #BCCCDC, #D9EAFD, #BCCCDC, #9AA6B2);
+            color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .card label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .card p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <body>
+        <div>
+            <div class="flex gap-4 mb-4">
+                <!-- Informasi -->
+                <div class="card w-1/3">
                 <h2 class="text-xl font-bold mb-4">InvenSync adalah</h2>
                 <p class="text-gray-700 mb-6 text-justify">
                     Aplikasi berbasis web yakni sistem inventaris yang dapat digunakan untuk mengelola stok barang masuk maupun keluar. Disini Anda dapat menggunakan berbagai fitur-fitur yang sudah disediakan untuk mengatur toko Anda!
@@ -20,8 +61,8 @@
                 </p>
             </div>
 
-            <!-- Right Card -->
-            <div class="bg-white rounded-lg p-8 shadow-lg">
+                <!-- Informasi Toko -->
+                <div class="card w-2/3">
                 <h2 class="text-xl font-bold mb-4">Fitur-Fitur yang Tersedia</h2>
                 <ul class="space-y-6">
                     <li>
