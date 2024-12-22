@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,15 +15,19 @@
   <!-- <script src="https://cdn.tailwindcss.com"></script> -->
   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
   <style>
-    #sidebar {
-      height: 100vh;
-      /* Pastikan sidebar memiliki tinggi layar penuh */
-      overflow-y: auto;
-      /* Aktifkan scroll vertikal */
-      width: 6rem;
-      /* Default width */
-      position: fixed;
-    }
+#sidebar {
+  height: 100vh;
+  width: 6rem; /* Sidebar dalam keadaan normal (kecil) */
+  position: fixed;
+  transition: width 0.3s ease; /* Menambahkan transisi untuk perubahan lebar */
+  overflow-y: auto;
+  background-color: #393E46;
+}
+
+#sidebar.wide {
+  width: 16rem; /* Sidebar melebar ketika mendapatkan class "wide" */
+}
+
 
     #sidebar:hover {
       width: 16rem;
@@ -34,7 +37,7 @@
     .sidebar-text {
       max-width: 0;
       opacity: 0;
-      transition: max-width 0.3s ease, opacity 0.3s ease;
+      transition: max-width 0.3s ease, opacity 0.3s;
     }
 
     #sidebar:hover .sidebar-text {
@@ -158,12 +161,14 @@
 </head>
 <div id="overlay" class="font-poppins fixed inset-0 bg-black bg-opacity-50 z-10 hidden transition-all duration-300">
 </div>
-<aside id="sidebar"
-  class="font-poppins fixed top-0 left-0 z-10 bg-[#393E46] text-white w-24 hover:w-64 min-h-screen overflow-hidden transition-all duration-300">
+<aside id="sidebar" class="font-poppins fixed top-0 left-0 z-10 bg-[#393E46] text-white w-24 hover:w-64 min-h-screen overflow-hidden transition-all duration-300">
   <div class="p-4">
+  <button id="menuButton" class="text-xl text-white mb-4">
+      <i class="fa-solid fa-bars"></i> <!-- Ikon Bars -->
+    </button>
     <h1
       class="ml-2 pb-4 font-black text-xl text-center sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">
-      InvenSync</h1>
+      InvenSync</i></h1> 
     <h1
       class="
     <?php
@@ -386,5 +391,11 @@
           });
         });
       });
+      document.getElementById('menuButton').addEventListener('click', function () {
+  const sidebar = document.getElementById('sidebar');
+  // Toggle class 'wide' untuk melebar/memperkecil sidebar
+  sidebar.classList.toggle('wide');
+});
+
     </script>
   <?php endif; ?>

@@ -1,15 +1,43 @@
+<?php
+// Letakkan kode paginasi ini di controller atau sebelum render view
+$limit = 4; // Limit per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+// Get total receipts
+$totalReceipts = count($data['receiptDetails']);
+
+// Paginate the data
+$paginatedReceipts = array_slice($data['receiptDetails'], $offset, $limit);
+
+// Pass paginated data to the view
+$data['paginatedReceipts'] = $paginatedReceipts;
+$data['totalPages'] = ceil($totalReceipts / $limit);
+$data['currentPage'] = $page;
+?>
+
 <div class="flex-1 ml-24 mt-20 p-8">
     <!-- Input Quick Search -->
     <input type="text" id="quickSearchInput" placeholder="Cari"
         class="border rounded-lg px-4 py-2 shadow-md focus:outline-none focus:ring focus:border-blue-400">
     <br><br>
 
-    <?php if (!empty($data['receiptDetails'])): ?>
-        <?php foreach ($data['receiptDetails'] as $receipt_id => $receipt): ?>
+    <?php if (!empty($data['paginatedReceipts'])): ?>
+        <!-- Paginasi dipindah ke atas -->
+        <div class="flex justify-center mb-6 space-x-2">
+            <?php for ($i = 1; $i <= $data['totalPages']; $i++): ?>
+                <a href="/invensync/public/transaction?page=<?= $i; ?>" 
+                class="px-4 py-2 <?= $i === $data['currentPage'] ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'; ?> hover:bg-blue-400 hover:text-white">
+                    <?= $i; ?>
+                </a>
+            <?php endfor; ?>
+        </div>
+
+        <?php foreach ($data['paginatedReceipts'] as $receipt_id => $receipt): ?>
             <div data-receipt-id="<?= $receipt_id; ?>" 
                 data-date="<?= $receipt['date_added']; ?>" 
                 onclick="toggleTable('table-<?= $receipt_id; ?>')"
-                class="receipt-container cursor-pointer bg-white shadow-lg rounded-lg p-6 mb-4 transition transform hover:scale-105">
+                class="receipt-container cursor-pointer bg-white shadow-lg p-6 mb-4 transition transform hover:scale-105">
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 text-lg font-semibold">
                         Transaksi ID: <span class="text-blue-600 font-bold"><?= $receipt_id; ?></span> - 
@@ -21,7 +49,7 @@
                     <div class="flex space-x-2">
                         <!-- Cetak Invoice Button -->
                         <button onclick="event.stopPropagation(); printInvoice(this)"
-                            class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition no-print">
+                            class="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600 transition no-print rounded-md">
                             <i class="fa fa-print mr-2"></i>Cetak Invoice
                         </button>
                     </div>
@@ -56,7 +84,7 @@
                     </tbody>
                 </table>
             </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
     <?php else: ?>
         <p class="text-center text-gray-600 mt-6">Tidak ada transaksi.</p>
     <?php endif; ?>
@@ -207,4 +235,22 @@ document.getElementById('quickSearchInput').addEventListener('input', function (
         }
     });
 });
+
+<?php
+// Constants
+$limit = 4; // Limit per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
+$offset = ($page - 1) * $limit; // Offset for the query
+
+// Get total receipts
+$totalReceipts = count($data['receiptDetails']); // Assuming receiptDetails is the full dataset
+
+// Paginate the data
+$paginatedReceipts = array_slice($data['receiptDetails'], $offset, $limit);
+
+// Pass paginated data to the view
+$data['paginatedReceipts'] = $paginatedReceipts;
+$data['totalPages'] = ceil($totalReceipts / $limit);
+$data['currentPage'] = $page;
+?>
 </script>

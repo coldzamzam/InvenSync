@@ -82,9 +82,18 @@
             </tr>
           <?php endforeach; ?>
         </tbody>
-      </table>
+          </table>
     </div>
   </main>
+
+  <div class="flex justify-center mb-6 space-x-2">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="/invensync/public/item?page=<?= $i; ?>" 
+                class="px-4 py-2 <?= $i === $data['currentPage'] ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'; ?> hover:bg-blue-400 hover:text-white">
+                    <?= $i; ?>
+                </a>
+            <?php endfor; ?>
+        </div>
 
 <!-- Modal for Adding or Editing Stock -->
 <div id="formModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
@@ -458,51 +467,6 @@ function editModalOpen(itemId) {
   document.getElementById('formModal').classList.remove('hidden');
 }
 
-<?php
-$limit = 10; // Jumlah data per halaman
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$offset = ($page - 1) * $limit;
-
-// Hitung total data
-$totalData = count($data['item']);
-$totalPages = ceil($totalData / $limit);
-
-// Query untuk ambil data sesuai halaman
-$data['item'] = array_slice($data['item'], $offset, $limit);
-?>
-<?php
-if (isset($_SESSION['status'])):
-    $status = $_SESSION['status']; // Get status from session
-    unset($_SESSION['status']); // Remove status from session after using it
-?>
-        let status = '<?= $status ?>';
-        if (status === 'berhasilDiupdate') {
-            Swal.fire({
-                title: 'Berhasil',
-                text: 'Data barang berhasil diupdate!',
-                icon: 'success'
-            });
-        } else if (status === 'berhasilDihapus') {
-            Swal.fire({
-                title: 'Berhasil!',
-                text: 'Item berhasil dihapus!',
-                icon: 'success'
-            });
-        } else if (status === 'berhasilDitambahkan') {
-            Swal.fire({
-                title: 'Berhasil!',
-                text: 'Item berhasil ditambahkan!',
-                icon: 'success'
-            });
-        } else {
-            Swal.fire({
-                title: 'Error',
-                text: 'Terjadi kesalahan!',
-                icon: 'error'
-            });
-        }
-<?php endif; ?>
-
 // Validasi Form Tambah/Edit Barang
 document.getElementById('inventoryForm').addEventListener('submit', function (event) {
   const itemName = document.getElementById('item_name').value.trim();
@@ -580,6 +544,108 @@ document.getElementById('inventoryForm').addEventListener('submit', function (ev
     showConfirmButton: false
   });
 });
+
+//paginasi wak//
+
+<?php
+// Tambahkan ini di bagian atas file atau di controller
+$limit = 10; // Jumlah item per halaman
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+// Hitung total halaman
+$totalItems = count($data['item']);
+$totalPages = ceil($totalItems / $limit);
+
+// Validasi nomor halaman
+if ($page < 1) $page = 1;
+if ($page > $totalPages) $page = $totalPages;
+
+// Slice array untuk mendapatkan data sesuai halaman
+$data['item'] = array_slice($data['item'], $offset, $limit);
+
+// Tambahkan informasi paginasi ke data
+$data['pagination'] = [
+    'currentPage' => $page,
+    'totalPages' => $totalPages,
+    'limit' => $limit
+];
+?>
+
+// Tambahkan script ini di bagian JavaScript yang sudah ada
+document.addEventListener("DOMContentLoaded", () => {
+  const quickSearchInput = document.getElementById("quickSearchInput");
+  const tableRows = document.querySelectorAll("tbody tr");
+  const paginationLinks = document.querySelectorAll(".pagination a");
+
+  // Fungsi untuk pencarian
+  quickSearchInput.addEventListener("input", () => {
+    const query = quickSearchInput.value.toLowerCase();
+    let visibleCount = 0;
+
+    tableRows.forEach(row => {
+      const columns = row.querySelectorAll("td");
+      const isMatch = Array.from(columns).some(column =>
+        column.innerText.toLowerCase().includes(query)
+      );
+      
+      row.style.display = isMatch ? "" : "none";
+      if (isMatch) visibleCount++;
+    });
+
+    // Sembunyikan paginasi saat pencarian aktif
+    const paginationContainer = document.querySelector(".pagination");
+    if (paginationContainer) {
+      paginationContainer.style.display = query ? "none" : "flex";
+    }
+  });
+
+  // Highlight halaman aktif
+  paginationLinks?.forEach(link => {
+    if (link.href === window.location.href) {
+      link.classList.add("bg-blue-500", "text-white");
+      link.classList.remove("bg-gray-200", "text-gray-800");
+    }
+  });
+});
+
+// Tambahkan script ini di bagian JavaScript yang sudah ada
+document.addEventListener("DOMContentLoaded", () => {
+  const quickSearchInput = document.getElementById("quickSearchInput");
+  const tableRows = document.querySelectorAll("tbody tr");
+  const paginationLinks = document.querySelectorAll(".pagination a");
+
+  // Fungsi untuk pencarian
+  quickSearchInput.addEventListener("input", () => {
+    const query = quickSearchInput.value.toLowerCase();
+    let visibleCount = 0;
+
+    tableRows.forEach(row => {
+      const columns = row.querySelectorAll("td");
+      const isMatch = Array.from(columns).some(column =>
+        column.innerText.toLowerCase().includes(query)
+      );
+      
+      row.style.display = isMatch ? "" : "none";
+      if (isMatch) visibleCount++;
+    });
+
+    // Sembunyikan paginasi saat pencarian aktif
+    const paginationContainer = document.querySelector(".pagination");
+    if (paginationContainer) {
+      paginationContainer.style.display = query ? "none" : "flex";
+    }
+  });
+
+  // Highlight halaman aktif
+  paginationLinks?.forEach(link => {
+    if (link.href === window.location.href) {
+      link.classList.add("bg-blue-500", "text-white");
+      link.classList.remove("bg-gray-200", "text-gray-800");
+    }
+  });
+});
+
 </script>
 </body>
 </html>
