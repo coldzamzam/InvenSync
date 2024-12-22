@@ -18,9 +18,9 @@
 <main class="flex-1 ml-24 mt-20 p-8">
   <!-- Tab Navigasi -->
   <div class="flex justify-center mb-8 space-x-4">
-    <a href="<?= BASEURL; ?>/monthlyreport" id="dailyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Harian</a>
-    <a href="<?= BASEURL; ?>/monthlyreport/bulan" id="monthlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Bulanan</a>
-    <a href="<?= BASEURL; ?>/monthlyreport/tahun" id="yearlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Tahunan</a>
+    <a href="<?= BASEURL; ?>/report" id="dailyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Harian</a>
+    <a href="<?= BASEURL; ?>/report/bulan" id="monthlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Bulanan</a>
+    <a href="<?= BASEURL; ?>/report/tahun" id="yearlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Tahunan</a>
   </div>
 
 
@@ -29,22 +29,32 @@
     <!-- Judul dan Pilihan Tahun dalam Satu Baris -->
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-semibold">Laporan Tahunan</h2>
-      <select id="yearPicker" class="border rounded px-4 py-2 focus:ring-2 focus:ring-blue-400">
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-      </select>
+      <form action="<?= BASEURL; ?>/report/getAnnualReport" method="post">
+        <select name="dateTahun" id="yearPicker" class="border rounded px-4 py-2 focus:ring-2 focus:ring-blue-400">
+          <option value="" selected disabled>Pilih Tahun</option>
+          <?php foreach ($data['tahun'] as $tahun) : ?>
+            <option value="<?= $tahun['TAHUN'] ?>"><?= $tahun['TAHUN'] ?></option>
+          <?php endforeach; ?>
+        </select>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition">
+          CHECK
+        </button>
+      </form>
     </div>
 
     <!-- Kotak Total -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
       <div class="bg-blue-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Total Pemasukan Tahunan</h3>
-        <p class="text-xl font-bold text-blue-600">Rp. 360.000.000</p>
+        <p class="text-xl font-bold text-blue-600">
+          Rp<?= number_format($data['totalTahunan']['TOTAL_PENDAPATAN'], 2, ',', '.') ?>
+        </p>
       </div>
       <div class="bg-red-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Total Pengeluaran Tahunan</h3>
-        <p class="text-xl font-bold text-red-600">Rp. 180.000.000</p>
+        <p class="text-xl font-bold text-red-600">
+          Rp<?= number_format($data['totalTahunan']['TOTAL_PENGELUARAN'], 2, ',', '.') ?>
+        </p>
       </div>
       <div class="bg-green-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Pemasukan Barang Tahunan</h3>
@@ -73,7 +83,7 @@
   <div class="bg-white shadow-lg border border-zinc-200 w-full max-w-lg p-8 rounded-lg">
     <!-- Header -->
     <div class="mb-6 text-center">
-      <h1 id="modalTitle" class="text-3xl font-bold text-gray-800">TOTAL</h1>
+      <h1 id="modalTitle" class="text-3xl font-bold text-gray-800">Laporan Tahunan</h1>
     </div>
 
     <!-- Konten Data -->
@@ -116,16 +126,16 @@
   new Chart(ctxYearly, {
     type: 'bar',
     data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+      labels: <?= json_encode($data['chartData']['labels']); ?>,
       datasets: [
         {
           label: 'Pemasukan',
-          data: [30000000, 32000000, 35000000, 28000000, 30000000, 31000000, 29000000, 33000000, 34000000, 31000000, 32000000, 35000000],
+          data: <?= json_encode($data['chartData']['pemasukan']); ?>,
           backgroundColor: '#3b82f6'
         },
         {
           label: 'Pengeluaran',
-          data: [15000000, 16000000, 17000000, 14000000, 15000000, 16000000, 14500000, 16500000, 17000000, 15500000, 16000000, 17500000],
+          data: <?= json_encode($data['chartData']['pengeluaran']); ?>,
           backgroundColor: '#ef4444'
         }
       ]
@@ -146,81 +156,8 @@
   });
 
   // Fungsi untuk Menampilkan Modal Report
-  function viewFullReport(reportType) {
+  function viewFullReport() {
     const modal = document.getElementById('reportModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
-
-    // Menyesuaikan Judul Modal
-    switch (reportType) {
-      case 'harian':
-        modalTitle.textContent = 'Laporan Harian';
-        modalContent.innerHTML = `
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pemasukan:</span>
-            <span>Rp. 1.000.000</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pengeluaran:</span>
-            <span>Rp. 500.000</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pemasukan Barang:</span>
-            <span>40 Pack</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pengeluaran Barang:</span>
-            <span>25 Pack</span>
-          </div>
-        `;
-        break;
-      case 'bulanan':
-        modalTitle.textContent = 'Laporan Bulanan';
-        modalContent.innerHTML = `
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pemasukan:</span>
-            <span>Rp. 30.000.000</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pengeluaran:</span>
-            <span>Rp. 15.000.000</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pemasukan Barang:</span>
-            <span>120 Pack</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pengeluaran Barang:</span>
-            <span>80 Pack</span>
-          </div>
-        `;
-        break;
-      case 'tahunan':
-        modalTitle.textContent = 'Laporan Tahunan';
-        modalContent.innerHTML = `
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pemasukan Tahunan:</span>
-            <span>Rp. 360.000.000</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pengeluaran Tahunan:</span>
-            <span>Rp. 180.000.000</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pemasukan Barang Tahunan:</span>
-            <span>1.600 Pack</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Total Pengeluaran Barang Tahunan:</span>
-            <span>800 Pack</span>
-          </div>
-        `;
-        break;
-      default:
-        modalTitle.textContent = 'Report';
-        modalContent.innerHTML = '';
-    }
-
     // Menampilkan Modal
     modal.classList.remove('hidden');
   }

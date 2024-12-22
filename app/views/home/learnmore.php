@@ -1,4 +1,4 @@
-<main class="flex-1 ml-24 mt-20 p-8">
+<main class="flex-1 mx-24 mt-20 p-8">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {

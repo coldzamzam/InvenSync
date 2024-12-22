@@ -18,9 +18,9 @@
 <main class="flex-1 ml-24 mt-20 p-8">
   <!-- Tab Navigasi -->
   <div class="flex justify-center mb-8 space-x-4">
-  <a href="<?= BASEURL; ?>/monthlyreport" id="dailyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Harian</a>
-    <a href="<?= BASEURL; ?>/monthlyreport/bulan" id="monthlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Bulanan</a>
-    <a href="<?= BASEURL; ?>/monthlyreport/tahun" id="yearlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Tahunan</a>
+  <a href="<?= BASEURL; ?>/report" id="dailyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Harian</a>
+    <a href="<?= BASEURL; ?>/report/bulan" id="monthlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Bulanan</a>
+    <a href="<?= BASEURL; ?>/report/tahun" id="yearlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Tahunan</a>
   </div>
 
 
@@ -29,18 +29,29 @@
     <!-- Judul dan Pilihan Tanggal dalam Satu Baris -->
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-semibold">Laporan Harian</h2>
-      <input type="date" id="startDate" class="border rounded px-4 py-2 focus:ring-2 focus:ring-blue-400">
+      <div class="flex items-center space-x-4">
+        <form action="<?= BASEURL; ?>/report/getDailyReport" method="post">
+          <input type="date" name="dateHarian" id="dateHarian" class="border rounded px-4 py-2 focus:ring-2 focus:ring-blue-400">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition">
+            CHECK
+          </button>
+        </form>
+      </div>
     </div>
 
     <!-- Kotak Total -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
       <div class="bg-blue-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Total Pemasukan</h3>
-        <p class="text-xl font-bold text-blue-600">Rp. 1.000.000</p>
+        <p class="text-xl font-bold text-blue-600">
+          Rp<?= number_format($data['dailyReport']['TOTAL_PENDAPATAN'], 2, ',', '.') ?>
+        </p>
       </div>
       <div class="bg-red-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Total Pengeluaran</h3>
-        <p class="text-xl font-bold text-red-600">Rp. 500.000</p>
+        <p class="text-xl font-bold text-red-600">
+          Rp<?= number_format($data['dailyReport']['TOTAL_PENGELUARAN'], 2, ',', '.') ?>
+        </p>
       </div>
       <div class="bg-green-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Pemasukan Barang</h3>
@@ -78,11 +89,15 @@
     <div id="modalContent" class="space-y-4 text-gray-700 text-lg">
       <div class="flex justify-between items-center">
         <span class="font-semibold">Total Pemasukan:</span>
-        <span>Rp. 1.000.000</span>
+        <span>
+          Rp<?= $data['dailyReport']['TOTAL_PENDAPATAN'] ?>
+        </span>
       </div>
       <div class="flex justify-between items-center">
         <span class="font-semibold">Total Pengeluaran:</span>
-        <span>Rp. 500.000</span>
+        <span>
+          Rp<?= $data['dailyReport']['TOTAL_PENGELUARAN'] ?>
+        </span>
       </div>
       <div class="flex justify-between items-center">
         <span class="font-semibold">Total Pemasukan Barang:</span>
@@ -116,7 +131,7 @@
     data: {
       labels: ['Pemasukan Uang', 'Pengeluaran Uang', 'Pemasukan Barang', 'Pengeluaran Barang'],
       datasets: [{
-        data: [1000000, 500000, 40, 25],
+        data: [<?= $data['dailyReport']['TOTAL_PENDAPATAN'] ?>, <?= $data['dailyReport']['TOTAL_PENGELUARAN'] ?>, 40, 25],
         backgroundColor: ['#3b82f6', '#ef4444', '#22c55e', '#eab308'],
         borderColor: '#ffffff',
         borderWidth: 2

@@ -17,6 +17,7 @@ Class Item_model {
               join i_master_brand b on i.brand_id = b.brand_id
               WHERE i.is_deleted = 0 AND i.store_id=:store_id
           ) WHERE rnum > :startIndex AND rnum <= :endIndex
+           ORDER BY item_name ASC
       ');
       $this->db->bind('startIndex', $start, PDO::PARAM_INT);
       $this->db->bind('endIndex', $start + $limit, PDO::PARAM_INT);
@@ -214,7 +215,7 @@ Class Item_model {
               FROM i_inventory i 
               JOIN i_master_item mi ON i.item_id = mi.item_id
               AND i.store_id = :store_id AND i.is_deleted = 0
-              ORDER BY i.date_added DESC";
+              ORDER BY i.status DESC, i.date_added DESC";
 
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);

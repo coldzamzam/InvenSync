@@ -212,13 +212,13 @@
         <span
           class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Transaksi</span>
       </a>
-      <a href="<?= BASEURL; ?>/dailyreport"
+      <!-- <a href="<?= BASEURL; ?>/dailyreport"
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-calendar-day"></i>
         <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Laporan
           Harian</span>
-      </a>
-      <a href="<?= BASEURL; ?>/monthlyreport"
+      </a> -->
+      <a href="<?= BASEURL; ?>/report"
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-calendar-alt"></i>
         <span
