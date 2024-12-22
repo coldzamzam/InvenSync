@@ -441,6 +441,12 @@ class User extends Controller
 		);
 	}
 
+	public function getAkun(){
+		echo json_encode(
+			$this->model('User_model')->getEditAkun($_SESSION['user_id'])
+		);
+	}
+
 	public function updateToko()
 	{
 		$data = [

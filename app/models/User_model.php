@@ -94,20 +94,22 @@ public function removeVerificationToken($user_id) {
   }
 
   public function cekEmailToko($email) {
-    $this->db->query('SELECT * FROM i_store_info WHERE email = :email and is_deleted = 0');
+    $this->db->query('SELECT * FROM i_store_info WHERE email = :email and is_deleted = 0 and store_id != :store_id');
     $this->db->bind('email', $email);
+    $this->db->bind('store_id', $_SESSION['store_id']);
     return $this->db->single();
   }
 
   public function cekNomorTelepon($nomor_telepon) {
-    $this->db->query('SELECT * FROM i_users WHERE phone_number = :nomor_telepon and is_deleted = 0');
+    $this->db->query('SELECT * FROM i_users WHERE phone_number = :nomor_telepon and is_deleted = 0 ');
     $this->db->bind('nomor_telepon', $nomor_telepon);
     return $this->db->single();
   }
   
   public function cekNomorTeleponToko($nomor_telepon) {
-    $this->db->query('SELECT * FROM i_store_info WHERE phone_number = :nomor_telepon and is_deleted = 0');
+    $this->db->query('SELECT * FROM i_store_info WHERE phone_number = :nomor_telepon and is_deleted = 0 and store_id != :store_id');
     $this->db->bind('nomor_telepon', $nomor_telepon);
+    $this->db->bind('store_id', $_SESSION['store_id']);
     return $this->db->single();
   }
 
@@ -244,6 +246,14 @@ public function removeVerificationToken($user_id) {
     $this->db->bind('owner_id', $id);
     $this->db->execute();
 
+    return $this->db->single();
+  }
+
+  public function getEditAkun($id){
+    $query = "SELECT * FROM i_users WHERE user_id = :user_id and is_deleted = 0";
+    $this->db->query($query);
+    $this->db->bind('user_id', $id);
+    $this->db->execute();
     return $this->db->single();
   }
 

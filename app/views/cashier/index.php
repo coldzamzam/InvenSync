@@ -1,35 +1,6 @@
 <main class="flex-1 ml-24 p-8 mt-14">
   <header class="flex justify-between items-center mb-6 z-[1]">
-  <aside class="w-1/3 top-0 right-0 fixed min-h-screen bg-white p-5 shadow-lg rounded-lg">
-      <h1 class="text-2xl font-bold mb-3">Barang yang Dipilih</h1>
-      <div class="space-y-4">
-      <?php foreach($data['receiptItems'] as $item): ?>
-        <div class="flex items-center gap-4 p-4 shadow-sm bg-gray-100 rounded-lg group">
-          <img src="https://via.placeholder.com/50" alt="Gambar Tidak Tersedia" class="w-16 h-16 object-cover rounded">
-          <div class="flex-1">
-            <div class="flex justify-between items-center">
-              <h2 class="font-bold">Produk A</h2>
-              <span class="font-semibold text-gray-600">Jumlah: 2</span>
-            </div>
-            <p class="text-gray-500">Total Harga: Rp100.000</p>
-          </div>
-          <button class="hidden group-hover:block bg-red-500 text-white px-3 py-1 rounded-lg">
-            Hapus
-          </button>
-        </div>
-      </div>
-      <?php endforeach; ?>
-      <div class="mt-6 border-t pt-4">
-        <div class="flex justify-between font-semibold text-lg mb-4">
-          <span>Total:</span>
-          <span>Rp100.000</span>
-        </div>
-        <button class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600">
-          Konfirmasi Pembelian
-        </button>
-      </div>
-    </aside>
-    <!-- <div class="ml-4 w-1/3 top-0 right-0 fixed min-h-screen p-10 bg-white mt-16 shadow-lg">
+    <div class="ml-4 w-1/3 top-0 right-0 fixed min-h-screen p-10 bg-white mt-16 shadow-lg">
       <h1 class="text-2xl font-bold mb-4">Barang yang Dipilih</h1>
       <div class="flex flex-col bg-gray-100 p-4 mb-4">
         <?php foreach($data['receiptItems'] as $item): ?>
@@ -60,7 +31,7 @@
         <button id="konfirmasiBtn" class="bg-green-500 text-white w-full py-2 px-4 rounded hover:bg-green-600 bottom-0">Konfirmasi Pembelian</button>
       <?php endif;?>
       </div>
-    </div> -->
+    </div>
   </header>
   <h1 class="text-2xl font-bold mb-4">Barang Yang Tersedia</h1>
   <input type="text" id="quickSearchInput" placeholder="Cari" class="border rounded px-6 py-2">
@@ -84,6 +55,40 @@
 
     </div>
   </div>
+
+  <!-- <div class="bg-white rounded shadow">
+    <table id="barangTable" class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-gray-200 text-gray-600">
+          <th class="py-3 px-4 border">Kode Barang</th>
+          <th class="py-3 px-4 border">Merk Barang</th>
+          <th class="py-3 px-4 border">Kategori Barang</th>
+          <th class="py-3 px-4 border">Nama Barang</th>
+          <th class="py-3 px-4 border">Jumlah Barang</th>
+          <th class="py-3 px-4 border">Harga Barang</th>
+          <th class="py-3 px-4 border">Total Harga</th>
+          <th id="optionSect" class="py-3 px-4 border text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>Looping data item menggunakan PHP
+        <?php foreach($data['receiptItems'] as $item): ?>
+          <tr class="group hover:bg-gray-100 relative">
+            <td class="py-3 px-4 border"><?= $item['ITEM_ID']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['BRAND_NAME']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['CATEGORY_NAME']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['ITEM_NAME']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['QUANTITY']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['COST_PRICE']; ?></td>
+            <td class="py-3 px-4 border"><?= $item['QUANTITY']*$item['COST_PRICE']; ?></td>
+            <td id="optionSect" class="py-3 px-4 border text-center">
+              <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Hapus</button>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div> -->
+  <?php Flasher::flash(); ?>
 </main>
 
 <!-- Modal Input Quantity -->
@@ -108,6 +113,47 @@
     </form>
   </div>
 </div>
+
+<!-- <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">
+  <div class="bg-white w-full max-w-[600px] p-6 rounded-lg shadow-lg">
+    <div class="flex justify-between items-center">
+      <h3 class="text-2xl font-semibold w-full text-center">Tambah Barang</h3>
+      <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-3xl font-bold p-2">&times;</button>
+    </div>
+    <form id="createBarangForm" action="<?= BASEURL; ?>/cashier/addItem" method="post">
+      <div class="mt-6">
+        <div class="mb-4">
+          <label for="namabarang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
+          <select id="kodebarang"  name="kodebarang" onchange="fetchItemDetails()"
+                  class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="" disabled selected>-- Pilih Nama Barang --</option>
+            <?php foreach ($data['item'] as $item) : ?>
+              <option value="<?= $item['ITEM_ID']; ?>"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="merk" class="block text-sm font-medium text-gray-700">Merk</label>
+          <input type="text" id="merk" name="merk" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>
+        </div>
+        <div class="mb-4">
+          <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori Barang</label>
+          <input type="text" id="kategori" name="kategori" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>
+        </div>
+        <div class="mb-4">
+          <label for="harga" class="block text-sm font-medium text-gray-700">Harga Barang</label>
+          <input type="text" id="harga" name="harga" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="formatHarga(this)" readonly>
+        </div>
+        <div class="mb-4">
+          <label for="quantity" class="block text-sm font-medium text-gray-700">Jumlah Barang</label>
+          <input type="number" id="quantity" name="quantity" class="w-full bg-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div> -->
+
 
 <!-- Modal Konfirmasi Pembayaran -->
 <div id="konfirmasiPembayaranModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">

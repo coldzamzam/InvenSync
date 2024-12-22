@@ -21,7 +21,24 @@
             /* Agar konten di dalam card tersusun ke bawah */
         }
 
+        .card-2 {
+            background: linear-gradient(135deg, #041A3D, #222831, #393E46);
+            /* Gradient dari warna palet */
+            color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            /* Agar konten di dalam card tersusun ke bawah */
+        }
+
         .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+        .card-2:hover {
             transform: translateY(-10px);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
         }
@@ -32,6 +49,22 @@
             color: #ffffff;
             margin-bottom: 16px;
             border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .card h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+        }
+
+        .card-2 h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 16px;
             padding-bottom: 8px;
         }
 
@@ -47,6 +80,27 @@
             margin-bottom: 10px;
             color: #ffffff;
         }
+        .card-2 h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 16px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .card-2 label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .card-2 p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
     </style>
     </head>
 
@@ -54,8 +108,13 @@
         <div>
             <div class="flex gap-4 mb-4">
                 <!-- Informasi Akun -->
-                <div class="card w-1/3">
-                    <h1>Informasi Akun</h1>
+                <div id="infoAkun" class="card w-1/3">
+                    <div class="flex justify-between items-center mb-4" style="border-bottom: 2px solid rgba(255, 255, 255, 0.3);">
+                        <h2>Informasi Akun</h2>
+                        <button class="btnEditAkun" id="openModalAkunButton">
+                            <i class="fas fa-edit "></i>
+                        </button>
+                    </div>
                     <div>
                         <label>UID</label>
                         <p><?= $_SESSION['user_id'] ?></p>
@@ -83,8 +142,14 @@
                 </div>
 
                 <!-- Informasi Toko -->
-                <div class="card w-2/3">
-                    <h1>Informasi Toko</h1>
+                <div id="infoToko" class="card-2 w-2/3">
+                    <div class="flex justify-between items-center mb-4" style="border-bottom: 2px solid rgba(255, 255, 255, 0.3);">
+                        <h2>Informasi Toko</h2>
+                        <button class="btnEditToko bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200 <?php if ($_SESSION['user_role'] != 'Owner')
+                            echo 'hidden'; ?>" id="openModalButton">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                    </div>
                     <div>
                         <label>Nama Toko</label>
                         <p><?= $data['namatoko'] ?></p>
@@ -110,14 +175,144 @@
                         <p><?= $data['yearfounded'] ?></p>
                     </div>
                     <div style="text-align: right; margin-top: 20px;">
-                        <button class="btn <?php if ($_SESSION['user_role'] != 'Owner')
-                            echo 'hidden'; ?>" id="openModalButton">Edit Informasi</button>
                         <button type='button' class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200 <?php if ($_SESSION['user_role'] != 'Owner')
                             echo 'hidden'; ?>' onclick='confirmDelete()'>
                             Hapus Toko
                         </button>
                     </div>
                 </div>
+
+                <div id="formModal" class="hidden bg-white shadow-md p-6 border border-zinc-100 rounded-lg w-2/3">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">Edit Informasi Akun</h2>
+                        <button id="closeModalAkunButton" class="text-gray-500 hover:text-gray-700">
+                            <span class="text-2xl">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?= BASEURL; ?>/User/updateToko" method="post">
+                        <input type="text" name="storeid" hidden class="hidden">
+
+                        <!-- Nama Toko -->
+                        <div class="mb-2">
+                            <label for="namatoko" class="text-sm text-gray-700">Nama Toko</label>
+                            <input id="namatoko"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                type="text" name="namatoko" placeholder="Nama Toko">
+                            <span class="text-red-500 text-sm"><?= $data['namatokoError']; ?></span>
+                        </div>
+
+                        <!-- Tipe Toko -->
+                        <div class="mb-2">
+                            <label for="tipetoko" class="text-sm text-gray-700">Tipe Toko</label>
+                            <select id="tipetoko" name="tipetoko"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                                <option selected disabled>Pilih Jenis Toko</option>
+                                <option value="Toko Distro">Toko Distro</option>
+                                <option value="Toko Sepatu">Toko Sepatu</option>
+                                <option value="Toko Baju">Toko Baju</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                            <span class="text-red-500 text-sm"><?= $data['tipetokoError']; ?></span>
+                        </div>
+
+                        <!-- Lokasi -->
+                        <div class="mb-2">
+                            <label for="lokasi" class="text-sm text-gray-700">Lokasi</label>
+                            <input id="lokasi"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                type="text" name="lokasi" placeholder="Lokasi">
+                            <span class="text-red-500 text-sm"><?= $data['lokasiError']; ?></span>
+                        </div>
+
+                        <!-- Nomor Telepon Toko -->
+                        <div class="mb-2">
+                            <label for="telepontoko" class="text-sm text-gray-700">Nomor Telepon Toko</label>
+                            <input id="telepontoko"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                type="number" name="telepontoko" placeholder="Nomor Telepon Toko">
+                            <span class="text-red-500 text-sm"><?= $data['telepontokoError']; ?></span>
+                        </div>
+
+                        <!-- Email Toko -->
+                        <div class="mb-2">
+                            <label for="emailtoko" class="text-sm text-gray-700">Email Toko</label>
+                            <input id="emailtoko"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                type="email" name="emailtoko" placeholder="Email Toko">
+                            <span class="text-red-500 text-sm"><?= $data['emailtokoError']; ?></span>
+                        </div>
+
+                        <!-- Tahun Didirikan -->
+                        <div class="mb-2">
+                            <label for="yearfounded" class="text-sm text-gray-700">Tahun Didirikan</label>
+                            <input id="yearfounded"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                type="number" name="yearfounded" placeholder="Tahun Didirikan">
+                            <span class="text-red-500 text-sm"><?= $data['yearfoundedError']; ?></span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex justify-end mt-4">
+                            <button type="submit" name="simpan"
+                                class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">
+                                Edit Informasi</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div id="formModalAkun" class="hidden bg-white shadow-md p-6 border border-zinc-100 rounded-lg w-2/3">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">Edit Informasi Toko</h2>
+                        <button id="closeModalButton" class="text-gray-500 hover:text-gray-700">
+                            <span class="text-2xl">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?= BASEURL; ?>/User/updateAkun" method="post">
+                        <!-- Nama Toko -->
+                        <div class="mb-2">
+                            <label for="nama" class="text-sm text-gray-700">Nama Akun</label>
+                            <input id="nama"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                type="text" name="nama" placeholder="Nama Akun">
+                            <span class="text-red-500 text-sm"><?= $data['namaError']; ?></span>
+                        </div>
+
+                        <!-- Lokasi -->
+                        <div class="mb-2">
+                            <label for="email" class="text-sm text-gray-700">email</label>
+                            <input id="email"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                type="text" name="email" placeholder="email">
+                            <span class="text-red-500 text-sm"><?= $data['emailError']; ?></span>
+                        </div>
+
+                        <!-- Nomor Telepon Toko -->
+                        <div class="mb-2">
+                            <label for="nomortelepon" class="text-sm text-gray-700">Nomor Telepon Akun</label>
+                            <input id="nomortelepon"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                type="number" name="nomortelepon" placeholder="Nomor Telepon Akun">
+                            <span class="text-red-500 text-sm"><?= $data['teleponAkunError']; ?></span>
+                        </div>
+
+                        <!-- Tahun Didirikan -->
+                        <div class="mb-2">
+                            <label for="alamat" class="text-sm text-gray-700">Alamat</label>
+                            <input id="alamat"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                type="number" name="alamat" placeholder="Alamat">
+                            <span class="text-red-500 text-sm"><?= $data['alamatError']; ?></span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex justify-end mt-4">
+                            <button type="submit" name="simpan"
+                                class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">
+                                Edit Informasi</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
             <button id="openModalPasswordButton"
                 class="gap-3 bg-gradient-to-br from-[#041A3D] via-[#222831] to-[#393E46] w-1/3 text-white rounded-lg shadow-lg p-5 flex hover:bg-gradient-to-br hover:from-[#222831] hover:via-[#393E46] hover:to-[#041A3D] cursor-pointer transition-all duration-300 ease-in-out">
@@ -188,83 +383,6 @@
             </div>
         </div>
 
-        <div id="formModal" class="hidden bg-white shadow-md p-6 border border-zinc-100 rounded-lg w-full">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-gray-800">Edit Informasi Toko</h2>
-                <button id="closeModalButton" class="text-gray-500 hover:text-gray-700">
-                    <span class="text-2xl">&times;</span>
-                </button>
-            </div>
-            <form action="<?= BASEURL; ?>/User/updateToko" method="post">
-                <input type="text" name="storeid" hidden class="hidden">
-
-                <!-- Nama Toko -->
-                <div class="mb-2">
-                    <label for="namatoko" class="text-sm text-gray-700">Nama Toko</label>
-                    <input id="namatoko"
-                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                        type="text" name="namatoko" placeholder="Nama Toko">
-                    <span class="text-red-500 text-sm"><?= $data['namatokoError']; ?></span>
-                </div>
-
-                <!-- Tipe Toko -->
-                <div class="mb-2">
-                    <label for="tipetoko" class="text-sm text-gray-700">Tipe Toko</label>
-                    <select id="tipetoko" name="tipetoko"
-                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
-                        <option selected disabled>Pilih Jenis Toko</option>
-                        <option value="Toko Distro">Toko Distro</option>
-                        <option value="Toko Sepatu">Toko Sepatu</option>
-                        <option value="Toko Baju">Toko Baju</option>
-                        <option value="Lainnya">Lainnya</option>
-                    </select>
-                    <span class="text-red-500 text-sm"><?= $data['tipetokoError']; ?></span>
-                </div>
-
-                <!-- Lokasi -->
-                <div class="mb-2">
-                    <label for="lokasi" class="text-sm text-gray-700">Lokasi</label>
-                    <input id="lokasi"
-                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                        type="text" name="lokasi" placeholder="Lokasi">
-                    <span class="text-red-500 text-sm"><?= $data['lokasiError']; ?></span>
-                </div>
-
-                <!-- Nomor Telepon Toko -->
-                <div class="mb-2">
-                    <label for="telepontoko" class="text-sm text-gray-700">Nomor Telepon Toko</label>
-                    <input id="telepontoko"
-                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                        type="number" name="telepontoko" placeholder="Nomor Telepon Toko">
-                    <span class="text-red-500 text-sm"><?= $data['telepontokoError']; ?></span>
-                </div>
-
-                <!-- Email Toko -->
-                <div class="mb-2">
-                    <label for="emailtoko" class="text-sm text-gray-700">Email Toko</label>
-                    <input id="emailtoko"
-                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                        type="email" name="emailtoko" placeholder="Email Toko">
-                    <span class="text-red-500 text-sm"><?= $data['emailtokoError']; ?></span>
-                </div>
-
-                <!-- Tahun Didirikan -->
-                <div class="mb-2">
-                    <label for="yearfounded" class="text-sm text-gray-700">Tahun Didirikan</label>
-                    <input id="yearfounded"
-                        class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                        type="number" name="yearfounded" placeholder="Tahun Didirikan">
-                    <span class="text-red-500 text-sm"><?= $data['yearfoundedError']; ?></span>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="flex justify-end mt-4">
-                    <button type="submit" name="simpan"
-                        class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Edit
-                        Informasi</button>
-                </div>
-            </form>
-        </div>
 
         <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'Owner') {
             echo "
@@ -292,6 +410,12 @@
     const openModalButton = document.getElementById('openModalButton');
     const closeModalButton = document.getElementById('closeModalButton');
     const submitButton = document.getElementById('submitButton');
+
+    const akun = document.getElementById('infoAkun');
+    const openModalButtonAkun = document.getElementById('openModalAkunButton');
+    const closeModalButtonAkun = document.getElementById('closeModalAkunButton');
+    const modalAkun = document.getElementById('formModalAkun');
+    
     function togglePasswordVisibility(inputId, iconId) {
         var input = document.getElementById(inputId);
         var icon = document.getElementById(iconId);
@@ -307,9 +431,55 @@
         }
     }
 
+
+    openModalButtonAkun.addEventListener('click', () => {
+        modalAkun.classList.remove('hidden');
+        akun.classList.add('hidden');
+        akun.classList.remove('card-2');
+        submitButton.textContent = 'Tambah Barang';
+    });
+    closeModalButton.addEventListener('click', () => {
+        modalAkun.classList.add('hidden');
+        akun.classList.remove('hidden');
+        akun.classList.add('card-2');
+    });
+    $(function () {
+        $('.btnEditAkun').on('click', function () {
+            const id = $(this).data('akun');
+
+            $.ajax({
+                url: 'http://localhost/InvenSync/public/User/getAkun',
+                data: { id: id },
+                method: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    $('#nama').val(data.NAME);
+                    $('#email').val(data.EMAIL);
+                    $('#nomortelepon').val(data.PHONE_NUMBER);
+                    $('#alamat').val(data.ADDRESS);
+                    console.log(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Status: ' + status);
+                    console.log('Error: ' + error);
+                    console.log(xhr.responseText);
+                }
+            })
+
+        });
+
+    });
+
+
+
+
+
+
+
     openModalButton.addEventListener('click', () => {
         modal.classList.remove('hidden');
         toko.classList.add('hidden');
+        toko.classList.remove('card-2');
         document.getElementById('inventoryForm').reset();
         document.getElementById('itemId').value = '';
         submitButton.textContent = 'Tambah Barang';
@@ -317,6 +487,7 @@
     closeModalButton.addEventListener('click', () => {
         modal.classList.add('hidden');
         toko.classList.remove('hidden');
+        toko.classList.add('card-2');
     });
     $(function () {
         $('.btnEditToko').on('click', function () {
