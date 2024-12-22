@@ -640,6 +640,10 @@ video {
   top: 50%;
 }
 
+.right-3 {
+  right: 0.75rem;
+}
+
 .-z-10 {
   z-index: -10;
 }

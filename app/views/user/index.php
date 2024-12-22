@@ -44,16 +44,35 @@
           <div class="flex flex-wrap gap-6 mt-4">
             <div class="flex-1">
               <label for="password" class="text-gray-700 font-medium mb-2">Password <span class="text-red-500">*</span></label>
-              <input id="password" class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="password" name="password" value="<?= htmlspecialchars($data['password'] ?? '', ENT_QUOTES); ?>" placeholder="Password">
+              <div class="relative">
+                <input id="password" class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                      type="password" name="password" 
+                      value="<?= htmlspecialchars($data['password'] ?? '', ENT_QUOTES); ?>" 
+                      placeholder="Password">
+                <button type="button" onclick="togglePassword('password', 'eyeIcon1')" 
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none">
+                  <i id="eyeIcon1" class="fas fa-eye"></i>
+                </button>
+              </div>
               <span class="text-red-500"><?= $data['passwordError']; ?></span>
             </div>
+            
             <div class="flex-1">
               <label for="confirmPassword" class="text-gray-700 font-medium mb-2 text-sm">Konfirmasi Password <span class="text-red-500">*</span></label>
-              <input id="confirmPassword" class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="password" name="confirmPassword" value="<?= htmlspecialchars($data['confirmPassword'] ?? '', ENT_QUOTES); ?>" placeholder="Konfirmasi Password">
+              <div class="relative">
+                <input id="confirmPassword" class="w-full bg-[#D9D9D9] text-gray-700 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                      type="password" name="confirmPassword" 
+                      value="<?= htmlspecialchars($data['confirmPassword'] ?? '', ENT_QUOTES); ?>" 
+                      placeholder="Konfirmasi Password">
+                <button type="button" onclick="togglePassword('confirmPassword', 'eyeIcon2')" 
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none">
+                  <i id="eyeIcon2" class="fas fa-eye"></i>
+                </button>
+              </div>
               <span class="text-red-500"><?= $data['confirmPasswordError']; ?></span>
             </div>
           </div>
-          <button type="submit" name="daftar" class="w-full bg-blue-600 text-white py-3 rounded-lg mt-6 hover:bg-blue-700">
+          <button type="submit" name="daftar" class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition duration-300">
             Daftar
           </button>
         </form>
@@ -61,27 +80,42 @@
     </div>
   </div>
 </div>
+<script>
+  function togglePassword(inputId, eyeIconId) {
+    const inputField = document.getElementById(inputId);
+    const eyeIcon = document.getElementById(eyeIconId);
 
+    if (inputField.type === "password") {
+      inputField.type = "text";
+      eyeIcon.classList.remove("fa-eye");
+      eyeIcon.classList.add("fa-eye-slash");
+    } else {
+      inputField.type = "password";
+      eyeIcon.classList.remove("fa-eye-slash");
+      eyeIcon.classList.add("fa-eye");
+    }
+  }
 <?php
-if (isset($_SESSION['status'])):
-    $status = $_SESSION['status']; // Get status from session
-    unset($_SESSION['status']); // Remove status from session after using it
-?>
-    <script>
-        // Handle SweetAlert based on session status
-        let status = '<?= $status ?>';
-        if (status === 'success') {
-            Swal.fire({
-                title: 'Berhasil!',
-                text: 'Tolong Verifikasi Akunmu Terlebih Dahulu!',
-                icon: 'warning',
-            });
-        } else if (status === 'errorEmail') {
-            Swal.fire({
-                title: 'Error',
-                text: 'Email tidak tersedia!',
-                icon: 'error'
-            });
-        }
-    </script>
-<?php endif; ?>
+  if (isset($_SESSION['status'])):
+      $status = $_SESSION['status']; // Get status from session
+      unset($_SESSION['status']); // Remove status from session after using it
+  ?>
+
+          // Handle SweetAlert based on session status
+          let status = '<?= $status ?>';
+          if (status === 'success') {
+              Swal.fire({
+                  title: 'Berhasil!',
+                  text: 'Tolong Verifikasi Akunmu Terlebih Dahulu!',
+                  icon: 'warning',
+              });
+          } else if (status === 'errorEmail') {
+              Swal.fire({
+                  title: 'Error',
+                  text: 'Email tidak tersedia!',
+                  icon: 'error'
+              });
+          }
+
+  <?php endif; ?>
+</script>

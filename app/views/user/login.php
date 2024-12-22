@@ -25,11 +25,8 @@
                   value="<?= htmlspecialchars($data['password'] ?? '', ENT_QUOTES); ?>"
                   class="w-full p-2 bg-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                 />
-                <button
-                  type="button"
-                  onclick="togglePassword()"
-                  class="p-3 transform text-gray-500 focus:outline-none"
-                >
+                <button type="button" onclick="togglePassword()" 
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none">
                   <i id="eyeIcon" class="fas fa-eye"></i>
                 </button>
               </div>
