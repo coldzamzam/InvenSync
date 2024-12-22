@@ -199,6 +199,31 @@ class Cashier_model {
     return $this->db->single();
   }
 
+  public function getTotalReceiptsCount()
+  {
+      $this->db->query('SELECT COUNT(*) as total FROM i_receipt WHERE store_id = :store_id AND is_deleted = 0');
+      $this->db->bind('store_id', $_SESSION['store_id']);
+      $this->db->execute();
+      return $this->db->single()['TOTAL'];
+  }
+
+  public function getPaginatedReceipts($start, $limit)
+{
+    $this->db->query('
+        SELECT * FROM i_receipt 
+        WHERE store_id = :store_id 
+        AND is_deleted = 0
+        ORDER BY date_added DESC 
+        OFFSET :starts ROWS FETCH NEXT :limits ROWS ONLY
+    ');
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->bind('starts', $start, PDO::PARAM_INT);
+    $this->db->bind('limits', $limit, PDO::PARAM_INT);
+    $this->db->execute();
+    return $this->db->resultSet();
+}
+
+
 }
 
 ?>

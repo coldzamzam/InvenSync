@@ -1,34 +1,48 @@
-<?php
-// Letakkan kode paginasi ini di controller atau sebelum render view
-$limit = 4; // Limit per page
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$offset = ($page - 1) * $limit;
-
-// Get total receipts
-$totalReceipts = count($data['receiptDetails']);
-
-// Paginate the data
-$paginatedReceipts = array_slice($data['receiptDetails'], $offset, $limit);
-
-// Pass paginated data to the view
-$data['paginatedReceipts'] = $paginatedReceipts;
-$data['totalPages'] = ceil($totalReceipts / $limit);
-$data['currentPage'] = $page;
-?>
-
 <div class="flex-1 ml-24 mt-20 p-8">
     <!-- Input Quick Search -->
+    <div class="mb-4 flex justify-between">
     <input type="text" id="quickSearchInput" placeholder="Cari"
         class="border rounded-lg px-4 py-2 shadow-md focus:outline-none focus:ring focus:border-blue-400">
     <br><br>
+    <?php if ($data['totalPages'] > 1): ?>
+    <div class="pagination mt-4">
+        <ul class="flex justify-center space-x-2">
+            <!-- Tombol Sebelumnya -->
+            <?php if ($data['currentPage'] > 1): ?>
+                <li>
+                    <a href="<?= BASEURL; ?>/transaction/index/<?= $data['currentPage'] - 1; ?>" 
+                       class="px-3 py-1 border rounded hover:bg-gray-200">Sebelumnya</a>
+                </li>
+            <?php endif; ?>
 
-    <?php if (!empty($data['paginatedReceipts'])): ?>
+            <!-- Nomor Halaman -->
+            <?php for ($i = 1; $i <= $data['totalPages']; $i++): ?>
+                <li>
+                    <a href="<?= BASEURL; ?>/transaction/index/<?= $i; ?>" 
+                       class="px-3 py-1 border <?= $data['currentPage'] == $i ? 'bg-blue-500 text-white' : ''; ?>">
+                        <?= $i; ?>
+                    </a>
+                </li>
+            <?php endfor; ?>
 
-        <?php foreach ($data['paginatedReceipts'] as $receipt_id => $receipt): ?>
+            <!-- Tombol Selanjutnya -->
+            <?php if ($data['currentPage'] < $data['totalPages']): ?>
+                <li>
+                    <a href="<?= BASEURL; ?>/transaction/index/<?= $data['currentPage'] + 1; ?>" 
+                       class="px-3 py-1 border rounded hover:bg-gray-200">Selanjutnya</a>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+</div>
+
+    <?php if (!empty($data['receiptDetails'])): ?>
+        <?php foreach ($data['receiptDetails'] as $receipt_id => $receipt): ?>
             <div data-receipt-id="<?= $receipt_id; ?>" 
                 data-date="<?= $receipt['date_added']; ?>" 
                 onclick="toggleTable('table-<?= $receipt_id; ?>')"
-                class="receipt-container cursor-pointer bg-white shadow-lg p-6 mb-4 transition transform hover:scale-105">
+                class="receipt-container cursor-pointer bg-white shadow-lg rounded-lg p-6 mb-4 transition transform hover:scale-105">
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 text-lg font-semibold">
                         Transaksi ID: <span class="text-blue-600 font-bold"><?= $receipt_id; ?></span> - 
@@ -40,7 +54,7 @@ $data['currentPage'] = $page;
                     <div class="flex space-x-2">
                         <!-- Cetak Invoice Button -->
                         <button onclick="event.stopPropagation(); printInvoice(this)"
-                            class="bg-blue-500 text-white py-2 px-4 hover:bg-blue-600 transition no-print rounded-md">
+                            class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition no-print">
                             <i class="fa fa-print mr-2"></i>Cetak Invoice
                         </button>
                     </div>
@@ -75,7 +89,7 @@ $data['currentPage'] = $page;
                     </tbody>
                 </table>
             </div>
-            <?php endforeach; ?>
+        <?php endforeach; ?>
     <?php else: ?>
         <p class="text-center text-gray-600 mt-6">Tidak ada transaksi.</p>
     <?php endif; ?>

@@ -21,7 +21,7 @@ Class Item extends Controller {
     ];
 
     // Define how many items per page
-    $itemsPerPage = 5;
+    $itemsPerPage = 9;
     
     // Get the total number of items
     $totalItems = $this->model('Item_model')->getItemCount();  // You need to create this method in the Item_model
