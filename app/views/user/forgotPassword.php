@@ -1,7 +1,7 @@
-<div class="relative min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('<?= BASEURL; ?>/img/background-login.jpg')">
-  <div class="w-full max-w-2xl bg-white shadow-lg rounded-lg overflow-hidden flex" style="margin-top: 90px;">
+<div class="relative min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('<?= BASEURL; ?>/img/background-login.jpg');">
+  <div class="w-full max-w-2xl bg-white shadow-lg rounded-lg overflow-hidden flex" style="margin-top: 90px; box-shadow: 0px 40px 25px rgba(0, 0, 0, 0.20);">
    
-  <!-- Login Panel -->
+    <!-- Login Panel -->
     <div class="w-3/5 px-4 py-12 flex items-center justify-center bg-white">
         <div class="w-full max-w-xs">
             <h2 class="text-center font-black text-3xl md:text-4xl py-4 text-gray-800">Lupa Password?</h2>
@@ -19,7 +19,7 @@
     <!-- Registration Panel -->
     <div class="w-2/5 bg-[#FFD369] flex flex-col items-center justify-center p-4 text-center">
         <img src="<?= BASEURL; ?>/img/invensync-black.png" alt="logo invensync">
-        <h1 class="font-black text-xl py-4 text-gray-800">
+        <h1 class="font-black text-xl py-4 text-black">
             Ubah Passwordmu Secara Mudah!
         </h1>    
     </div>

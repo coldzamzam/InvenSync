@@ -48,7 +48,7 @@
     <div class="bg-white rounded shadow">
       <table class="w-full text-left border-collapse">
         <thead>
-          <tr class="bg-gray-200 text-gray-600">
+          <tr class="bg-[#FFD369] text-gray-600">
             <th class="py-3 px-4 border text-center">ID Barang</th>
             <th class="py-3 px-4 border text-center">Nama Barang</th>
             <th class="py-3 px-4 border text-center">Kategori Barang</th>
@@ -580,8 +580,6 @@ document.getElementById('inventoryForm').addEventListener('submit', function (ev
     showConfirmButton: false
   });
 });
-
-
 </script>
 </body>
 </html>

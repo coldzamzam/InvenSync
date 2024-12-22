@@ -1,6 +1,6 @@
 <div class="relative min-h-screen flex items-center justify-center bg-cover bg-center">
   <!-- Wrapper for sliding panels -->
-  <div id="auth-panels" class="w-full max-w-2xl bg-white shadow-lg rounded-lg overflow-hidden flex mt-[90px]">
+  <div id="auth-panels" class="w-full max-w-2xl bg-white shadow-lg rounded-lg overflow-hidden flex mt-[90px]" style="box-shadow: 0px 10px 25px rgba(0.6, 0.6, 0.6, 0.6);">
     <!-- Register Panel -->
     <div class="flex items-center justify-center">
       <div class="m-0 bg-[#FFD369] w-2/5 h-full rounded-lg text-center p-6 flex flex-col items-center justify-center">

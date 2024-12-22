@@ -1,5 +1,5 @@
 <div class="relative min-h-screen flex items-center justify-center bg-cover bg-center">
-  <div class="w-full max-w-2xl bg-white shadow-lg rounded-lg overflow-hidden flex mt-[90px]">
+  <div class="w-full max-w-2xl bg-white shadow-lg rounded-lg overflow-hidden flex mt-[90px]" style="box-shadow: 0px 10px 25px rgba(0.6, 0.6, 0.6, 0.6);">
     <div class="flex items-center justify-between">
         <div class="w-3/5 px-10 py-8 bg-white">
           <h2 class="text-center font-black text-3xl md:text-4xl py-4 text-gray-800">Login</h2>
@@ -33,8 +33,25 @@
               <span class="text-red-500 text-sm"><?= $data['loginPasswordError']; ?></span>
               <div>
                 <h2>
-                  Lupa kata sandi? 
-                  <a href="<?= BASEURL; ?>/user/forgotPassword">ganti passwordmu</a>
+                  Lupa password? 
+                  <a href="<?= BASEURL; ?>/user/forgotPassword" style="position: relative; text-decoration: none; color: #000;">
+  ganti passwordmu
+</a>
+
+<style>
+  a:hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px; /* Ketebalan garis */
+    background-color: #000; /* Warna garis */
+    transition: width 0.3s ease-in-out; /* Animasi */
+    width: 100%;
+  }
+</style>
+
                 </h2>
               </div>
             </div>

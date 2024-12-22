@@ -20,7 +20,6 @@
   <button onclick="openModal()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto">+ Tambah Karyawan</button>
 </div>
 
-
       <h2 class="text-xl font-semibold pb-2">Daftar Karyawan</h2>
       <div class="bg-white rounded shadow">
       
