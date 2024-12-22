@@ -18,44 +18,41 @@
 <main class="flex-1 ml-24 mt-20 p-8">
   <!-- Tab Navigasi -->
   <div class="flex justify-center mb-8 space-x-4">
-  <a href="<?= BASEURL; ?>/monthlyreport" id="dailyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Harian</a>
+    <a href="<?= BASEURL; ?>/monthlyreport" id="dailyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Harian</a>
     <a href="<?= BASEURL; ?>/monthlyreport/bulan" id="monthlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Bulanan</a>
     <a href="<?= BASEURL; ?>/monthlyreport/tahun" id="yearlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Tahunan</a>
   </div>
 
-
-  <!-- Laporan Harian -->
-  <section id="dailyReport" class="bg-white p-6 rounded-lg shadow-lg space-y-6">
-    <!-- Judul dan Pilihan Tanggal dalam Satu Baris -->
+  <!-- Laporan Bulanan -->
+  <section id="monthlyReport" class="bg-white p-6 rounded-lg shadow-lg space-y-6">
+    <!-- Judul dan Pilihan Bulan dalam Satu Baris -->
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-semibold">Laporan Harian</h2>
-      <input type="date" id="startDate" class="border rounded px-4 py-2 focus:ring-2 focus:ring-blue-400">
+      <h2 class="text-xl font-semibold">Laporan Bulanan</h2>
+      <input type="month" id="monthPicker" class="border rounded px-4 py-2 focus:ring-2 focus:ring-blue-400">
     </div>
 
     <!-- Kotak Total -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
       <div class="bg-blue-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Total Pemasukan</h3>
-        <p class="text-xl font-bold text-blue-600">Rp. 1.000.000</p>
+        <p class="text-xl font-bold text-blue-600">Rp. 30.000.000</p>
       </div>
       <div class="bg-red-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Total Pengeluaran</h3>
-        <p class="text-xl font-bold text-red-600">Rp. 500.000</p>
+        <p class="text-xl font-bold text-red-600">Rp. 15.000.000</p>
       </div>
       <div class="bg-green-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Pemasukan Barang</h3>
-        <p class="text-xl font-bold text-green-600">40 Pack</p>
+        <p class="text-xl font-bold text-green-600">120 Pack</p>
       </div>
       <div class="bg-yellow-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Pengeluaran Barang</h3>
-        <p class="text-xl font-bold text-yellow-600">25 Pack</p>
+        <p class="text-xl font-bold text-yellow-600">80 Pack</p>
       </div>
     </div>
 
-    <!-- Grafik Donat -->
-    <div class="w-full max-w-2xl mx-auto">
-      <canvas id="dailyChart" class="w-full h-64"></canvas>
-    </div>
+    <!-- Grafik Line -->
+    <canvas id="monthlyChart" class="w-full h-64"></canvas>
 
     <!-- Tombol View Report -->
     <div class="flex justify-end mt-6">
@@ -78,20 +75,20 @@
     <div id="modalContent" class="space-y-4 text-gray-700 text-lg">
       <div class="flex justify-between items-center">
         <span class="font-semibold">Total Pemasukan:</span>
-        <span>Rp. 1.000.000</span>
+        <span>Rp. 30.000.000</span>
       </div>
       <div class="flex justify-between items-center">
         <span class="font-semibold">Total Pengeluaran:</span>
-        <span>Rp. 500.000</span>
+        <span>Rp. 15.000.000</span>
       </div>
       <div class="flex justify-between items-center">
         <span class="font-semibold">Total Pemasukan Barang:</span>
-        <span>40 Pack</span>
+        <span>120 Pack</span>
       </div>
       <div class="flex justify-between items-center">
         <span class="font-semibold">Total Pengeluaran Barang:</span>
-        <span>25 Pack</span>
-      </div>
+        <span>80 Pack</span>
+          </div>
     </div>
 
     <!-- Tombol Aksi -->
@@ -109,24 +106,46 @@
 <!-- JavaScript -->
 <script>
 
-  // Grafik Donat Harian
-  const ctxDaily = document.getElementById('dailyChart').getContext('2d');
-  new Chart(ctxDaily, {
-    type: 'doughnut',
+  // Grafik Line Bulanan
+  const monthlyChartData = <?php echo json_encode($data['monthlyChartData']); ?>;
+  console.log(monthlyChartData);
+  const labels = monthlyChartData.map(data => data.MINGGU);
+  const pemasukanData = monthlyChartData.map(data => data.TOTAL_PEMASUKAN);
+  const pengeluaranData = monthlyChartData.map(data => data.TOTAL_PENGELUARAN);
+
+
+  const ctxMonthly = document.getElementById('monthlyChart').getContext('2d');
+  new Chart(ctxMonthly, {
+    type: 'line',
     data: {
-      labels: ['Pemasukan Uang', 'Pengeluaran Uang', 'Pemasukan Barang', 'Pengeluaran Barang'],
-      datasets: [{
-        data: [1000000, 500000, 40, 25],
-        backgroundColor: ['#3b82f6', '#ef4444', '#22c55e', '#eab308'],
-        borderColor: '#ffffff',
-        borderWidth: 2
-      }]
+      labels: labels,
+      datasets: [
+        {
+          label: 'Pemasukan',
+          data: pemasukanData,
+          borderColor: '#3b82f6',
+          tension: 0.4,
+          fill: false
+        },
+        {
+          label: 'Pengeluaran',
+          data: pengeluaranData,
+          borderColor: '#ef4444',
+          tension: 0.4,
+          fill: false
+        }
+      ]
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
           position: 'bottom'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
         }
       }
     }
