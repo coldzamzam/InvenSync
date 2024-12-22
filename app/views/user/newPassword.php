@@ -8,17 +8,25 @@
             <h3 class="text-center font-semibold text-xl md:text-l py-2 text-gray-800">Masukkan Password Baru Anda</h3>
             <form action="<?=BASEURL?>/user/updatePassword" method="post" onsubmit="return validatePasswords()">
                 <input type="hidden" name="code" value="<?=$data['code']?>">
-                <input type="password" placeholder="Password Baru" name="new_password" id="new_password" class="w-full bg-gray-200 p-3 rounded-lg mb-2">
+                <div class="relative mb-4">
+                    <input type="password" placeholder="Password Baru" name="new_password" id="new_password" class="w-full bg-gray-200 p-3 rounded-lg">
+                    <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" onclick="togglePasswordVisibility('new_password', 'eyeIconNewPassword')">
+                        <i id="eyeIconNewPassword" class="fas fa-eye"></i> <!-- Eye Icon -->
+                    </button>
+                </div>
                 <span id="new_password_error" class="text-red-500 text-sm hidden">Password tidak boleh kosong.</span>
                 
-                <input type="password" placeholder="Konfirmasi Password" name="confirm_password" id="confirm_password" class="w-full bg-gray-200 p-3 rounded-lg mb-2">
+                <!-- Confirm Password Field with Eye Icon -->
+                <div class="relative mb-4">
+                    <input type="password" placeholder="Konfirmasi Password" name="confirm_password" id="confirm_password" class="w-full bg-gray-200 p-3 rounded-lg">
+                    <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" onclick="togglePasswordVisibility('confirm_password', 'eyeIconConfirmPassword')">
+                        <i id="eyeIconConfirmPassword" class="fas fa-eye"></i> <!-- Eye Icon -->
+                    </button>
+                </div>
                 <span id="confirm_password_error" class="text-red-500 text-sm hidden">Konfirmasi password tidak cocok.</span>
-                
-                <form action="<?=BASEURL?>/user/updatePassword" method="post" onsubmit="return validatePasswords()">
                     <button type="submit" class="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition duration-300">
                         Reset Password
                     </button>
-                </form>
             </form>
         </div>
     </div>
@@ -26,6 +34,20 @@
 </div>
 
 <script>
+        function togglePasswordVisibility(inputId, iconId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+    
     function validatePasswords() {
         // Get form values
         var new_password = document.getElementById('new_password').value;
