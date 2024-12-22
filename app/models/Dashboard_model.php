@@ -216,7 +216,6 @@ class Dashboard_model {
 
 		return $this->db->single();
 	}
-
 }
 
 ?>

@@ -8,6 +8,7 @@
   .tab-active {
     @apply bg-blue-600 text-white shadow-lg;
   }
+
   .tab-inactive {
     @apply bg-gray-200 text-gray-600 hover:bg-gray-300;
   }
@@ -16,11 +17,11 @@
 <!-- Container Utama -->
 <main class="flex-1 ml-24 mt-20 p-8">
   <!-- Tab Navigasi -->
-<div class="flex justify-center mb-8 space-x-4">
-  <button id="dailyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Harian</button>
-  <button id="monthlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Bulanan</button>
-  <button id="yearlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Tahunan</button>
-</div>
+  <div class="flex justify-center mb-8 space-x-4">
+    <button id="dailyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Harian</button>
+    <button id="monthlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Bulanan</button>
+    <button id="yearlyTab" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Laporan Tahunan</button>
+  </div>
 
 
   <!-- Laporan Harian -->
@@ -58,7 +59,8 @@
 
     <!-- Tombol View Report -->
     <div class="flex justify-end mt-6">
-      <button onclick="viewFullReport('harian')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Lihat Laporan</button>
+      <button onclick="viewFullReport('harian')"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Lihat Laporan</button>
     </div>
   </section>
 
@@ -95,7 +97,8 @@
 
     <!-- Tombol View Report -->
     <div class="flex justify-end mt-6">
-      <button onclick="viewFullReport('bulanan')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Lihat Laporan</button>
+      <button onclick="viewFullReport('bulanan')"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Lihat Laporan</button>
     </div>
   </section>
 
@@ -136,7 +139,8 @@
 
     <!-- Tombol View Report -->
     <div class="flex justify-end mt-6">
-      <button onclick="viewFullReport('tahunan')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Lihat Laporan</button>
+      <button onclick="viewFullReport('tahunan')"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Lihat Laporan</button>
     </div>
   </section>
 </main>
@@ -148,7 +152,7 @@
     <div class="mb-6 text-center">
       <h1 id="modalTitle" class="text-3xl font-bold text-gray-800">TOTAL</h1>
     </div>
-    
+
     <!-- Konten Data -->
     <div id="modalContent" class="space-y-4 text-gray-700 text-lg">
       <!-- Data akan diisi oleh JavaScript -->
@@ -241,22 +245,29 @@
   });
 
   // Grafik Line Bulanan
+  const monthlyChartData = <?php echo json_encode($data['monthlyChartData']); ?>;
+  console.log(monthlyChartData);
+  const labels = monthlyChartData.map(data => data.MINGGU);
+  const pemasukanData = monthlyChartData.map(data => data.TOTAL_PEMASUKAN);
+  const pengeluaranData = monthlyChartData.map(data => data.TOTAL_PENGELUARAN);
+
+
   const ctxMonthly = document.getElementById('monthlyChart').getContext('2d');
   new Chart(ctxMonthly, {
     type: 'line',
     data: {
-      labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
+      labels: labels,
       datasets: [
         {
           label: 'Pemasukan',
-          data: [7000000, 8000000, 7500000, 7500000],
+          data: pemasukanData,
           borderColor: '#3b82f6',
           tension: 0.4,
           fill: false
         },
         {
           label: 'Pengeluaran',
-          data: [4000000, 3500000, 4000000, 3500000],
+          data: pengeluaranData,
           borderColor: '#ef4444',
           tension: 0.4,
           fill: false
@@ -319,7 +330,7 @@
     const modalContent = document.getElementById('modalContent');
 
     // Menyesuaikan Judul Modal
-    switch(reportType) {
+    switch (reportType) {
       case 'harian':
         modalTitle.textContent = 'Laporan Harian';
         modalContent.innerHTML = `
@@ -399,7 +410,7 @@
   }
 
   // Menutup Modal ketika Klik di Luar Konten Modal
-  window.onclick = function(event) {
+  window.onclick = function (event) {
     const modal = document.getElementById('reportModal');
     if (event.target == modal) {
       modal.classList.add('hidden');
