@@ -23,15 +23,6 @@ $data['currentPage'] = $page;
     <br><br>
 
     <?php if (!empty($data['paginatedReceipts'])): ?>
-        <!-- Paginasi dipindah ke atas -->
-        <div class="flex justify-center mb-6 space-x-2">
-            <?php for ($i = 1; $i <= $data['totalPages']; $i++): ?>
-                <a href="/invensync/public/transaction?page=<?= $i; ?>" 
-                class="px-4 py-2 <?= $i === $data['currentPage'] ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'; ?> hover:bg-blue-400 hover:text-white">
-                    <?= $i; ?>
-                </a>
-            <?php endfor; ?>
-        </div>
 
         <?php foreach ($data['paginatedReceipts'] as $receipt_id => $receipt): ?>
             <div data-receipt-id="<?= $receipt_id; ?>" 
@@ -235,22 +226,4 @@ document.getElementById('quickSearchInput').addEventListener('input', function (
         }
     });
 });
-
-<?php
-// Constants
-$limit = 4; // Limit per page
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
-$offset = ($page - 1) * $limit; // Offset for the query
-
-// Get total receipts
-$totalReceipts = count($data['receiptDetails']); // Assuming receiptDetails is the full dataset
-
-// Paginate the data
-$paginatedReceipts = array_slice($data['receiptDetails'], $offset, $limit);
-
-// Pass paginated data to the view
-$data['paginatedReceipts'] = $paginatedReceipts;
-$data['totalPages'] = ceil($totalReceipts / $limit);
-$data['currentPage'] = $page;
-?>
 </script>

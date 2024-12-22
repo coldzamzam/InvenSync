@@ -13,26 +13,44 @@ Class Item extends Controller {
       header('Location: ' . BASEURL . '/dashboard');
     }
   }
-  public function index(){
+  public function index($page = 1){
     $data = [
-      'judul' => 'List Barang',
-      'brandError'=>'',
-      'categoryError'=>''
+        'judul' => 'List Barang',
+        'brandError' => '',
+        'categoryError' => ''
     ];
-    $data['item'] = $this->model('Item_model')->getAllItem();
+
+    // Define how many items per page
+    $itemsPerPage = 5;
+    
+    // Get the total number of items
+    $totalItems = $this->model('Item_model')->getItemCount();  // You need to create this method in the Item_model
+    $totalPages = ceil($totalItems / $itemsPerPage);
+    
+    // Determine the starting point for pagination
+    $start = ($page - 1) * $itemsPerPage;
+
+    // Fetch the items for the current page
+    $data['item'] = $this->model('Item_model')->getPaginatedItems($start, $itemsPerPage);  // You need to create this method in the Item_model
+
+    // Other data
     $data['brand'] = $this->model('Item_model')->getAllBrand();
     $data['category'] = $this->model('Item_model')->getAllCategory();
     $data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
     $data['notifications'] = $this->model('Item_model')->getTotalStockItem();
 
+    // Pagination data
+    $data['currentPage'] = $page;
+    $data['totalPages'] = $totalPages;
+
     if($this->model('User_model')->checkRowToko() > 0) {
-      $this->view('templates/s-header', $data);
-      $this->view('itemdummy/index', $data);
-  }
-  else {
-    header('Location: ' . BASEURL . '/dashboard/toko');
-  }  
+        $this->view('templates/s-header', $data);
+        $this->view('itemdummy/index', $data);
+    } else {
+        header('Location: ' . BASEURL . '/dashboard/toko');
+    }
 }
+
 
   public function userdummy(){
     $data['judul'] = 'List User';

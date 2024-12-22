@@ -12,8 +12,9 @@ Class Item_model {
   {
       $this->db->query('
           SELECT * FROM (
-              SELECT i.*, ROWNUM rnum
-              FROM i_inventory i   
+              SELECT i.*, c.category_name, b.brand_name, ROWNUM rnum
+              FROM i_master_item i join i_master_category c on i.category_id = c.category_id
+              join i_master_brand b on i.brand_id = b.brand_id
               WHERE i.is_deleted = 0 AND i.store_id=:store_id
           ) WHERE rnum > :startIndex AND rnum <= :endIndex
       ');
@@ -26,7 +27,7 @@ Class Item_model {
 
   public function getItemCount()
   {
-      $this->db->query('SELECT COUNT(*) as total FROM i_inventory i  WHERE i.is_deleted = 0 AND i.store_id=:store_id');
+      $this->db->query('SELECT COUNT(*) as total FROM i_master_item i  WHERE i.is_deleted = 0 AND i.store_id=:store_id');
       $this->db->bind('store_id',$_SESSION['store_id']);
       $this->db->execute();
       return $this->db->single()['TOTAL'];

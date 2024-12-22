@@ -32,6 +32,7 @@ class Report_model {
                       ORDER BY TO_CHAR(cd.DATE_ADDED, 'DD')";
     $this->db->query($query);
     $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
     return $this->db->resultSet();
     
   }

@@ -26,7 +26,7 @@ class Employees extends Controller{
         $data['notifications'] = $this->model('Item_model')->getTotalStockItem();
         // $data['invusers'] = $this->model('User_model')->getInventoryUser();
         // $data['cashusers'] = $this->model('User_model')->getCashierUser();
-        $usersperpage = 10;
+        $usersperpage = 1;
         $totalusers = $this->model('User_model')->getUserCount();
         $totalpages = ceil($totalusers / $usersperpage);
         $start = ($page - 1) * $usersperpage;
