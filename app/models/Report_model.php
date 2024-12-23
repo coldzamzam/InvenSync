@@ -266,7 +266,17 @@ class Report_model {
     $this->db->bind('bulan', $month);
     $this->db->bind('store_id', $_SESSION['store_id']);
     $this->db->execute();
-    return $this->db->single();
+    
+    $result = $this->db->single();
+    if (!$result) {
+      return [
+        'TOTAL_PENGELUARAN' => 0,
+        'TOTAL_PENDAPATAN' => 0,
+        'PROFIT' => 0
+      ];
+    } else {
+      return $result;
+    }
   }
 
   public function getTotalYear($year) {

@@ -125,10 +125,10 @@
     }
   }
 
-const monthlyChartData = <?php echo json_encode($data['monthlyChartData']); ?>;  // Pastikan ini mengandung data yang benar
-const labels = monthlyChartData.map(data => data.NAMA_HARI);  // Menyesuaikan nama label sesuai dengan struktur data
-const pemasukanData = monthlyChartData.map(data => data.TOTAL_PENDAPATAN);  // Ambil data pemasukan
-const pengeluaranData = monthlyChartData.map(data => data.TOTAL_PENGELUARAN);  // Ambil data pengeluaran
+  const monthlyChartData = <?php echo json_encode($data['monthlyChartData']); ?>;  // Pastikan ini mengandung data yang benar
+  const labels = monthlyChartData.map(data => data.NAMA_HARI);  // Menyesuaikan nama label sesuai dengan struktur data
+  const pemasukanData = monthlyChartData.map(data => data.TOTAL_PENDAPATAN);  // Ambil data pemasukan
+  const pengeluaranData = monthlyChartData.map(data => data.TOTAL_PENGELUARAN);  // Ambil data pengeluaran
 
 // Gambar Chart.js setelah halaman dimuat
 window.onload = function() {

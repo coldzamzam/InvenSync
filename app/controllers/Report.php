@@ -94,13 +94,14 @@ class Report extends Controller {
 			$bulanOnly = substr($bulan, 5, 2);  // Mengambil hanya bagian bulan (2 digit)
 			echo $bulanOnly;  // Menampilkan bulan dalam format "MM"
 		}	
+		$bulan = ($_POST['bulan']) ? $bulanOnly : date('Y-m');
 		$data['judul'] = 'Laporan Bulanan';
 		$data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
 		$data['notifications'] = $this->model('Item_model')->getTotalStockItem();
 		$data['bulan'] = $this->model('Report_model')->getAvailableMonths();
 	
-		$data['monthlyChartData'] = $this->model('Report_model')->getDailyPerMonths($bulanOnly);
-		$data['totalBulanan'] = $this->model('Report_model')->getTotalMonth($bulanOnly);
+		$data['monthlyChartData'] = $this->model('Report_model')->getDailyPerMonths($bulan);
+		$data['totalBulanan'] = $this->model('Report_model')->getTotalMonth($bulan);
 		
 		$this->view('templates/s-header', $data);
 		$this->view('report/bulan', $data);
@@ -120,7 +121,7 @@ class Report extends Controller {
 		// var_dump($data['annualReport']);
 		// exit;
 
-	$labels = [];
+		$labels = [];
     $pemasukanData = [];
     $pengeluaranData = [];
 
