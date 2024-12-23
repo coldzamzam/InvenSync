@@ -101,8 +101,9 @@ public function removeVerificationToken($user_id) {
   }
 
   public function cekNomorTelepon($nomor_telepon) {
-    $this->db->query('SELECT * FROM i_users WHERE phone_number = :nomor_telepon and is_deleted = 0 ');
+    $this->db->query('SELECT * FROM i_users WHERE phone_number = :nomor_telepon and user_id != :user_id and is_deleted = 0 ');
     $this->db->bind('nomor_telepon', $nomor_telepon);
+    $this->db->bind('user_id', $_SESSION['user_id']);
     return $this->db->single();
   }
   
@@ -279,6 +280,22 @@ public function removeVerificationToken($user_id) {
     $this->db->execute();
     // var_dump($this->db->single());
 
+    return $this->db->rowCount();
+  }
+
+  public function editAkun($nama, $alamat, $telepon){ 
+    $query = "UPDATE i_users SET 
+                name = :name, 
+                address = :address, 
+                phone_number = :phonenumber
+              WHERE user_id = :user_id AND is_deleted = 0";
+    $this->db->query($query);
+    $this->db->bind('name', $nama);
+    $this->db->bind('address', $alamat);
+    $this->db->bind('phonenumber', $telepon);
+    $this->db->bind('user_id', $_SESSION['user_id']);
+
+    $this->db->execute();
     return $this->db->rowCount();
   }
 

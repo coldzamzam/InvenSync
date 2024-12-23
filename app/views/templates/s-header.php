@@ -161,80 +161,69 @@
 </head>
 <div id="overlay" class="font-poppins fixed inset-0 bg-black bg-opacity-50 z-10 hidden transition-all duration-300">
 </div>
-<aside id="sidebar" class="font-poppins fixed top-0 left-0 z-10 bg-[#393E46] text-white w-24 hover:w-64 min-h-screen overflow-hidden transition-all duration-300">
+<aside id="sidebar" class="group font-poppins fixed top-0 left-0 z-10 bg-[#393E46] text-white w-24 hover:w-64 min-h-screen overflow-hidden transition-all duration-300">
   <div class="p-4">
-  <button id="menuButton" class="text-xl text-white mb-4">
-      <i class="fa-solid fa-bars"></i> <!-- Ikon Bars -->
-    </button>
-    <h1
-      class="ml-2 pb-4 font-black text-xl text-center sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">
-      InvenSync</i></h1> 
-    <h1
-      class="
-    <?php
-    if ($_SESSION['user_role'] == 'Admin Gudang') {
-      echo 'bg-red-400';
-    } elseif ($_SESSION['user_role'] == 'Admin Kasir') {
-      echo 'bg-green-400';
-    } elseif ($_SESSION['user_role'] == 'Owner') {
-      echo 'bg-purple-400';
-    } ?> rounded-3xl ml-2 text-sm font-black text-m text-center sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">
+    <div class="relative flex justify-center items-center">
+      <!-- Logo Gambar -->
+      <img src="<?= BASEURL; ?>/img/invensync-logo1.png" alt="logo invensync"
+        class="transition-all duration-300 absolute opacity-100 group-hover:opacity-0">
+      
+      <!-- Teks h1 -->
+      <h1 class="ml-2 pb-4 font-black text-xl text-center group-hover:opacity-100 group-hover:translate-x-0 opacity-0 transition-all duration-300">
+        InvenSync
+      </h1>
+    </div>
+    <h1 class="
+      <?php
+      if ($_SESSION['user_role'] == 'Admin Gudang') {
+        echo 'bg-red-400';
+      } elseif ($_SESSION['user_role'] == 'Admin Kasir') {
+        echo 'bg-green-400';
+      } elseif ($_SESSION['user_role'] == 'Owner') {
+        echo 'bg-purple-400';
+      } ?> rounded-3xl ml-2 text-sm font-black text-m text-center sidebar-text whitespace-nowrap overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">
       Anda Login Sebagai <br> <?= $_SESSION['user_role'] ?>
     </h1>
     <nav class="mt-6 space-y-4">
       <a href="<?= BASEURL; ?>/dashboard"
         class="py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-tachometer-alt"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Halaman
-          Utama</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">Halaman Utama</span>
       </a>
       <a href="<?= BASEURL; ?>/employees"
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-users"></i>
-        <span
-          class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Karyawan</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">Karyawan</span>
       </a>
       <a href="<?= BASEURL; ?>/item"
         class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fa-solid fa-box"></i>
-        <span
-          class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Barang</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">Barang</span>
       </a>
       <a href="<?= BASEURL; ?>/inventory"
         class="<?= ($_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-boxes"></i>
-        <span
-          class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Inventaris</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">Inventaris</span>
       </a>
       <a href="<?= BASEURL; ?>/transaction"
         class="py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-money-bill"></i>
-        <span
-          class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Transaksi</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">Transaksi</span>
       </a>
-      <!-- <a href="<?= BASEURL; ?>/dailyreport"
-        class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
-        <i class="fas fa-calendar-day"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Laporan
-          Harian</span>
-      </a> -->
       <a href="<?= BASEURL; ?>/report"
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang' || $_SESSION['user_role'] == 'Admin Kasir') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-calendar-alt"></i>
-        <span
-          class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Laporan</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">Laporan</span>
       </a>
       <a href="<?= BASEURL; ?>/cashier"
         class="<?= ($_SESSION['user_role'] == 'Admin Gudang') ? 'hidden' : 'block' ?> py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-cash-register"></i>
-        <span
-          class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Kasir</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">Kasir</span>
       </a>
       <a href="<?= BASEURL; ?>/dashboard/toko"
         class="py-2 px-6 rounded hover:bg-gray-700 flex items-center transition-all duration-300">
         <i class="fas fa-info-circle"></i>
-        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Profil
-          Toko</span>
+        <span class="ml-2 sidebar-text whitespace-nowrap overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">Profil Toko</span>
       </a>
     </nav>
     <form action="<?= BASEURL; ?>/dashboard/logout" id="LogoutForm" method="post" class="mt-12">
@@ -242,19 +231,20 @@
       <button type="button" onclick="logoutConfirmation()"
         class="bg-[#FFD369] text-black py-1.5 px-6 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center space-x-2">
         <i class="fa-solid fa-right-from-bracket"></i>
-        <span class="sidebar-text whitespace-nowrap overflow-hidden opacity-0 transition-all duration-300">Keluar</span>
+        <span class="sidebar-text whitespace-nowrap overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">Keluar</span>
       </button>
     </form>
   </div>
 </aside>
 
 
+
 <nav class="font-poppins left-0 p-6 bg-[#fdfdfd] fixed min-w-screen top-0 right-0 shadow-md z-[5] flex items-center justify-between">
   <p class="text-2xl font-bold text-center flex-1"><?= $data['judul'] ?></p>
   <button id="notificationBtn"
-    class="relative<?php if ($data['totalnotifications']!=0): echo ' bg-red-600'; else: echo ' bg-[#FFD369]'; endif ?> text-black py-1 px-3 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center">
-    <i class="fa-solid fa-bell"></i>
-    <span id="notificationBadge">
+    class="relative<?php if ($data['totalnotifications']!=0): echo ' bg-red-500'; else: echo ' bg-[#FFD369]'; endif ?> text-black py-1 px-3 rounded hover:bg-yellow-400 transition-all duration-300 flex items-center justify-center">
+    <?php if ($data['totalnotifications']!=0): echo '<i class="fa-solid fa-bell" style="color: #ffffff;"></i>';else : echo '<i class="fa-solid fa-bell"></i>'; endif ?>
+    <span id="notificationBadge" class="<?php if ($data['totalnotifications']!=0): echo ' text-white'; else: echo ' text-black'; endif ?>">
       <?= $data['totalnotifications']; ?>
     </span>
   </button>

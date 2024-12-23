@@ -108,11 +108,11 @@
         <div>
             <div class="flex gap-4 mb-4">
                 <!-- Informasi Akun -->
-                <div class="w-full">
+                <div class="w-1/2">
                     <div id="infoAkun" class="card">
                         <div class="flex justify-between items-center mb-4" style="border-bottom: 2px solid rgba(255, 255, 255, 0.3);">
                             <h2>Informasi Akun</h2>
-                            <button class="btnEditAkun" id="openModalAkunButton">
+                            <button class="btnEditAkun bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200" id="openModalAkunButton">
                                 <i class="fas fa-edit "></i>
                             </button>
                         </div>
@@ -143,7 +143,7 @@
                     </div>
                     <div id="formModalAkun" class="hidden bg-white shadow-md p-6 border border-zinc-100 rounded-lg">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-2xl font-bold text-gray-800">Edit Informasi Toko</h2>
+                            <h2 class="text-2xl font-bold text-gray-800">Edit Informasi Akun</h2>
                             <button id="closeModalAkunButton" class="text-gray-500 hover:text-gray-700">
                                 <span class="text-2xl">&times;</span>
                             </button>
@@ -154,17 +154,17 @@
                                 <label for="nama" class="text-sm text-gray-700">Nama Akun</label>
                                 <input id="nama"
                                     class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                                    type="text" name="nama" placeholder="Nama Akun">
+                                    type="text" name="namaAkun" placeholder="Nama Akun">
                                 <span class="text-red-500 text-sm"><?= $data['namaError']; ?></span>
                             </div>
 
                             <!-- Lokasi -->
                             <div class="mb-2">
-                                <label for="email" class="text-sm text-gray-700">email</label>
-                                <input id="email"
+                                <label for="Alamat" class="text-sm text-gray-700">Alamat</label>
+                                <input id="Alamat"
                                     class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                                    type="text" name="email" placeholder="email">
-                                <span class="text-red-500 text-sm"><?= $data['emailError']; ?></span>
+                                    type="text" name="alamatAkun" placeholder="Alamat">
+                                <span class="text-red-500 text-sm"><?= $data['alamatError']; ?></span>
                             </div>
 
                             <!-- Nomor Telepon Toko -->
@@ -172,18 +172,9 @@
                                 <label for="nomortelepon" class="text-sm text-gray-700">Nomor Telepon Akun</label>
                                 <input id="nomortelepon"
                                     class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                                    type="number" name="nomortelepon" placeholder="Nomor Telepon Akun">
+                                    type="number" name="teleponAkun" placeholder="Nomor Telepon Akun">
                                 <span class="text-red-500 text-sm"><?= $data['teleponAkunError']; ?></span>
-                            </div>
-
-                            <!-- Tahun Didirikan -->
-                            <div class="mb-2">
-                                <label for="alamat" class="text-sm text-gray-700">Alamat</label>
-                                <input id="alamat"
-                                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                                    type="number" name="alamat" placeholder="Alamat">
-                                <span class="text-red-500 text-sm"><?= $data['alamatError']; ?></span>
-                            </div>
+    </div>
 
                             <!-- Submit Button -->
                             <div class="flex justify-end mt-4">
@@ -229,17 +220,11 @@
                             <label>Tahun Didirikan</label>
                             <p><?= $data['yearfounded'] ?></p>
                         </div>
-                        <div style="text-align: right; margin-top: 20px;">
-                            <button type='button' class='bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200 <?php if ($_SESSION['user_role'] != 'Owner')
-                                echo 'hidden'; ?>' onclick='confirmDelete()'>
-                                Hapus Toko
-                            </button>
-                        </div>
                     </div>
 
                     <div id="formModal" class="hidden bg-white shadow-md p-6 border border-zinc-100 rounded-lg">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-2xl font-bold text-gray-800">Edit Informasi Akun</h2>
+                            <h2 class="text-2xl font-bold text-gray-800">Edit Informasi Toko</h2>
                             <button id="closeModalButton" class="text-gray-500 hover:text-gray-700">
                                 <span class="text-2xl">&times;</span>
                             </button>
@@ -289,7 +274,7 @@
                             </div>
 
                             <!-- Email Toko -->
-                            <div class="mb-2">
+                            <div class="mb-2 hidden">
                                 <label for="emailtoko" class="text-sm text-gray-700">Email Toko</label>
                                 <input id="emailtoko"
                                     class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
@@ -309,7 +294,7 @@
                             <!-- Submit Button -->
                             <div class="flex justify-end mt-4">
                                 <button type="submit" name="simpan"
-                                    class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">
+                                    class="absolute bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">
                                     Edit Informasi</button>
                             </div>
                         </form>
@@ -321,6 +306,10 @@
                 class="gap-3 bg-gradient-to-br from-[#041A3D] via-[#222831] to-[#393E46] w-1/3 text-white rounded-lg shadow-lg p-5 flex hover:bg-gradient-to-br hover:from-[#222831] hover:via-[#393E46] hover:to-[#041A3D] cursor-pointer transition-all duration-300 ease-in-out">
                 <i class="fas fa-key"></i>
                 <h1>Ubah Password</h1>
+            </button>
+            <button type='button' class='bg-red-500 mt-4 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200 <?php if ($_SESSION['user_role'] != 'Owner')
+                echo 'hidden'; ?>' onclick='confirmDelete()'>
+                Hapus Toko
             </button>
         </div>
 
@@ -455,10 +444,10 @@
                 method: 'post',
                 dataType: 'json',
                 success: function (data) {
-                    $('#nama').val(data.NAME);
+                    $('#Alamat').val(data.ADDRESS);
                     $('#email').val(data.EMAIL);
+                    $('#nama').val(data.NAME);
                     $('#nomortelepon').val(data.PHONE_NUMBER);
-                    $('#alamat').val(data.ADDRESS);
                     console.log(data);
                 },
                 error: function (xhr, status, error) {

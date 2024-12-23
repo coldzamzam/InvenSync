@@ -1,60 +1,67 @@
-<main class="flex-1 ml-24 p-8 mt-14">
-  <header class="flex justify-between items-center mb-6 z-[1]">
-    <div class="ml-4 w-1/3 top-0 right-0 fixed min-h-screen p-10 bg-white mt-16 shadow-lg">
-      <h1 class="text-2xl font-bold mb-4">Barang yang Dipilih</h1>
-      <div class="flex flex-col bg-gray-100 p-4 mb-4">
-        <?php foreach($data['receiptItems'] as $item): ?>
-        <div class="flex items-center p-2 mb-2 gap-3 shadow-sm bg-white group">
-            <div>
-              <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" width="50px">
-            </div>
-            <div class="w-full">
-              <div class="flex justify-between">
-                  <h2 class="font-bold"><?= $item['ITEM_ID']; ?>-<?= $item['ITEM_NAME']; ?></h2>
-                  <h2 class="font-bold">Jumlah : <?= $item['QUANTITY']; ?></h2>
-              </div>
-              <div>
-                <h3>Total Harga : Rp.<?= $item['TOTAL_PER_ITEM']*$item['QUANTITY']; ?></h3>
-              </div>
-            </div>
-            <form action="<?= BASEURL; ?>/cashier/removeItem" method="post">
-              <input type="hidden" name="receipt_item_id" value="<?= $item['RECEIPT_ITEM_ID']; ?>">
-              <button type="submit" class="hidden group-hover:block absolute bg-red-500 text-white px-2 rounded-full">
-                  -
-              </button>
-            </form>
-        </div>
-        <?php endforeach; ?>
+<main class="flex-1 ml-24 p-8 mt-14 flex">
+  <div class="w-full">
+    <h1 class="text-2xl font-bold mb-4">Barang Yang Tersedia</h1>
+    <input type="text" id="quickSearchInput" placeholder="Cari" class="border rounded px-6 py-2">
+    <div class="flex w-3/5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+      <?php foreach($data['item'] as $item): ?>
+        <button id="tambahBarangBtn_<?= $item['ITEM_ID']; ?>" 
+                data-itemid="<?= $item['ITEM_ID']; ?>" 
+                data-itemname="<?= $item['ITEM_NAME']; ?>"
+                class="group bg-white rounded-lg shadow-lg w-full">
+          <div class="flex flex-col items-center px-20 py-5">
+            <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" class="group-hover:hidden w-full h-full object-cover">
+            <img src="<?= BASEURL; ?>/img/add-to-cart.png" class="w-full h-full  hidden group-hover:block" alt="">
+          </div>
+          <div class="bg-[#FFD369] rounded-lg flex flex-col">
+          <span class="mb-2 font-semibold text-lg"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></span>
+            <span class="text-gray-600">Rp.<?= number_format($item['COST_PRICE'], 2);?> - Stock Tersedia : <?= $item['STOCK_AVAILABLE'];?></span>
+          </div>
+        </button>
+      <?php endforeach; ?>
       </div>
-      <div class="space-x-2">
-      <?php if (isset($_SESSION['receipt_id'])):?>
-        <button id="konfirmasiBtn" class="bg-green-500 text-white w-full py-2 px-4 rounded hover:bg-green-600 bottom-0">Konfirmasi Pembelian</button>
-      <?php endif;?>
-      </div>
-    </div>
-  </header>
-  <h1 class="text-2xl font-bold mb-4">Barang Yang Tersedia</h1>
-  <input type="text" id="quickSearchInput" placeholder="Cari" class="border rounded px-6 py-2">
-  <div class="flex w-3/5">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-    <?php foreach($data['item'] as $item): ?>
-      <button id="tambahBarangBtn_<?= $item['ITEM_ID']; ?>" 
-              data-itemid="<?= $item['ITEM_ID']; ?>" 
-              data-itemname="<?= $item['ITEM_NAME']; ?>"
-              class="group bg-white rounded-lg shadow-lg w-full">
-        <div class="flex flex-col items-center px-20 py-5">
-          <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" class="group-hover:hidden w-full h-full object-cover">
-          <img src="<?= BASEURL; ?>/img/add-to-cart.png" class="w-full h-full  hidden group-hover:block" alt="">
-        </div>
-        <div class="bg-[#FFD369] rounded-lg flex flex-col">
-        <span class="mb-2 font-semibold text-lg"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></span>
-          <span class="text-gray-600">Rp.<?= number_format($item['COST_PRICE'], 2);?> - Stock Tersedia : <?= $item['STOCK_AVAILABLE'];?></span>
-        </div>
-      </button>
-    <?php endforeach; ?>
-
     </div>
   </div>
+  <aside class="bg-white p-5 shadow-lg rounded-lg fixed right-0 top-20 w-1/4 h-full">
+      <h1 class="text-2xl font-bold mb-3">Barang yang Dipilih</h1>
+      <div class="space-y-4 listedItems">
+      <?php $grandTotal = 0;foreach($data['receiptItems'] as $item):
+      $itemTotal = $item['TOTAL_PER_ITEM'] * $item['QUANTITY'];
+        $grandTotal += $itemTotal; ?>
+          <div class="flex items-center p-2 mb-2 gap-3 shadow-sm bg-white group">
+              <div>
+                <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" width="50px">
+              </div>
+              <div class="w-full">
+                <div class="flex justify-between">
+                    <h2 class="font-bold"><?= $item['ITEM_ID']; ?>-<?= $item['ITEM_NAME']; ?></h2>
+                    <h2 class="font-bold">Jumlah : <?= $item['QUANTITY']; ?></h2>
+                </div>
+                <div>
+                  <h3>Total Harga : Rp.<?= $item['TOTAL_PER_ITEM']*$item['QUANTITY']; ?></h3>
+                </div>
+              </div>
+              <form action="<?= BASEURL; ?>/cashier/removeItem" method="post">
+                <input type="hidden" name="receipt_item_id" value="<?= $item['RECEIPT_ITEM_ID']; ?>">
+                <button type="submit" class="hidden group-hover:block absolute bg-red-500 text-white px-2 rounded-full">
+                    -
+                </button>
+              </form>
+          </div>
+          <?php endforeach; ?>
+      </div>
+      <div class="mt-6 border-t pt-4">
+        <div class="flex justify-between font-semibold text-lg mb-4">
+          <span>Total:</span>
+          <span><?= number_format($grandTotal, 2);?></span>
+        </div>
+        <div class="mt-4">
+        <?php if (isset($_SESSION['receipt_id'])):?>
+          <button id="konfirmasiBtn" class="bg-green-500 text-white w-full py-2 px-4 rounded hover:bg-green-600 bottom-0">Konfirmasi Pembelian</button>
+        <?php endif;?>
+          <div id="konfirBtnAbu" class="bg-gray-100 text-gray-600 w-full py-2 px-4 rounded bottom-0 text-center">Konfirmasi Pembelian</div>
+        </div>
+    </aside>
 
   <!-- <div class="bg-white rounded shadow">
     <table id="barangTable" class="w-full text-left border-collapse">
@@ -221,7 +228,8 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const konfirmasiBtn = document.getElementById('konfirmasiBtn');
-    const itemsContainer = document.querySelector('.flex-col.bg-gray-100');
+    const itemsContainer = document.querySelector('.listedItems');
+    const konfirBtnAbu = document.getElementById('konfirBtnAbu');
 
     // Fungsi untuk memeriksa apakah ada item yang dipilih
     function checkItemsSelected() {
@@ -229,9 +237,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (items.length > 0) {
             // Menampilkan tombol konfirmasi jika ada item
             konfirmasiBtn.classList.remove('hidden');
+            konfirBtnAbu.classList.add('hidden');
         } else {
             // Menyembunyikan tombol konfirmasi jika tidak ada item
             konfirmasiBtn.classList.add('hidden');
+            konfirBtnAbu.classList.remove('hidden');
         }
     }
 
@@ -245,47 +255,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Memanggil fungsi ketika halaman pertama kali dimuat
     checkItemsSelected();
-});
-// Get the search input and all item buttons
-const quickSearchInput = document.getElementById('quickSearchInput');
-const itemButtons = document.querySelectorAll('[id^="tambahBarangBtn_"]');
-
-// Add event listener for real-time search
-quickSearchInput.addEventListener('input', function(e) {
-    const searchTerm = e.target.value.toLowerCase();
-    
-    // Loop through each item button
-    itemButtons.forEach(button => {
-        // Get item details from data attributes
-        const itemId = button.getAttribute('data-itemid').toLowerCase();
-        const itemName = button.getAttribute('data-itemname').toLowerCase();
-        
-        // Check if either item ID or name contains the search term
-        const matchesSearch = 
-            itemId.includes(searchTerm) || 
-            itemName.includes(searchTerm);
-        
-        // Show/hide button based on search match
-        if (matchesSearch) {
-            button.style.display = '';
-            // Optional: Add highlight effect
-            const nameElement = button.querySelector('.font-semibold');
-            if (nameElement) {
-                const text = `${button.getAttribute('data-itemid')} - ${button.getAttribute('data-itemname')}`;
-                if (searchTerm) {
-                    const highlightedText = text.replace(
-                        new RegExp(searchTerm, 'gi'),
-                        match => `<span class="bg-yellow-200">${match}</span>`
-                    );
-                    nameElement.innerHTML = highlightedText;
-                } else {
-                    nameElement.innerHTML = text;
-                }
-            }
-        } else {
-            button.style.display = 'none';
-        }
-    });
 });
 
 // Add clear search functionality
@@ -537,7 +506,7 @@ document.getElementById('printInvoiceBtn').addEventListener('click', function ()
         const selectedOption = this.options[this.selectedIndex]; // Ambil opsi yang dipilih
         const namaBarang = selectedOption.getAttribute('data-namabarang'); // Ambil data-namabarang
         
-        // Isi input Nama Barang
         document.getElementById('namabarang').value = namaBarang;
     });
+
 </script>

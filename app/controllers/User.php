@@ -456,12 +456,17 @@ class User extends Controller
 			'telepontoko' => $_POST['telepontoko'] ?? '',
 			'emailtoko' => $_POST['emailtoko'] ?? '',
 			'yearfounded' => $_POST['yearfounded'] ?? '',
+			'totalnotifications' => $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'],
+			'notifications' => $this->model('Item_model')->getTotalStockItem(),
 			'namatokoError' => '',
 			'tipetokoError' => '',
 			'lokasiError' => '',
 			'telepontokoError' => '',
 			'emailtokoError' => '',
 			'yearfoundedError' => '',
+			'namaError' => '',
+			'alamatError' => '',
+			'teleponAkunError' => '',
 			'judul' => 'Profile Toko'
 		];
 		$cekemail = $this->model('User_model')->cekEmailToko($data['emailtoko']);
@@ -497,13 +502,40 @@ class User extends Controller
 			!empty($data['namatokoError']) || !empty($data['tipetokoError']) || !empty($data['lokasiError']) ||
 			!empty($data['telepontokoError']) || !empty($data['emailtokoError']) || !empty($data['yearfoundedError'])
 		) {
-			$this->view('templates/s-header', $data);
-			$this->view('user/tokoinfo', $data);
+			$storeInfo = $this->model('User_model')->getStoreInfo();
+    
+			if ($storeInfo) {    
+				$personalInfo = $this->model('User_model')->getPersonalInfo();
+		
+				$data['nama'] = $personalInfo['NAME'];
+				$data['alamat'] = $personalInfo['ADDRESS'];
+				$data['nomortelp'] = $personalInfo['PHONE_NUMBER'];
+				$data['email'] = $personalInfo['EMAIL'];
+				$data['role'] = $personalInfo['ROLE'];
+				$data['namatoko'] = $storeInfo['STORE_NAME'];
+				$data['tipetoko'] = $storeInfo['STORE_TYPE'];
+				$data['lokasi'] = $storeInfo['LOCATION'];
+				$data['telepontoko'] = $storeInfo['PHONE_NUMBER'];
+				$data['emailtoko'] = $storeInfo['EMAIL'];
+				$data['yearfounded'] = $storeInfo['YEAR_FOUNDED'];
+				$this->view('templates/s-header', $data);
+				$this->view('user/tokoinfo', $data);
+			}
 			echo "<script>
+					document.addEventListener('DOMContentLoaded', function () {
+						const button = document.getElementById('openModalButton');
+						if (button) {
+							button.click();
+						}
+					});
 							modal.classList.remove('hidden');
 							toko.classList.add('hidden');
+							modalAkun.classList.add('hidden');
+							akun.classList.remove('hidden');
 						</script>";
-			return;
+			$this->view('templates/s-header',$data);
+			$this->view('user/tokoinfo', $data);
+			exit;
 		}
 
 		// Insert data
@@ -518,6 +550,86 @@ class User extends Controller
 			exit;
 		}
 	}
+
+	public function updateAkun()
+	{
+		$data = [
+			'name' => $_POST['namaAkun'] ?? '',
+			'address' => $_POST['alamatAkun'] ?? '',
+			'phonenumber' => $_POST['teleponAkun'] ?? '',
+			'namaError' => '',
+			'alamatError' => '',
+			'teleponAkunError' => '',
+			'namatokoError' => '',
+			'tipetokoError' => '',
+			'lokasiError' => '',
+			'telepontokoError' => '',
+			'emailtokoError' => '',
+			'yearfoundedError' => '',
+			'totalnotifications' => $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'],
+			'notifications' => $this->model('Item_model')->getTotalStockItem(),
+			'judul' => 'Profile Toko'
+		];
+	
+		$cekNomorTelepon = $this->model('User_model')->cekNomorTelepon($data['phonenumber']);
+	
+		// Validasi data
+		if (empty($data['name'])) {
+			$data['namaAkunError'] = 'Nama akun tidak boleh kosong.';
+		}
+		if (empty($data['address'])) {
+			$data['alamatAkunError'] = 'Alamat akun tidak boleh kosong.';
+		}
+		if (empty($data['phonenumber'])) {
+			$data['teleponAkunError'] = 'Nomor telepon tidak boleh kosong.';
+		} elseif ($cekNomorTelepon > 0) {
+			$data['teleponAkunError'] = 'Nomor telepon sudah terdaftar.';
+		}
+	
+		// Kembalikan error jika ada
+		if (!empty($data['namaAkunError']) || !empty($data['alamatAkunError']) || !empty($data['teleponAkunError'])) {
+			$storeInfo = $this->model('User_model')->getStoreInfo();
+    
+			if ($storeInfo) {    
+				$personalInfo = $this->model('User_model')->getPersonalInfo();
+		
+				$data['nama'] = $personalInfo['NAME'];
+				$data['alamat'] = $personalInfo['ADDRESS'];
+				$data['nomortelp'] = $personalInfo['PHONE_NUMBER'];
+				$data['email'] = $personalInfo['EMAIL'];
+				$data['role'] = $personalInfo['ROLE'];
+				$data['namatoko'] = $storeInfo['STORE_NAME'];
+				$data['tipetoko'] = $storeInfo['STORE_TYPE'];
+				$data['lokasi'] = $storeInfo['LOCATION'];
+				$data['telepontoko'] = $storeInfo['PHONE_NUMBER'];
+				$data['emailtoko'] = $storeInfo['EMAIL'];
+				$data['yearfounded'] = $storeInfo['YEAR_FOUNDED'];
+				$this->view('templates/s-header', $data);
+				$this->view('user/tokoinfo', $data);
+			}
+			$this->view('templates/s-header', $data);
+			$this->view('user/tokoinfo', $data);
+			echo "<script>
+					document.addEventListener('DOMContentLoaded', function () {
+						const button = document.getElementById('openModalAkunButton');
+						if (button) {
+							button.click();
+						}
+					});
+						</script>";
+			return;
+		}
+	
+		// Update data
+		if ($this->model('User_model')->editAkun($data['name'], $data['address'], $data['phonenumber']) > 0) {
+			header('Location: ' . BASEURL . '/dashboard/toko');
+			exit;
+		} else {
+			echo 'Gagal memperbarui data';
+			exit;
+		}
+	}
+	
 
 	public function deleteToko()
 	{

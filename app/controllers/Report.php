@@ -30,7 +30,10 @@ class Report extends Controller {
 		$data['judul'] = 'Laporan Bulanan';
 		$data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
 		$data['notifications'] = $this->model('Item_model')->getTotalStockItem();
-		// $data['monthlyChartData'] = $this->model('Report_model')->getMonthlyReport();
+
+		$data['bulan'] = $this->model('Report_model')->getAvailableMonths();
+		$data['monthlyChartData'] = $this->model('Report_model')->getDailyPerYears(date('M'));
+		$data['totalBulanan'] = $this->model('Report_model')->getTotalMonth(date('M'));
 		// Debug output
 		// var_dump($data['monthlyChartData']);  
 		// exit;

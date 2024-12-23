@@ -117,6 +117,61 @@ class Report_model {
     return $this->db->resultSet();
 	}
 
+  public function getAvailableMonths(){
+    $query = "SELECT DISTINCT TO_CHAR(r.time_added, 'MM') AS BULAN
+              FROM I_RECEIPT_ITEM r
+              WHERE r.IS_DELETED = 0
+                AND r.STORE_ID = :store_id
+              UNION
+              SELECT DISTINCT TO_CHAR(i.date_added, 'MM') AS BULAN
+              FROM I_INVENTORY i
+              WHERE i.IS_DELETED = 0
+                AND i.STORE_ID = :store_id
+              ORDER BY BULAN";
+    $this->db->query($query);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+    return $this->db->resultSet();
+  }
+
+  public function getDailyPerMonths($month){
+    $query = "SELECT 
+                  h.HARI,
+                  h.NAMA_HARI,
+                  NVL(SUM(pengeluaran.TOTAL_PENGELUARAN), 0) AS TOTAL_PENGELUARAN,
+                  NVL(SUM(pendapatan.TOTAL_PENDAPATAN), 0) AS TOTAL_PENDAPATAN,
+                  NVL(SUM(pendapatan.TOTAL_PENDAPATAN), 0) - NVL(SUM(pengeluaran.TOTAL_PENGELUARAN), 0) AS PROFIT
+              FROM HARIAN h
+              LEFT JOIN (
+                  SELECT 
+                      EXTRACT(DAY FROM i.date_added) AS HARI,
+                      SUM(i.QUANTITY * i.HARGA_BELI) AS TOTAL_PENGELUARAN
+                  FROM I_INVENTORY i
+                  WHERE i.IS_DELETED = 0
+                    AND EXTRACT(MONTH FROM i.date_added) = :bulan
+                  GROUP BY EXTRACT(DAY FROM i.date_added)
+              ) pengeluaran ON h.HARI = pengeluaran.HARI
+              LEFT JOIN (
+                  SELECT 
+                      EXTRACT(DAY FROM r.time_added) AS HARI,
+                      SUM(r.QUANTITY * m.COST_PRICE) AS TOTAL_PENDAPATAN
+                  FROM I_RECEIPT_ITEM r
+                  JOIN I_MASTER_ITEM m ON r.ITEM_ID = m.ITEM_ID
+                  WHERE r.IS_DELETED = 0 
+                    AND m.IS_DELETED = 0
+                    AND EXTRACT(MONTH FROM r.time_added) = :bulan
+                  GROUP BY EXTRACT(DAY FROM r.time_added)
+              ) pendapatan ON h.HARI = pendapatan.HARI
+              GROUP BY h.HARI, h.NAMA_HARI
+              ORDER BY h.HARI";
+
+    $this->db->query($query);
+    $this->db->bind('bulan', $month);
+    $this->db->execute();
+    return $this->db->resultSet();
+  }
+
+
   public function getMonthlyPerYears($year) {
     $query = "WITH BULANAN AS (
                   SELECT LEVEL AS BULAN,
@@ -158,6 +213,54 @@ class Report_model {
     $this->db->bind('tahun', $year);
     $this->db->execute();
     return $this->db->resultSet();
+  }
+
+  public function getTotalMonth($month) {
+    $query = "SELECT 
+                  COALESCE(pengeluaran.BULAN, pendapatan.BULAN) AS BULAN,
+                  TO_CHAR(TO_DATE(COALESCE(pengeluaran.BULAN, pendapatan.BULAN), 'MM'), 'Month') AS NAMA_BULAN,
+                  NVL(pengeluaran.TOTAL_PENGELUARAN, 0) AS TOTAL_PENGELUARAN,
+                  NVL(pendapatan.TOTAL_PENDAPATAN, 0) AS TOTAL_PENDAPATAN,
+                  NVL(pendapatan.TOTAL_PENDAPATAN, 0) - NVL(pengeluaran.TOTAL_PENGELUARAN, 0) AS PROFIT
+              FROM 
+                  ( -- Pengeluaran
+                      SELECT 
+                          TO_CHAR(i.date_added, 'MM') AS BULAN, 
+                          SUM(i.QUANTITY * i.HARGA_BELI) AS TOTAL_PENGELUARAN
+                      FROM 
+                          I_INVENTORY i
+                      WHERE 
+                          i.IS_DELETED = 0 
+                          AND i.STORE_ID = :store_id
+                      GROUP BY 
+                          TO_CHAR(i.date_added, 'MM')
+                  ) pengeluaran
+              FULL OUTER JOIN 
+                  ( -- Pendapatan
+                      SELECT 
+                          TO_CHAR(r.time_added, 'MM') AS BULAN, 
+                          SUM(r.QUANTITY * m.COST_PRICE) AS TOTAL_PENDAPATAN
+                      FROM 
+                          I_RECEIPT_ITEM r
+                      JOIN 
+                          I_MASTER_ITEM m ON r.ITEM_ID = m.ITEM_ID
+                      WHERE 
+                          r.IS_DELETED = 0 
+                          AND m.IS_DELETED = 0
+                          AND r.STORE_ID = :store_id
+                          AND m.STORE_ID = :store_id
+                      GROUP BY 
+                          TO_CHAR(r.time_added, 'MM')
+                  ) pendapatan
+              ON 
+                  pengeluaran.BULAN = pendapatan.BULAN
+              WHERE 
+                  COALESCE(pengeluaran.BULAN, pendapatan.BULAN) = :bulan";
+    $this->db->query($query);
+    $this->db->bind('bulan', $month);
+    $this->db->bind('store_id', $_SESSION['store_id']);
+    $this->db->execute();
+    return $this->db->single();
   }
 
   public function getTotalYear($year) {
