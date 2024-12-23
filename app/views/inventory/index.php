@@ -68,7 +68,7 @@
         <div class="overflow-y-auto max-h-96">
           <table class="min-w-full table-auto">
             <thead>
-              <tr class="bg-gray-200 text-gray-600">
+              <tr class="bg-[#FFD369] text-gray-600">
                 <th class="py-3 px-4 border text-center">Nama Barang</th>
                 <th class="py-3 px-4 border text-center">Total Kuantitas</th>
               </tr>
@@ -92,7 +92,7 @@
       <div class="bg-white rounded shadow">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="bg-gray-200 text-gray-600">
+            <tr class="bg-[#FFD369] text-gray-600">
               <th class="py-3 px-4 border text-center">Inventory ID</th>
               <th class="py-3 px-4 border text-center">Nama Barang</th>
               <th class="py-3 px-4 border text-center">Kuantitas</th>
@@ -247,32 +247,6 @@
       });
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const quickSearchInput = document.getElementById("quickSearch");
-      const tableRows = document.querySelectorAll("tbody tr");
-
-      quickSearchInput.addEventListener("input", (event) => {
-        const searchValue = event.target.value.toLowerCase();
-
-        // Filter rows based on input
-        tableRows.forEach((row) => {
-          const inventoryId = row.cells[0].textContent.toLowerCase();
-          const itemName = row.cells[1].textContent.toLowerCase();
-          const quantity = row.cells[2].textContent.toLowerCase();
-
-          if (
-            inventoryId.includes(searchValue) ||
-            itemName.includes(searchValue) ||
-            quantity.includes(searchValue)
-          ) {
-            row.style.display = ""; // Show row
-          } else {
-            row.style.display = "none"; // Hide row
-          }
-        });
-      });
-    });
-
     function confirmStatus() {
       swal.fire({
         title: "Apakah Anda Yakin Sudah Menerima Stok?",
@@ -367,6 +341,42 @@
       document.getElementById('formModal').classList.add('hidden');
       document.getElementById('inventoryForm').reset();
       });
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const quickSearchInput = document.getElementById("quickSearch");
+  const inventoryTableRows = document.querySelectorAll(".bg-white.w-9\\/12 tbody tr");
+  const totalStockTableRows = document.querySelectorAll(".bg-white.min-h-\\[600px\\] tbody tr");
+
+  quickSearchInput.addEventListener("input", (event) => {
+    const searchValue = event.target.value.toLowerCase();
+
+    // Filter Inventory Table
+    inventoryTableRows.forEach((row) => {
+      const inventoryId = row.cells[0].textContent.toLowerCase();
+      const itemName = row.cells[1].textContent.toLowerCase();
+
+      if (
+        inventoryId.includes(searchValue) ||
+        itemName.includes(searchValue)
+      ) {
+        row.style.display = ""; // Show row
+      } else {
+        row.style.display = "none"; // Hide row
+      }
+    });
+
+    // Filter Total Stock Table
+    totalStockTableRows.forEach((row) => {
+      const itemName = row.cells[0].textContent.toLowerCase();
+
+      if (itemName.includes(searchValue)) {
+        row.style.display = ""; // Show row
+      } else {
+        row.style.display = "none"; // Hide row
+      }
+    });
+  });
+});
 
   </script>
 </body>

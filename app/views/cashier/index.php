@@ -3,23 +3,25 @@
     <h1 class="text-2xl font-bold mb-4">Barang Yang Tersedia</h1>
     <input type="text" id="quickSearchInput" placeholder="Cari" class="border rounded px-6 py-2">
     <div class="flex w-3/5">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-      <?php foreach($data['item'] as $item): ?>
-        <button id="tambahBarangBtn_<?= $item['ITEM_ID']; ?>" 
-                data-itemid="<?= $item['ITEM_ID']; ?>" 
-                data-itemname="<?= $item['ITEM_NAME']; ?>"
-                class="group bg-white rounded-lg shadow-lg w-full">
-          <div class="flex flex-col items-center px-20 py-5">
-            <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" class="group-hover:hidden w-full h-full object-cover">
-            <img src="<?= BASEURL; ?>/img/add-to-cart.png" class="w-full h-full  hidden group-hover:block" alt="">
-          </div>
-          <div class="bg-[#FFD369] rounded-lg flex flex-col">
-          <span class="mb-2 font-semibold text-lg"><?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?></span>
-            <span class="text-gray-600">Rp.<?= number_format($item['COST_PRICE'], 2);?> - Stock Tersedia : <?= $item['STOCK_AVAILABLE'];?></span>
-          </div>
-        </button>
-      <?php endforeach; ?>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+  <?php foreach($data['item'] as $item): ?>
+    <button id="tambahBarangBtn_<?= $item['ITEM_ID']; ?>" 
+            data-itemid="<?= $item['ITEM_ID']; ?>" 
+            data-itemname="<?= $item['ITEM_NAME']; ?>"
+            class="group bg-white rounded-lg shadow-lg w-full">
+      <div class="flex flex-col items-center px-20 py-5">
+        <img src="<?= BASEURL; ?>/img/noimage1.png" alt="gambar tidak tersedia" class="group-hover:hidden w-full h-full object-cover">
+        <img src="<?= BASEURL; ?>/img/add-to-cart.png" class="w-full h-full  hidden group-hover:block" alt="">
       </div>
+      <div class="bg-[#FFD369] rounded-lg flex flex-col">
+        <span class="mb-2 font-semibold text-lg">
+          <?= $item['ITEM_ID']; ?> - <?= $item['ITEM_NAME']; ?>
+        </span>
+        <span class="text-gray-600">Rp.<?= number_format($item['COST_PRICE'], 2);?> - Stock Tersedia : <?= $item['STOCK_AVAILABLE'];?></span>
+      </div>
+    </button>
+  <?php endforeach; ?>
+</div>
     </div>
   </div>
   <aside class="bg-white p-5 shadow-lg rounded-lg fixed right-0 top-20 w-1/4 h-full">
@@ -161,7 +163,6 @@
   </div>
 </div> -->
 
-
 <!-- Modal Konfirmasi Pembayaran -->
 <div id="konfirmasiPembayaranModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display: none;">
   <div class="bg-white w-full max-w-[600px] p-6 rounded-lg shadow-lg">
@@ -201,8 +202,6 @@
       document.getElementById('modal').style.display = 'flex';
     });
   });
-
-  
 
   function closeModalPembayaran() {
     document.getElementById('konfirmasiPembayaranModal').style.display = 'none';
@@ -257,15 +256,6 @@ document.addEventListener("DOMContentLoaded", function () {
     checkItemsSelected();
 });
 
-// Add clear search functionality
-quickSearchInput.addEventListener('keyup', function(e) {
-    if (e.key === 'Escape') {
-        this.value = '';
-        // Trigger the input event to reset the display
-        this.dispatchEvent(new Event('input'));
-    }
-});
-
 document.getElementById('printInvoiceBtn').addEventListener('click', function () {
     // Get all items from the current receipt
     const itemElements = document.querySelectorAll('.flex.items-center.p-2.mb-2.gap-3');
@@ -296,191 +286,225 @@ document.getElementById('printInvoiceBtn').addEventListener('click', function ()
     const date = new Date().toLocaleDateString('id-ID');
 
     printWindow.document.write(`
-        <html>
-        <head>
-            <title>Invoice InvenSync</title>
-            <style>
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-                body {
-                    font-family: 'Inter', sans-serif;
-                    margin: 0;
-                    padding: 40px;
-                    color: #1f2937;
-                    background: #f9fafb;
-                }
-                .invoice-container {
-                    max-width: 900px;
-                    margin: 0 auto;
-                    background: white;
-                    padding: 40px;
-                    border-radius: 12px;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-                    overflow: hidden;
-                }
+    <html>
+    <head>
+    <title>Invoice InvenSync</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        .invoice-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
                 .header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 40px;
-                    border-bottom: 2px solid #222831;
-                    padding-bottom: 16px;
-                }
-                .company-details {
-                    font-size: 14px;
-                    color: #4b5563;
-                    display: flex;
-                    align-items: center;
-                }
-                .company-details img {
-                    max-width: 120px;
-                    margin-right: 20px;
-                }
-                .company-details h2 {
-                    font-size: 24px;
-                    color: #1f2937;
-                    font-weight: 700;
-                    margin: 0;
-                }
-                .invoice-details {
-                    text-align: right;
-                    font-size: 14px;
-                    color: #4b5563;
-                }
-                .invoice-details .invoice-title {
-                    font-size: 36px;
-                    font-weight: 700;
-                    color: #fbbf24;
-                    margin: 0;
-                }
-                .invoice-details .invoice-date {
-                    font-size: 14px;
-                    margin-top: 8px;
-                }
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #222831; /* Warna #222831 untuk garis bawah */
+            padding-bottom: 16px;
+        }
+
+        .company-details {
+            font-size: 14px;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+        }
+
+        .company-details img {
+            max-width: 120px;
+            margin-right: 20px;
+        }
+
+        .company-details h2 {
+            font-size: 24px;
+            color: #1f2937;
+            font-weight: 700;
+            margin: 0;
+        }
+
+            .invoice-details {
+            text-align: right;
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .invoice-details .invoice-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #fbbf24; /* Aksen Kuning */
+            margin: 0;
+        }
+
+        .invoice-details .invoice-date {
+            font-size: 14px;
+            margin-top: 8px;
+        }
                 table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin: 32px 0;
-                }
-                thead {
-                    background: #f9fafb;
-                    border-radius: 8px;
-                }
-                th {
-                    text-align: left;
-                    padding: 12px;
-                    font-weight: 600;
-                    color: #374151;
-                    text-transform: uppercase;
-                    font-size: 14px;
-                    background-color: #FFD369;
-                    color: #222831;
-                }
-                td {
-                    padding: 16px 12px;
-                    border-bottom: 1px solid #e5e7eb;
-                    color: #374151;
-                    font-size: 14px;
-                }
-                .amount-column {
-                    text-align: right;
-                }
-                .total-section {
-                    margin-top: 32px;
-                    padding-top: 24px;
-                    border-top: 2px solid #222831;
-                    text-align: right;
-                }
-                .total-label {
-                    font-size: 14px;
-                    color: #6b7280;
-                }
-                .total-amount {
-                    font-size: 24px;
-                    font-weight: 700;
-                    color: #1f2937;
-                }
-                .footer {
-                    margin-top: 48px;
-                    padding-top: 24px;
-                    text-align: center;
-                    color: #6b7280;
-                    font-size: 14px;
-                }
-                .footer p {
-                    margin: 8px 0;
-                }
-                .footer .company-name {
-                    font-weight: bold;
-                    color: #1f2937;
-                }
-                .footer .highlight {
-                    color: #fbbf24;
-                }
-                @media print {
-                    body {
-                        background: white;
-                        padding: 0;
-                    }
-                    .invoice-container {
-                        box-shadow: none;
-                    }
-                }
+            width: 100%;
+            border-collapse: collapse;
+            margin: 32px 0;
+        }
+
+        thead {
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            font-weight: 600;
+            color: #374151;
+            text-transform: uppercase;
+            font-size: 14px;
+            background-color: #FFD369; /* Aksen Kuning */
+            color: #222831; /* Teks Hitam pada Header */
+        }
+
+        td {
+            padding: 16px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .amount-column {
+            text-align: right;
+        }
+
+        .total-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 2px solid #222831; /* Warna #222831 untuk garis atas total */
+            text-align: right;
+        }
+
+        .total-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .total-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .footer p {
+            margin: 8px 0;
+        }
+
+        .footer .company-name {
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .footer .highlight {
+            color: #fbbf24; /* Aksen Kuning pada footer */
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .invoice-container {
+                box-shadow: none;
+            }
+        }
             </style>
         </head>
         <body>
-            <div class="invoice-container">
-                <div class="header">
-                    <div class="company-details">
-                        <img src="${window.location.origin}/img/invensync-black.png" alt="InvenSync Logo">
-                        <div>
-                            <h2>InvenSync</h2>
-                            <p>Jl. Kukusan No. 123, Depok, Indonesia</p>
-                            <p>Email: support@invensync.com</p>
-                            <p>Phone: +62 21 123...</p>
-                        </div>
-                    </div>
+          <div class="invoice-container">
+                  <div class="header">
+                      <div class="company-details">
+                          <img src="<?= BASEURL; ?>/img/invensync-black.png" alt="InvenSync Logo">
+                          <div>
+                              <h2>InvenSync</h2>
+                              <p>Jl. Kukusan No. 123, Depok, Indonesia</p>
+                              <p>Email: support@invensync.com</p>
+                              <p>Phone: +62 21 1234 5678</p>
+                          </div>
+                      </div>
                     <div class="invoice-details">
-                        <h1 class="invoice-title">Invoice</h1>
-                        <p class="invoice-date">Tanggal: ${date}</p>
-                    </div>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nama Barang</th>
-                            <th>Jumlah</th>
-                            <th>Harga</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${items.map(item => `
-                            <tr>
-                                <td>${item.ITEM_NAME}</td>
-                                <td>${item.QUANTITY}</td>
-                                <td>Rp. ${formatNumber(item.COST_PRICE)}</td>
-                                <td>Rp. ${formatNumber(item.TOTAL)}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-                <div class="total-section">
-                    <p class="total-label">Total:</p>
-                    <p class="total-amount">Rp. ${formatNumber(total)}</p>
-                </div>
-                <div class="footer">
-                    <p>&copy; 2024 InvenSync. All rights reserved.</p>
-                </div>
+                <div class="invoice-title">Invoice</div>
+                <div class="invoice-date">Date: ${date}</div>
             </div>
-        </body>
-        </html>
+        </div>
+                <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th class="amount-column">Total</th>
+                </tr>
+            </thead>
+                    <tbody>
+                ${items.map(item => `
+                    <tr>
+                        <td>${item.ITEM_NAME}</td>
+                        <td>${item.QUANTITY}</td>
+                        <td>Rp ${formatNumber(item.COST_PRICE)}</td>
+                        <td class="amount-column">Rp ${formatNumber(item.COST_PRICE * item.QUANTITY)}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+                <div class="total-section">
+            <div class="total-label">Total Amount</div>
+            <div class="total-amount">Rp ${formatNumber(total)}</div>
+        </div>
+        <div class="footer">
+            <p>Thank you for your business!</p>
+            <p class="company-name">InvenSync</p>
+            <p class="highlight">We appreciate your trust in us!</p>
+        </div>
+    </div>
+</body>
+</html>
     `);
 
     // Trigger print dialog
-    printWindow.document.close();
+    printWindow.document.close();  // Close the document after writing
     printWindow.print();
+    printWindow.close();  // Close the print window after printing
 });
-
+  const logo = new Image();
+  logo.src = '<?= BASEURL; ?>/img/invensync-black.png';
+  logo.onload = () => {
+      // Setelah gambar dimuat, lakukan print
+      printWindow.document.close();
+      printWindow.print();
+      printWindow.close();
+  };
+  printWindow.document.write(`
+      <img src="${logo.src}" alt="InvenSync Logo">
+  `);
 
   function fetchItemDetails(){
     const kodeBarang = $('#kodebarang').val();
@@ -508,5 +532,26 @@ document.getElementById('printInvoiceBtn').addEventListener('click', function ()
         
         document.getElementById('namabarang').value = namaBarang;
     });
+
+  document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("quickSearchInput");
+  const itemCards = document.querySelectorAll(".grid .group");
+
+  searchInput.addEventListener("input", function () {
+    const query = searchInput.value.toLowerCase().trim();
+    
+    itemCards.forEach(card => {
+      const itemId = card.querySelector("span").textContent.toLowerCase();
+      const itemName = card.querySelector("span").textContent.toLowerCase();
+
+      // Show card if query matches either ITEM_ID or ITEM_NAME
+      if (itemId.includes(query) || itemName.includes(query)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+});
 
 </script>
