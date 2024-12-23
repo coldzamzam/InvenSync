@@ -446,7 +446,7 @@ document.getElementById('printInvoiceBtn').addEventListener('click', function ()
                           <div>
                               <h2>InvenSync</h2>
                               <p>Jl. Kukusan No. 123, Depok, Indonesia</p>
-                              <p>Email: support@invensync.com</p>
+                              <p>Email: @invensync.com</p>
                               <p>Phone: +62 21 1234 5678</p>
                           </div>
                       </div>

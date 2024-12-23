@@ -1,3 +1,86 @@
+<style>
+  @media print {
+    body * {
+      visibility: hidden; /* Sembunyikan semua elemen */
+    }
+
+    #reportModal, #reportModal * {
+      visibility: visible; /* Tampilkan hanya elemen modal */
+    }
+
+    #reportModal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      margin: 0;
+      padding: 20px;
+      background: white;
+      box-shadow: none;
+      border: none;
+    }
+
+    #modalTitle {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    #reportHeader {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #modalContent {
+      padding: 20px;
+      font-size: 16px;
+      line-height: 1.6;
+      border-top: 2px solid #ccc;
+      border-bottom: 2px solid #ccc;
+    }
+
+    #modalFooter {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px dashed #ddd;
+    }
+
+    .data-row:last-child {
+      border-bottom: none;
+    }
+
+    button {
+      display: none; /* Sembunyikan tombol pada mode cetak */
+    }
+  }
+
+  /* Style modal saat tidak mencetak */
+  #reportModal {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  #modalContent .data-row span:first-child {
+    font-weight: bold;
+    color: #333;
+  }
+
+  #modalContent .data-row span:last-child {
+    font-weight: bold;
+    color: #007BFF; /* Biru */
+  }
+</style>
+
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -33,7 +116,7 @@
         <form action="<?= BASEURL; ?>/report/getDailyReport" method="post">
           <input type="date" name="dateHarian" id="dateHarian" class="border rounded px-4 py-2 focus:ring-2 focus:ring-blue-400">
           <button class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition">
-            CHECK
+          CEK
           </button>
         </form>
       </div>
@@ -81,32 +164,34 @@
 <div id="reportModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
   <div class="bg-white shadow-lg border border-zinc-200 w-full max-w-lg p-8 rounded-lg">
     <!-- Header -->
-    <div class="mb-6 text-center">
-      <h1 id="modalTitle" class="text-3xl font-bold text-gray-800">TOTAL</h1>
+    <div id="reportHeader">
+      <h1 id="modalTitle">Laporan Harian</h1>
+      <p class="text-gray-600">Periode: <?= date('F Y', strtotime($data['periode'])); ?></p>
     </div>
 
-    <!-- Konten Data -->
-    <div id="modalContent" class="space-y-4 text-gray-700 text-lg">
-      <div class="flex justify-between items-center">
-        <span class="font-semibold">Total Pemasukan:</span>
-        <span>
-          Rp<?= $data['dailyReport']['TOTAL_PENDAPATAN'] ?>
-        </span>
+<!-- Konten Data -->
+<div id="modalContent">
+      <div class="data-row">
+        <span>Total Pemasukan:</span>
+        <span>Rp<?= number_format($data['dailyReport']['TOTAL_PENDAPATAN'], 2, ',', '.') ?></span>
       </div>
-      <div class="flex justify-between items-center">
-        <span class="font-semibold">Total Pengeluaran:</span>
-        <span>
-          Rp<?= $data['dailyReport']['TOTAL_PENGELUARAN'] ?>
-        </span>
+      <div class="data-row">
+        <span>Total Pengeluaran:</span>
+        <span>Rp<?= number_format($data['dailyReport']['TOTAL_PENGELUARAN'], 2, ',', '.') ?></span>
       </div>
-      <div class="flex justify-between items-center">
-        <span class="font-semibold">Total Pemasukan Barang:</span>
-        <span>40 Pack</span>
+      <div class="data-row">
+        <span>Total Pemasukan Barang:</span>
+        <span>120 Pack</span>
       </div>
-      <div class="flex justify-between items-center">
-        <span class="font-semibold">Total Pengeluaran Barang:</span>
-        <span>25 Pack</span>
+      <div class="data-row">
+        <span>Total Pengeluaran Barang:</span>
+        <span>80 Pack</span>
       </div>
+    </div>
+
+    <!-- Footer -->
+ <div id="modalFooter">
+      <p>Dicetak pada: <?= date('d-m-Y H:i'); ?></p>
     </div>
 
     <!-- Tombol Aksi -->

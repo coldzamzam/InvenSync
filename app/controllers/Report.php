@@ -11,6 +11,7 @@ class Report extends Controller {
 		$data['judul'] = 'Laporan Harian';
 		$data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
 		$data['notifications'] = $this->model('Item_model')->getTotalStockItem();
+		$data['periode'] = isset($_POST['bulan']) ? $_POST['bulan'] : date('Y-m');
 
 		$data['dailyReport'] = $this->model('Report_model')->getReportHarian(date('Y-m-d'));
 		// Debug output
@@ -30,6 +31,7 @@ class Report extends Controller {
 		$data['judul'] = 'Laporan Bulanan';
 		$data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
 		$data['notifications'] = $this->model('Item_model')->getTotalStockItem();
+		$data['periode'] = isset($_POST['bulan']) ? $_POST['bulan'] : date('Y-m');
 
 		$data['bulan'] = $this->model('Report_model')->getAvailableMonths();
 		$data['monthlyChartData'] = $this->model('Report_model')->getDailyPerMonths(date('m'));
