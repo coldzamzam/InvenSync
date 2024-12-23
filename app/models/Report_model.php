@@ -135,7 +135,13 @@ class Report_model {
   }
 
   public function getDailyPerMonths($month){
-    $query = "SELECT 
+    $query = "WITH HARIAN AS (
+                  SELECT LEVEL AS HARI,
+                        TO_CHAR(TO_DATE(LEVEL, 'DD'), 'DD') AS NAMA_HARI
+                  FROM DUAL
+                  CONNECT BY LEVEL <= 31  -- Jumlah maksimal hari dalam satu bulan
+              )
+              SELECT 
                   h.HARI,
                   h.NAMA_HARI,
                   NVL(SUM(pengeluaran.TOTAL_PENGELUARAN), 0) AS TOTAL_PENGELUARAN,

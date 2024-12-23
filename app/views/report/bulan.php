@@ -1,18 +1,9 @@
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- <style>
-  .tab-active {
-    @apply bg-blue-600 text-white shadow-lg;
-  }
-
-  .tab-inactive {
-    @apply bg-gray-200 text-gray-600 hover:bg-gray-300;
-  }
-</style> -->
 
 <!-- Container Utama -->
 <main class="flex-1 ml-24 mt-20 p-8">
@@ -28,12 +19,13 @@
     <!-- Judul dan Pilihan Bulan dalam Satu Baris -->
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-semibold">Laporan Bulanan</h2>
-      <form action="<?= BASEURL; ?>/report/getMonthlyReport" method="post">
-        <input type="month" id="monthPicker" class="border rounded px-4 py-2 focus:ring-2 focus:ring-blue-400">
+      <form id="reportForm" action="<?= BASEURL; ?>/report/getMonthlyReport" method="post">
+        <input type="month" name="bulan" id="monthPicker" class="border rounded px-4 py-2 focus:ring-2 focus:ring-blue-400">
         <button class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition">
             CHECK
         </button>
       </form>
+
     </div>
 
     <!-- Kotak Total -->
@@ -81,11 +73,11 @@
     <div id="modalContent" class="space-y-4 text-gray-700 text-lg">
       <div class="flex justify-between items-center">
         <span class="font-semibold">Total Pemasukan:</span>
-        <span>Rp. 30.000.000</span>
+        <span>Rp<?= number_format($data['totalBulanan']['TOTAL_PENDAPATAN'], 2, ',', '.') ?></span>
       </div>
       <div class="flex justify-between items-center">
         <span class="font-semibold">Total Pengeluaran:</span>
-        <span>Rp. 15.000.000</span>
+        <span>Rp<?= number_format($data['totalBulanan']['TOTAL_PENGELUARAN'], 2, ',', '.') ?></span>
       </div>
       <div class="flex justify-between items-center">
         <span class="font-semibold">Total Pemasukan Barang:</span>
@@ -133,51 +125,49 @@
     }
   }
 
-  // Grafik Line Bulanan
-  // const monthlyChartData = <?php echo json_encode($data['monthlyChartData']); ?>;
-  // console.log(monthlyChartData);
-  // const labels = monthlyChartData.map(data => data.MINGGU);
-  // const pemasukanData = monthlyChartData.map(data => data.TOTAL_PEMASUKAN);
-  // const pengeluaranData = monthlyChartData.map(data => data.TOTAL_PENGELUARAN);
+const monthlyChartData = <?php echo json_encode($data['monthlyChartData']); ?>;  // Pastikan ini mengandung data yang benar
+const labels = monthlyChartData.map(data => data.NAMA_HARI);  // Menyesuaikan nama label sesuai dengan struktur data
+const pemasukanData = monthlyChartData.map(data => data.TOTAL_PENDAPATAN);  // Ambil data pemasukan
+const pengeluaranData = monthlyChartData.map(data => data.TOTAL_PENGELUARAN);  // Ambil data pengeluaran
 
-
+// Gambar Chart.js setelah halaman dimuat
+window.onload = function() {
   const ctxMonthly = document.getElementById('monthlyChart').getContext('2d');
   new Chart(ctxMonthly, {
-    type: 'line',
+    type: 'line',  // Jenis grafik adalah line chart
     data: {
-      labels: labels,
+      labels: labels,  // Label untuk sumbu X (misalnya, minggu)
       datasets: [
         {
-          label: 'Pemasukan',
-          data: pemasukanData,
-          borderColor: '#3b82f6',
-          tension: 0.4,
-          fill: false
+          label: 'Pemasukan',  // Label untuk dataset pertama
+          data: pemasukanData,  // Data pemasukan
+          borderColor: '#3b82f6',  // Warna border untuk garis
+          tension: 0.4,  // Tension garis (lebih rendah untuk garis lebih lurus)
+          fill: false  // Jangan isi area di bawah garis
         },
         {
-          label: 'Pengeluaran',
-          data: pengeluaranData,
-          borderColor: '#ef4444',
-          tension: 0.4,
-          fill: false
+          label: 'Pengeluaran',  // Label untuk dataset kedua
+          data: pengeluaranData,  // Data pengeluaran
+          borderColor: '#ef4444',  // Warna border untuk garis pengeluaran
+          tension: 0.4,  // Tension garis
+          fill: false  // Jangan isi area di bawah garis
         }
       ]
     },
     options: {
-      responsive: true,
+      responsive: true,  // Grafik responsif
       plugins: {
         legend: {
-          position: 'bottom'
+          position: 'bottom'  // Letakkan legenda di bawah grafik
         }
       },
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: true  // Mulai skala Y dari 0
         }
       }
     }
   });
+};
 
-
-  
 </script>

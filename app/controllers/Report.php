@@ -32,11 +32,13 @@ class Report extends Controller {
 		$data['notifications'] = $this->model('Item_model')->getTotalStockItem();
 
 		$data['bulan'] = $this->model('Report_model')->getAvailableMonths();
-		$data['monthlyChartData'] = $this->model('Report_model')->getDailyPerYears(date('M'));
-		$data['totalBulanan'] = $this->model('Report_model')->getTotalMonth(date('M'));
+		$data['monthlyChartData'] = $this->model('Report_model')->getDailyPerMonths(date('m'));
+		$data['totalBulanan'] = $this->model('Report_model')->getTotalMonth(date('m'));
 		// Debug output
 		// var_dump($data['monthlyChartData']);  
 		// exit;
+		$chartData = json_encode($data['monthlyChartData']);
+		
 		if($this->model('User_model')->checkRowToko() > 0) {
 			$this->view('templates/s-header', $data);
 			$this->view('report/bulan', $data);
@@ -86,6 +88,25 @@ class Report extends Controller {
     $this->view('report/index', $data);
 	}
 
+	public function getMonthlyReport() { 
+		if (isset($_POST['bulan'])) {
+			$bulan = $_POST['bulan'];  // format: YYYY-MM
+			$bulanOnly = substr($bulan, 5, 2);  // Mengambil hanya bagian bulan (2 digit)
+			echo $bulanOnly;  // Menampilkan bulan dalam format "MM"
+		}	
+		$data['judul'] = 'Laporan Bulanan';
+		$data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
+		$data['notifications'] = $this->model('Item_model')->getTotalStockItem();
+		$data['bulan'] = $this->model('Report_model')->getAvailableMonths();
+	
+		$data['monthlyChartData'] = $this->model('Report_model')->getDailyPerMonths($bulanOnly);
+		$data['totalBulanan'] = $this->model('Report_model')->getTotalMonth($bulanOnly);
+		
+		$this->view('templates/s-header', $data);
+		$this->view('report/bulan', $data);
+	}
+	
+
 	public function getAnnualReport() {
 		$data['judul'] = 'Laporan Tahunan';
 		$data['totalnotifications'] = $this->model('Item_model')->getStockNotification()['TOTAL_NOTIFICATIONS'];
@@ -99,7 +120,7 @@ class Report extends Controller {
 		// var_dump($data['annualReport']);
 		// exit;
 
-		$labels = [];
+	$labels = [];
     $pemasukanData = [];
     $pengeluaranData = [];
 
