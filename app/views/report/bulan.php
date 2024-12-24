@@ -112,23 +112,27 @@
     </div>
 
     <!-- Kotak Total -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
+    <div class="flex md:flex-row gap-4 justify-center w-full">
       <div class="bg-blue-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Total Pemasukan</h3>
-        <p class="text-xl font-bold text-blue-600">Rp. 30.000.000</p>
+        <p class="text-xl font-bold text-blue-600">
+          Rp<?= number_format($data['totalBulanan']['TOTAL_PENDAPATAN'], 2, ',', '.'); ?>
+        </p>
       </div>
       <div class="bg-red-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Total Pengeluaran</h3>
-        <p class="text-xl font-bold text-red-600">Rp. 15.000.000</p>
+        <p class="text-xl font-bold text-red-600">
+          Rp<?= number_format($data['totalBulanan']['TOTAL_PENGELUARAN'], 2, ',', '.'); ?>
+        </p>
       </div>
-      <div class="bg-green-100 p-4 rounded-lg shadow-md">
+      <!-- <div class="bg-green-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Pemasukan Barang</h3>
         <p class="text-xl font-bold text-green-600">120 Pack</p>
       </div>
       <div class="bg-yellow-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Pengeluaran Barang</h3>
         <p class="text-xl font-bold text-yellow-600">80 Pack</p>
-      </div>
+      </div> -->
     </div>
 
     <!-- Grafik Line -->
@@ -163,14 +167,14 @@
         <span>Total Pengeluaran:</span>
         <span>Rp<?= number_format($data['totalBulanan']['TOTAL_PENGELUARAN'], 2, ',', '.') ?></span>
       </div>
-      <div class="data-row">
+      <!-- <div class="data-row">
         <span>Total Pemasukan Barang:</span>
         <span>120 Pack</span>
       </div>
       <div class="data-row">
         <span>Total Pengeluaran Barang:</span>
         <span>80 Pack</span>
-      </div>
+      </div> -->
     </div>
 
  <!-- Footer -->

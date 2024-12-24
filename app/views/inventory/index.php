@@ -100,7 +100,7 @@
               <th class="py-3 px-4 border text-center">Harga Beli</th>
               <th class="py-3 px-4 border text-center">ID User</th>
               <th class="py-3 px-4 border text-center">Status</th>
-              <th class="py-3 px-4 border text-center">Aksi</th>
+              <!-- <th class="py-3 px-4 border text-center">Aksi</th> -->
             </tr>
           </thead>
           <tbody>
@@ -125,11 +125,11 @@
                     </button>
                   </div>
                 </td>
-                <td class="py-3 px-4 border flex justify-center items-center">
+                <!-- <td class="py-3 px-4 border flex justify-center items-center">
                   <button onclick="editItem('<?= $users['INVENTORY_ID']; ?>')" class="bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
                     <img src="<?= BASEURL; ?>/img/setting-logo.png" width="20px" height="20px" alt="logo edit">
                   </button>
-                </td>
+                </td> -->
               </tr>
             <?php endforeach; ?>
           </tbody>

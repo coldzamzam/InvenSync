@@ -123,7 +123,7 @@
     </div>
 
     <!-- Kotak Total -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
+    <div class="flex md:flex-row gap-4 justify-center w-full">
       <div class="bg-blue-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Total Pemasukan</h3>
         <p class="text-xl font-bold text-blue-600">
@@ -136,14 +136,14 @@
           Rp<?= number_format($data['dailyReport']['TOTAL_PENGELUARAN'], 2, ',', '.') ?>
         </p>
       </div>
-      <div class="bg-green-100 p-4 rounded-lg shadow-md">
+      <!-- <div class="bg-green-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Pemasukan Barang</h3>
         <p class="text-xl font-bold text-green-600">40 Pack</p>
       </div>
       <div class="bg-yellow-100 p-4 rounded-lg shadow-md">
         <h3 class="font-semibold text-gray-700">Pengeluaran Barang</h3>
         <p class="text-xl font-bold text-yellow-600">25 Pack</p>
-      </div>
+      </div> -->
     </div>
 
     <!-- Grafik Donat -->
@@ -179,14 +179,14 @@
         <span>Total Pengeluaran:</span>
         <span>Rp<?= number_format($data['dailyReport']['TOTAL_PENGELUARAN'], 2, ',', '.') ?></span>
       </div>
-      <div class="data-row">
+      <!-- <div class="data-row">
         <span>Total Pemasukan Barang:</span>
         <span>120 Pack</span>
       </div>
       <div class="data-row">
         <span>Total Pengeluaran Barang:</span>
         <span>80 Pack</span>
-      </div>
+      </div> -->
     </div>
 
     <!-- Footer -->
@@ -214,9 +214,9 @@
   new Chart(ctxDaily, {
     type: 'doughnut',
     data: {
-      labels: ['Pemasukan Uang', 'Pengeluaran Uang', 'Pemasukan Barang', 'Pengeluaran Barang'],
+      labels: ['Pemasukan Uang', 'Pengeluaran Uang'],
       datasets: [{
-        data: [<?= $data['dailyReport']['TOTAL_PENDAPATAN'] ?>, <?= $data['dailyReport']['TOTAL_PENGELUARAN'] ?>, 40, 25],
+        data: [<?= ($data['dailyReport']['TOTAL_PENDAPATAN']) ?>, <?= $data['dailyReport']['TOTAL_PENGELUARAN'] ?>],
         backgroundColor: ['#3b82f6', '#ef4444', '#22c55e', '#eab308'],
         borderColor: '#ffffff',
         borderWidth: 2
