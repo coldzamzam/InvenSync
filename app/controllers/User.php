@@ -63,14 +63,14 @@ class User extends Controller
 		}
 	}
 
+	public function sanitizeInputSignIn($input)
+	{
+		return strtolower(trim($input));
+	}
 
 	public function createAcc()
 	{
 
-		function sanitizeInputSignIn($input)
-		{
-			return strtolower(trim($input));
-		}
 
 		$mail = new PHPMailer(true);
 
@@ -79,7 +79,7 @@ class User extends Controller
 			'role' => $_POST['role'] ?? '',
 			'address' => $_POST['address'] ?? '',
 			'phonenumber' => $_POST['phonenumber'] ?? '',
-			'email' => sanitizeInputSignIn($_POST['email']) ?? '',
+			'email' => $this->sanitizeInputSignIn($_POST['email']) ?? '',
 			'password' => $_POST['password'] ?? '',
 			'nameError' => '',
 			'roleError' => '',
@@ -813,12 +813,8 @@ class User extends Controller
 	public function sendResetPasswordRequest()
 	{
 		$mail = new PHPMailer(true);
-		function sanitizeInputSignIn($input)
-		{
-			return strtolower(trim($input));
-		}
 		$data = [
-			'email' => sanitizeInputSignIn($_POST['email']) ?? '',
+			'email' => $this->sanitizeInputSignIn($_POST['email']) ?? '',
 			'code' => bin2hex(random_bytes(16)),
 		];
 		if (isset($_POST['email']) && $_POST['email'] != '') {
